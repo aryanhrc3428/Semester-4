@@ -1,0 +1,9 @@
+*.rpm
+
+# Large PDF files (>40 MB) - causing Git push issues
+CN/CISSP books/*.pdf
+CN/ref_*.pdf
+DBMS/ref_*.pdf
+DSE/ref_*.pdf
+EVS/EVS Presentation.pdf
+

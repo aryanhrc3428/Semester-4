@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>SEC Practical 2 - Lists, Images, and Links</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <style>
+        /* Main background for entire page */
+        body {
+            background-color: rgb(250, 243, 225);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 20px;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        /* Header styles */
+        h1 {
+            color: rgb(34, 34, 34);
+            border-bottom: 3px solid rgb(250, 129, 18);
+            padding-bottom: 15px;
+        }
+
+        /* Section container */
+        .section {
+            background-color: rgb(245, 231, 198);
+            margin: 20px 0;
+            padding: 20px;
+            border-left: 4px solid rgb(250, 129, 18);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+        }
+
+        /* Section heading */
+        .section h2 {
+            color: rgb(250, 129, 18);
+            border-bottom: 2px solid rgb(245, 231, 198);
+            padding-bottom: 10px;
+        }
+
+        /* Example box styling */
+        .example {
+            background-color: rgb(250, 243, 225);
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid rgb(245, 231, 198);
+        }
+
+        /* Image styling */
+        .image-container {
+            margin: 15px 0;
+            text-align: center;
+        }
+
+        .image-container img {
+            max-width: 100%;
+            height: auto;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            margin: 10px 0;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .image-info {
+            background-color: rgb(245, 231, 198);
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 10px;
+            color: rgb(34, 34, 34);
+            font-size: 13px;
+        }
+
+        /* List styling */
+        ol, ul {
+            margin: 15px 0;
+            padding-left: 30px;
+        }
+
+        li {
+            margin: 8px 0;
+        }
+
+        /* Link styling */
+        a {
+            color: #007bff;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        a:hover {
+            text-decoration: underline;
+            color: #0056b3;
+        }
+
+        a:visited {
+            color: #663399;
+        }
+
+        /* Navigation link styling */
+        .nav-links {
+            background-color: #e8f4f8;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+
+        .nav-links a {
+            display: inline-block;
+            margin-right: 15px;
+            margin-bottom: 10px;
+            padding: 8px 12px;
+            background-color: #007bff;
+            color: white;
+            border-radius: 3px;
+        }
+
+        .nav-links a:hover {
+            background-color: #0056b3;
+            text-decoration: none;
+        }
+
+        /* Code reference box */
+        .code-box {
+            background-color: #f5f5f5;
+            border-left: 3px solid #ff6b6b;
+            padding: 10px;
+            margin: 10px 0;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+        }
+
+        /* Table styling */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #007bff;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            border-top: 2px solid #e0e0e0;
+            color: #666;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- ============================================ -->
+    <!-- PAGE HEADER -->
+    <!-- ============================================ -->
+    <h1>SEC Frontend Development - Practical 2</h1>
+    <p style="color: #666; font-size: 18px;"><em>Lists, Images, and Link Navigation</em></p>
+    <p>Learn how to organize information with lists, display images, and create navigation links on your website.</p>
+
+    <!-- Quick Navigation -->
+    <div class="nav-links">
+        <strong>Quick Navigation:</strong><br>
+        <a href="#unordered-lists">Unordered Lists</a>
+        <a href="#ordered-lists">Ordered Lists</a>
+        <a href="#images">Images</a>
+        <a href="#internal-links">Internal Links</a>
+        <a href="#external-links">External Links</a>
+        <a href="#summary">Summary Table</a>
+    </div>
+
+    <hr>
+
+    <!-- ============================================ -->
+    <!-- SECTION 1: UNORDERED LISTS -->
+    <!-- ============================================ -->
+    <div class="section" id="unordered-lists">
+        <h2>1. Unordered Lists (&lt;ul&gt;)</h2>
+        <p>Unordered lists use bullet points to display items in no particular sequence. Perfect for features, ingredients, or non-sequential information.</p>
+
+        <div class="example">
+            <h3>Example: Skills Required for Web Development</h3>
+            <ul>
+                <li>HTML - Structure and semantic markup</li>
+                <li>CSS - Styling and responsive design</li>
+                <li>JavaScript - Interactivity and functionality</li>
+                <li>Version Control (Git) - Collaborative development</li>
+                <li>Responsive Design - Mobile-first approach</li>
+            </ul>
+
+            <h3>Example: Nested Unordered List (Subcategories)</h3>
+            <ul>
+                <li>Frontend Technologies
+                    <ul>
+                        <li>HTML5</li>
+                        <li>CSS3</li>
+                        <li>JavaScript (ES6+)</li>
+                        <li>Frameworks (React, Vue, Angular)</li>
+                    </ul>
+                </li>
+                <li>Backend Technologies
+                    <ul>
+                        <li>Node.js</li>
+                        <li>Python</li>
+                        <li>Databases (SQL, NoSQL)</li>
+                    </ul>
+                </li>
+                <li>DevOps Tools
+                    <ul>
+                        <li>Docker</li>
+                        <li>Kubernetes</li>
+                        <li>CI/CD Pipelines</li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+
+        <div class="code-box">
+            &lt;ul&gt;<br>
+            &nbsp;&nbsp;&lt;li&gt;Item 1&lt;/li&gt;<br>
+            &nbsp;&nbsp;&lt;li&gt;Item 2&lt;/li&gt;<br>
+            &lt;/ul&gt;
+        </div>
+
+        <p><strong>Use case:</strong> Feature lists, ingredient lists, bullet-point content, any non-sequential information.</p>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- SECTION 2: ORDERED LISTS -->
+    <!-- ============================================ -->
+    <div class="section" id="ordered-lists">
+        <h2>2. Ordered Lists (&lt;ol&gt;)</h2>
+        <p>Ordered lists display items in a numbered sequence. Use when order matters—recipes, steps, rankings, or procedures.</p>
+
+        <div class="example">
+            <h3>Example: Steps to Create a Website</h3>
+            <ol>
+                <li>Plan your website structure and content</li>
+                <li>Create HTML skeleton with semantic elements</li>
+                <li>Style with CSS for visual design</li>
+                <li>Add interactivity with JavaScript</li>
+                <li>Test across different browsers and devices</li>
+                <li>Deploy to a web server</li>
+                <li>Monitor and maintain the website</li>
+            </ol>
+
+            <h3>Example: Recipe (Nested Ordered List)</h3>
+            <ol>
+                <li>Preparation Phase
+                    <ol type="a">
+                        <li>Gather all ingredients</li>
+                        <li>Preheat oven to 350°F</li>
+                        <li>Measure and prepare ingredients</li>
+                    </ol>
+                </li>
+                <li>Mixing Phase
+                    <ol type="a">
+                        <li>Combine dry ingredients in a bowl</li>
+                        <li>Mix wet ingredients separately</li>
+                        <li>Combine wet and dry ingredients</li>
+                    </ol>
+                </li>
+                <li>Baking Phase
+                    <ol type="a">
+                        <li>Pour mixture into baking pan</li>
+                        <li>Bake for 30 minutes</li>
+                        <li>Cool before serving</li>
+                    </ol>
+                </li>
+            </ol>
+
+            <h3>Example: Ranked List with Different Numbering</h3>
+            <p><strong>Roman Numerals (type="i"):</strong></p>
+            <ol type="I">
+                <li>First Priority - Critical bug fixes</li>
+                <li>Second Priority - New feature implementation</li>
+                <li>Third Priority - Code optimization</li>
+                <li>Fourth Priority - Documentation updates</li>
+            </ol>
+
+            <p><strong>Alphabetical (type="A"):</strong></p>
+            <ol type="A">
+                <li>Architecture planning</li>
+                <li>Backend development</li>
+                <li>Client-side testing</li>
+                <li>Deployment and launch</li>
+            </ol>
+        </div>
+
+        <div class="code-box">
+            &lt;ol&gt;<br>
+            &nbsp;&nbsp;&lt;li&gt;First step&lt;/li&gt;<br>
+            &nbsp;&nbsp;&lt;li&gt;Second step&lt;/li&gt;<br>
+            &lt;/ol&gt;
+        </div>
+
+        <p><strong>Use case:</strong> Step-by-step instructions, rankings, prioritized items, recipes, tutorials.</p>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- SECTION 3: IMAGES -->
+    <!-- ============================================ -->
+    <div class="section" id="images">
+        <h2>3. Inserting Images (&lt;img&gt;)</h2>
+        <p>Images enhance your website's visual appeal and communicate information effectively. Use the &lt;img&gt; tag to embed images.</p>
+
+        <h3>Key Image Attributes:</h3>
+        <ul>
+            <li><strong>src</strong> - The source/path to the image file</li>
+            <li><strong>alt</strong> - Alternative text (for accessibility and SEO)</li>
+            <li><strong>width & height</strong> - Image dimensions</li>
+            <li><strong>title</strong> - Tooltip text when hovering</li>
+        </ul>
+
+        <div class="example">
+            <h3>Example 1: Image with Full Path (Local File)</h3>
+            <div class="image-container">
+                <img src="bridge.jpeg" alt="Beautiful bridge over a river" width="400" title="Bridge Image">
+                <div class="image-info">
+                    Local image file: bridge.jpeg<br>
+                    Width: 400px (auto-scale height)<br>
+                    Alt text for accessibility: "Beautiful bridge over a river"
+                </div>
+            </div>
+
+            <h3>Example 2: Another Local Image</h3>
+            <div class="image-container">
+                <img src="router.jpeg" alt="Modern networking router" width="350" title="Router Device">
+                <div class="image-info">
+                    Local image file: router.jpeg<br>
+                    Width: 350px<br>
+                    Alt text for accessibility: "Modern networking router"
+                </div>
+            </div>
+
+            <h3>Example 3: Image with Fixed Dimensions</h3>
+            <div class="image-container">
+                <!-- Placeholder for demonstration -->
+                <div style="width: 300px; height: 200px; background: linear-gradient(135deg, rgb(250, 129, 18) 0%, rgb(34, 34, 34) 100%); border-radius: 5px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; margin: 0 auto;">
+                    300x200px Image Placeholder
+                </div>
+                <div class="image-info">
+                    Fixed dimensions: 300px × 200px<br>
+                    Maintains exact size regardless of content
+                </div>
+            </div>
+
+            <h3>Example 4: Responsive Image (Percent-based width)</h3>
+            <div style="background-color: #e8f4f8; padding: 15px; border-radius: 5px; margin: 10px 0;">
+                <p>To make images responsive, use percentage width instead of fixed pixels:</p>
+                <div class="code-box">
+                    &lt;img src="image.jpg" alt="Description" width="100%" style="max-width: 600px;"&gt;
+                </div>
+                <p>This ensures the image scales with screen size but never exceeds 600px.</p>
+            </div>
+        </div>
+
+        <div class="code-box">
+            &lt;img src="path/to/image.jpg" alt="Image description" width="400" height="300" title="Hover text"&gt;
+        </div>
+
+        <p><strong>Best Practices:</strong></p>
+        <ul>
+            <li>Always include descriptive <strong>alt text</strong> for accessibility and SEO</li>
+            <li>Optimize image file sizes (use JPEG for photos, PNG for graphics)</li>
+            <li>Use relative paths for local images: <code>./images/photo.jpg</code></li>
+            <li>Set width/height to prevent layout shifts</li>
+        </ul>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- SECTION 4: INTERNAL LINKS -->
+    <!-- ============================================ -->
+    <div class="section" id="internal-links">
+        <h2>4. Internal Links</h2>
+        <p>Internal links connect different pages or sections within your website. They help with navigation and SEO.</p>
+
+        <h3>Type 1: Links to Different Pages</h3>
+        <div class="example">
+            <p><strong>Link to another HTML file in the same folder:</strong></p>
+            <div class="code-box">
+                &lt;a href="1.html"&gt;Go to Practical 1&lt;/a&gt;
+            </div>
+            <p><a href="1.html">Click here to view Practical 1 - Text Formatting</a></p>
+
+            <p><strong>Link to a file in a subfolder:</strong></p>
+            <div class="code-box">
+                &lt;a href="./images/gallery.html"&gt;View Gallery&lt;/a&gt;
+            </div>
+
+            <p><strong>Link to parent directory:</strong></p>
+            <div class="code-box">
+                &lt;a href="../index.html"&gt;Back to Home&lt;/a&gt;
+            </div>
+        </div>
+
+        <h3>Type 2: Links to Sections Within Same Page (Anchors)</h3>
+        <div class="example">
+            <p>Use anchor links to jump to different sections on the same page:</p>
+
+            <div class="code-box">
+                &lt;!-- Define a section with an ID --&gt;<br>
+                &lt;div id="section-name"&gt;<br>
+                &nbsp;&nbsp;&lt;h2&gt;Section Title&lt;/h2&gt;<br>
+                &lt;/div&gt;<br>
+                <br>
+                &lt;!-- Create a link to that section --&gt;<br>
+                &lt;a href="#section-name"&gt;Jump to Section&lt;/a&gt;
+            </div>
+
+            <p><strong>Quick Links to Sections on This Page:</strong></p>
+            <ul>
+                <li><a href="#unordered-lists">→ Unordered Lists Section</a></li>
+                <li><a href="#ordered-lists">→ Ordered Lists Section</a></li>
+                <li><a href="#images">→ Images Section</a></li>
+                <li><a href="#external-links">→ External Links Section</a></li>
+            </ul>
+        </div>
+
+        <h3>Type 3: Link with Title Attribute (Tooltip)</h3>
+        <div class="example">
+            <div class="code-box">
+                &lt;a href="page.html" title="This appears on hover"&gt;Click me&lt;/a&gt;
+            </div>
+            <p><a href="1.html" title="Navigate to HTML formatting practical">Hover over me to see tooltip</a></p>
+        </div>
+
+        <p><strong>Use case:</strong> Navigation between pages, creating table of contents, jump links for long pages.</p>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- SECTION 5: EXTERNAL LINKS -->
+    <!-- ============================================ -->
+    <div class="section" id="external-links">
+        <h2>5. External Links</h2>
+        <p>External links point to resources outside your website. These can be helpful for research, references, or directing users to other services.</p>
+
+        <h3>Educational Resources:</h3>
+        <div class="example">
+            <ul>
+                <li><a href="https://www.w3schools.com/html/" target="_blank">W3Schools HTML Tutorial</a> - Comprehensive HTML reference and tutorials</li>
+                <li><a href="https://developer.mozilla.org/en-US/docs/Web/HTML" target="_blank">MDN Web Docs - HTML</a> - Official Mozilla documentation</li>
+                <li><a href="https://www.codecademy.com/learn/learn-html" target="_blank">Codecademy - Learn HTML</a> - Interactive coding course</li>
+            </ul>
+        </div>
+
+        <h3>Design Inspiration - Abstract Art:</h3>
+        <div class="example">
+            <p>For inspiration and learning about abstract art and design principles:</p>
+            <ul>
+                <li><a href="https://www.tate.org.uk/art/artists" target="_blank">Tate Museum - Artist Collections</a> - Explore modern and abstract art</li>
+                <li><a href="https://www.artsy.net/gene/abstract-art" target="_blank">Artsy - Abstract Art Guide</a> - Curated abstract art collections and essays</li>
+                <li><a href="https://www.guggenheim.org/" target="_blank">Guggenheim Museum</a> - Contemporary and abstract artwork exhibitions</li>
+                <li><a href="https://www.moma.org/" target="_blank">Museum of Modern Art (MoMA)</a> - Extensive collection of modern and abstract works</li>
+                <li><a href="https://en.wikipedia.org/wiki/Abstract_art" target="_blank">Wikipedia - Abstract Art</a> - Historical overview and information</li>
+            </ul>
+        </div>
+
+        <h3>Important Rules for External Links:</h3>
+        <div class="example">
+            <div class="code-box">
+                &lt;!-- Use target="_blank" to open in new tab --&gt;<br>
+                &lt;a href="https://example.com" target="_blank"&gt;External Site&lt;/a&gt;
+            </div>
+
+            <p><strong>Key points:</strong></p>
+            <ul>
+                <li><strong>target="_blank"</strong> - Opens link in a new tab (doesn't leave your site)</li>
+                <li><strong>Full URL</strong> - Must include https:// or http://</li>
+                <li><strong>SEO consideration</strong> - Use <strong>rel="noopener noreferrer"</strong> for security:
+                    <div class="code-box">
+                        &lt;a href="https://external-site.com" target="_blank" rel="noopener noreferrer"&gt;External Link&lt;/a&gt;
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <h3>Example: News & Information</h3>
+        <div class="example">
+            <ul>
+                <li><a href="https://news.ycombinator.com/" target="_blank">Hacker News</a> - Technology and programming news</li>
+                <li><a href="https://www.medium.com" target="_blank">Medium</a> - Technical articles and blogs</li>
+                <li><a href="https://www.github.com" target="_blank">GitHub</a> - Code repository and developer community</li>
+            </ul>
+        </div>
+
+        <p><strong>Best Practice:</strong> Always test external links to ensure they're valid and relevant. Users expect links to work and be helpful.</p>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- SECTION 6: SUMMARY TABLE -->
+    <!-- ============================================ -->
+    <div class="section" id="summary">
+        <h2>Quick Reference Summary</h2>
+        <table>
+            <tr>
+                <th>Concept</th>
+                <th>HTML Element</th>
+                <th>Purpose</th>
+                <th>Example</th>
+            </tr>
+            <tr>
+                <td>Unordered List</td>
+                <td>&lt;ul&gt; &lt;li&gt;</td>
+                <td>Display items with bullet points</td>
+                <td>&lt;ul&gt;&lt;li&gt;Item&lt;/li&gt;&lt;/ul&gt;</td>
+            </tr>
+            <tr>
+                <td>Ordered List</td>
+                <td>&lt;ol&gt; &lt;li&gt;</td>
+                <td>Display numbered items</td>
+                <td>&lt;ol&gt;&lt;li&gt;Step 1&lt;/li&gt;&lt;/ol&gt;</td>
+            </tr>
+            <tr>
+                <td>Image</td>
+                <td>&lt;img&gt;</td>
+                <td>Embed pictures</td>
+                <td>&lt;img src="pic.jpg" alt="Desc"&gt;</td>
+            </tr>
+            <tr>
+                <td>Internal Link</td>
+                <td>&lt;a href=""&gt;</td>
+                <td>Link to pages or sections</td>
+                <td>&lt;a href="page.html"&gt;Link&lt;/a&gt;</td>
+            </tr>
+            <tr>
+                <td>Anchor Link</td>
+                <td>&lt;a href="#id"&gt;</td>
+                <td>Jump to section with ID</td>
+                <td>&lt;a href="#top"&gt;Go Up&lt;/a&gt;</td>
+            </tr>
+            <tr>
+                <td>External Link</td>
+                <td>&lt;a href="url"&gt;</td>
+                <td>Link to external website</td>
+                <td>&lt;a href="https://..." target="_blank"&gt;</td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- FOOTER -->
+    <!-- ============================================ -->
+    <hr>
+
+    <footer>
+        <p><strong>SEC Frontend Development - Practical 2</strong></p>
+        <p>✓ Unordered Lists   |   ✓ Ordered Lists   |   ✓ Images   |   ✓ Internal Links   |   ✓ External Links</p>
+        <p>Created for learning web fundamentals and proper link structure</p>
+    </footer>
+
+</body>
+</html>

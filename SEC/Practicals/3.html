@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>SEC Practical 3 - HTML Tables & Timetable</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <style>
+        /* Main page styling */
+        body {
+            background-color: rgb(250, 243, 225);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 20px;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        /* Header styles */
+        h1 {
+            color: rgb(34, 34, 34);
+            border-bottom: 3px solid rgb(250, 129, 18);
+            padding-bottom: 15px;
+            text-align: center;
+        }
+
+        h2 {
+            color: rgb(250, 129, 18);
+            margin-top: 30px;
+            border-bottom: 2px solid rgb(245, 231, 198);
+            padding-bottom: 10px;
+        }
+
+        /* Section container */
+        .section {
+            background-color: rgb(245, 231, 198);
+            margin: 20px 0;
+            padding: 20px;
+            border-left: 4px solid rgb(250, 129, 18);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+        }
+
+        /* Example box */
+        .example {
+            background-color: rgb(250, 243, 225);
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+            border: 1px solid rgb(245, 231, 198);
+        }
+
+        /* Code box */
+        .code-box {
+            background-color: rgb(250, 243, 225);
+            border-left: 3px solid rgb(250, 129, 18);
+            padding: 12px;
+            margin: 10px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            overflow-x: auto;
+            color: rgb(34, 34, 34);
+        }
+
+        /* General table styling */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            background-color: rgb(245, 231, 198);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        th {
+            background-color: rgb(250, 129, 18);
+            color: white;
+            padding: 12px;
+            text-align: center;
+            font-weight: bold;
+            border: 1px solid rgb(250, 129, 18);
+        }
+
+        td {
+            padding: 12px;
+            border: 1px solid rgb(245, 231, 198);
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        tr:nth-child(even) {
+            background-color: rgb(250, 243, 225);
+        }
+
+        tr:hover {
+            background-color: rgb(245, 231, 198);
+        }
+
+        /* First column styling (day names and time slots) */
+        td:first-child, th:first-child {
+            background-color: rgb(245, 231, 198);
+            font-weight: bold;
+            min-width: 100px;
+        }
+
+        /* Timetable specific styles */
+        .timetable-container {
+            overflow-x: auto;
+            margin: 20px 0;
+        }
+
+        .timetable {
+            font-size: 13px;
+            min-width: 1000px;
+        }
+
+        .timetable th {
+            background-color: rgb(34, 34, 34);
+            color: white;
+            padding: 10px 8px;
+            font-size: 12px;
+        }
+
+        .timetable td {
+            padding: 10px 8px;
+            font-size: 12px;
+            min-height: 60px;
+            vertical-align: top;
+            word-wrap: break-word;
+        }
+
+        /* Color coding for different types of classes */
+        .lecture {
+            background-color: rgb(250, 243, 225);
+            color: rgb(250, 129, 18);
+        }
+
+        .lab {
+            background-color: rgb(245, 231, 198);
+            color: rgb(250, 129, 18);
+        }
+
+        .practical {
+            background-color: rgb(250, 243, 225);
+            color: rgb(250, 129, 18);
+        }
+
+        .seminar {
+            background-color: rgb(245, 231, 198);
+            color: rgb(250, 129, 18);
+        }
+
+        .free-period {
+            background-color: rgb(250, 243, 225);
+            color: rgb(34, 34, 34);
+        }
+
+        /* Subject code styling */
+        .subject-code {
+            font-weight: bold;
+            font-size: 11px;
+            display: block;
+        }
+
+        .room-code {
+            font-size: 11px;
+            color: #666;
+        }
+
+        /* Legend box */
+        .legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin: 20px 0;
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .legend-color {
+            width: 30px;
+            height: 30px;
+            border-radius: 3px;
+            border: 1px solid #ddd;
+        }
+
+        /* Quick reference list */
+        ul {
+            margin: 10px 0;
+            padding-left: 25px;
+        }
+
+        li {
+            margin: 8px 0;
+        }
+
+        /* Navigation link at top */
+        .quick-nav {
+            background-color: #e8f4f8;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .quick-nav a {
+            color: #007bff;
+            text-decoration: none;
+            margin: 0 10px;
+            font-weight: 500;
+        }
+
+        .quick-nav a:hover {
+            text-decoration: underline;
+        }
+
+        /* Info box */
+        .info-box {
+            background-color: #e8f5e9;
+            border-left: 4px solid #4caf50;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+
+        .info-box strong {
+            color: #2e7d32;
+        }
+
+        .warning-box {
+            background-color: rgb(250, 243, 225);
+            border-left: 4px solid #ff9800;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header -->
+    <h1>SEC Frontend Development - Practical 3</h1>
+    <p style="text-align: center; color: #666; font-size: 18px;"><em>HTML Tables & Semester Timetable</em></p>
+
+    <!-- Quick Navigation -->
+    <div class="quick-nav">
+        <strong>Jump to Section:</strong>
+        <a href="#table-basics">Table Basics</a>
+        <a href="#table-structure">Table Structure</a>
+        <a href="#our-timetable">Semester Timetable</a>
+        <a href="#color-guide">Color Guide</a>
+    </div>
+
+    <hr>
+
+    <!-- ============================================ -->
+    <!-- SECTION 1: HTML TABLE BASICS -->
+    <!-- ============================================ -->
+    <div class="section" id="table-basics">
+        <h2>1. HTML Table Basics</h2>
+        <p>Tables organize data into rows and columns. They're perfect for displaying timetables, schedules, pricing, comparisons, and structured information.</p>
+
+        <div class="example">
+            <h3>Basic Table Structure</h3>
+            <table>
+                <tr>
+                    <th>Header 1</th>
+                    <th>Header 2</th>
+                    <th>Header 3</th>
+                </tr>
+                <tr>
+                    <td>Row 1, Cell 1</td>
+                    <td>Row 1, Cell 2</td>
+                    <td>Row 1, Cell 3</td>
+                </tr>
+                <tr>
+                    <td>Row 2, Cell 1</td>
+                    <td>Row 2, Cell 2</td>
+                    <td>Row 2, Cell 3</td>
+                </tr>
+            </table>
+        </div>
+
+        <h3>Table HTML Elements:</h3>
+        <ul>
+            <li><strong>&lt;table&gt;</strong> - Container for entire table</li>
+            <li><strong>&lt;tr&gt;</strong> - Table row (row of cells)</li>
+            <li><strong>&lt;th&gt;</strong> - Table header cell (bold, centered by default)</li>
+            <li><strong>&lt;td&gt;</strong> - Table data cell (regular cell)</li>
+            <li><strong>&lt;thead&gt;</strong> - Groups header rows</li>
+            <li><strong>&lt;tbody&gt;</strong> - Groups body rows</li>
+            <li><strong>&lt;tfoot&gt;</strong> - Groups footer rows</li>
+        </ul>
+
+        <div class="code-box">
+            &lt;table&gt;<br>
+            &nbsp;&nbsp;&lt;tr&gt;<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&lt;th&gt;Header&lt;/th&gt;<br>
+            &nbsp;&nbsp;&lt;/tr&gt;<br>
+            &nbsp;&nbsp;&lt;tr&gt;<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&lt;td&gt;Data&lt;/td&gt;<br>
+            &nbsp;&nbsp;&lt;/tr&gt;<br>
+            &lt;/table&gt;
+        </div>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- SECTION 2: TABLE STRUCTURE & ATTRIBUTES -->
+    <!-- ============================================ -->
+    <div class="section" id="table-structure">
+        <h2>2. Advanced Table Structure</h2>
+        <p>Make tables more semantic and accessible with proper HTML structure.</p>
+
+        <h3>Proper Table with Head, Body, and Foot:</h3>
+        <div class="example">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Course</th>
+                        <th>Instructor</th>
+                        <th>Credits</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Web Development</td>
+                        <td>Dr. Smith</td>
+                        <td>4</td>
+                    </tr>
+                    <tr>
+                        <td>Database Design</td>
+                        <td>Dr. Johnson</td>
+                        <td>3</td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="2"><strong>Total Credits:</strong></td>
+                        <td><strong>7</strong></td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+
+        <h3>Important Table Attributes:</h3>
+        <div class="example">
+            <ul>
+                <li><strong>border</strong> - Adds border around cells</li>
+                <li><strong>cellspacing</strong> - Space between cells</li>
+                <li><strong>cellpadding</strong> - Space inside cells</li>
+                <li><strong>colspan</strong> - Merge cells horizontally (across columns)</li>
+                <li><strong>rowspan</strong> - Merge cells vertically (across rows)</li>
+                <li><strong>width</strong> - Table or column width</li>
+            </ul>
+        </div>
+
+        <h3>Example: Using colspan and rowspan</h3>
+        <div class="example">
+            <table>
+                <tr>
+                    <th colspan="2">Merged Header (2 columns)</th>
+                </tr>
+                <tr>
+                    <td>Cell 1</td>
+                    <td>Cell 2</td>
+                </tr>
+                <tr>
+                    <td rowspan="2">Spans 2 rows</td>
+                    <td>Cell A</td>
+                </tr>
+                <tr>
+                    <td>Cell B</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="code-box">
+            &lt;!-- Merge columns --&gt;<br>
+            &lt;td colspan="3"&gt;Spans 3 columns&lt;/td&gt;<br>
+            <br>
+            &lt;!-- Merge rows --&gt;<br>
+            &lt;td rowspan="2"&gt;Spans 2 rows&lt;/td&gt;
+        </div>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- SECTION 3: SEMESTER TIMETABLE -->
+    <!-- ============================================ -->
+    <div class="section" id="our-timetable">
+        <h2>3. Semester Timetable</h2>
+        <p>This is the official timetable for the current semester. Classes are organized by day and time slot.</p>
+
+        <div class="warning-box">
+            <strong>⏰ Note:</strong> Timings and room allocations are subject to change. Please check official notices for updates.
+        </div>
+
+        <div class="info-box">
+            <strong>📚 Semester 4 Schedule:</strong> This timetable covers all courses, labs, and seminars scheduled for your semester based on your curriculum.
+        </div>
+
+        <div class="timetable-container">
+            <table class="timetable">
+                <thead>
+                    <tr>
+                        <th>Day</th>
+                        <th>8:40-9:40</th>
+                        <th>9:40-10:40</th>
+                        <th>10:40-11:40</th>
+                        <th>11:40-12:40</th>
+                        <th>12:40-1:00</th>
+                        <th>1:00-2:00</th>
+                        <th>2:00-3:00</th>
+                        <th>3:00-4:00</th>
+                        <th>4:00-5:00</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Monday -->
+                    <tr>
+                        <td><strong>Monday</strong></td>
+                        <td class="lecture">
+                            <span class="subject-code">CS LAB</span>
+                            <span class="room-code">G1/DAA - SC</span>
+                        </td>
+                        <td class="free-period">Free</td>
+                        <td class="lecture">
+                            <span class="subject-code">GL (DAA)</span>
+                            <span class="room-code">LAB 1</span>
+                        </td>
+                        <td class="practical">
+                            <span class="subject-code">IWP (SEC)</span>
+                            <span class="room-code">LAB 5</span>
+                        </td>
+                        <td class="free-period">Break</td>
+                        <td class="lab">
+                            <span class="subject-code">CS LAB</span>
+                            <span class="room-code">EVS</span>
+                        </td>
+                        <td class="free-period">&mdash;</td>
+                        <td class="free-period">&mdash;</td>
+                        <td class="free-period">&mdash;</td>
+                    </tr>
+
+                    <!-- Tuesday -->
+                    <tr>
+                        <td><strong>Tuesday</strong></td>
+                        <td class="lecture">
+                            <span class="subject-code">GE</span>
+                            <span class="room-code">DAVP (HK)</span>
+                            <span class="room-code">Lab 5</span>
+                        </td>
+                        <td class="lecture">
+                            <span class="subject-code">DBMS</span>
+                            <span class="room-code">LAB 1</span>
+                        </td>
+                        <td class="lecture">
+                            <span class="subject-code">CN</span>
+                            <span class="room-code">B203</span>
+                        </td>
+                        <td class="practical">
+                            <span class="subject-code">DAA</span>
+                            <span class="room-code">B203</span>
+                        </td>
+                        <td class="free-period">Break</td>
+                        <td class="lab">
+                            <span class="subject-code">CS LAB</span>
+                            <span class="room-code">G1/CN-MG</span>
+                            <span class="room-code">LAB 1</span>
+                        </td>
+                        <td class="free-period">&mdash;</td>
+                        <td class="free-period">&mdash;</td>
+                        <td class="free-period">&mdash;</td>
+                    </tr>
+
+                    <!-- Wednesday -->
+                    <tr>
+                        <td><strong>Wednesday</strong></td>
+                        <td class="lab">
+                            <span class="subject-code">DAA</span>
+                            <span class="room-code">LAB 5</span>
+                        </td>
+                        <td class="lecture">
+                            <span class="subject-code">CN</span>
+                            <span class="room-code">LAB 5</span>
+                        </td>
+                        <td class="free-period">&mdash;</td>
+                        <td class="practical">
+                            <span class="subject-code">DBMS</span>
+                            <span class="room-code">LAB 3</span>
+                        </td>
+                        <td class="free-period">Break</td>
+                        <td class="lab">
+                            <span class="subject-code">GT</span>
+                            <span class="room-code">DAVP (HK)</span>
+                            <span class="room-code">Lab 5</span>
+                        </td>
+                        <td class="lab">
+                            <span class="subject-code">GE</span>
+                            <span class="room-code">IWP (S3)</span>
+                            <span class="room-code">LAB 2</span>
+                        </td>
+                        <td class="free-period">&mdash;</td>
+                        <td class="free-period">&mdash;</td>
+                    </tr>
+
+                    <!-- Thursday -->
+                    <tr>
+                        <td><strong>Thursday</strong></td>
+                        <td class="free-period">&mdash;</td>
+                        <td class="lecture">
+                            <span class="subject-code">CN</span>
+                            <span class="room-code">LAB 1</span>
+                        </td>
+                        <td class="free-period">&mdash;</td>
+                        <td class="practical">
+                            <span class="subject-code">DBMS</span>
+                            <span class="room-code">B-3</span>
+                        </td>
+                        <td class="free-period">Break</td>
+                        <td colspan="2" class="seminar">
+                            <span class="subject-code">SEC</span>
+                        </td>
+                        <td class="free-period">&mdash;</td>
+                        <td class="free-period">&mdash;</td>
+                    </tr>
+
+                    <!-- Friday -->
+                    <tr>
+                        <td><strong>Friday</strong></td>
+                        <td class="free-period">&mdash;</td>
+                        <td class="lab">
+                            <span class="subject-code">DAA</span>
+                            <span class="room-code">Lab 7</span>
+                        </td>
+                        <td class="lab">
+                            <span class="subject-code">CS LAB</span>
+                            <span class="room-code">G1/DAA - HK</span>
+                            <span class="room-code">LAB 2</span>
+                        </td>
+                        <td class="free-period">&mdash;</td>
+                        <td class="free-period">Break</td>
+                        <td class="free-period">&mdash;</td>
+                        <td class="practical">
+                            <span class="subject-code">VAC</span>
+                        </td>
+                        <td class="free-period">&mdash;</td>
+                        <td class="free-period">&mdash;</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h3>Course Codes Reference:</h3>
+        <div class="example">
+            <ul style="column-count: 2; column-gap: 30px;">
+                <li><strong>CS LAB</strong> - Computer Science Laboratory</li>
+                <li><strong>GL (DAA)</strong> - Data Structures Lab</li>
+                <li><strong>DBMS</strong> - Database Management System</li>
+                <li><strong>CN</strong> - Computer Networks</li>
+                <li><strong>DAA</strong> - Discrete Applied Analysis</li>
+                <li><strong>GE</strong> - General Engineering</li>
+                <li><strong>GT</strong> - Graphics & Theory</li>
+                <li><strong>IWP</strong> - Internet & Web Programming</li>
+                <li><strong>SEC</strong> - Software Engineering & Concepts</li>
+                <li><strong>EV</strong> - Environmental Science</li>
+                <li><strong>VAC</strong> - Value-Added Course</li>
+                <li><strong>DAVP</strong> - Advanced Programming</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- SECTION 4: COLOR GUIDE -->
+    <!-- ============================================ -->
+    <div class="section" id="color-guide">
+        <h2>4. Schedule Legend & Colors</h2>
+        <p>Different cell colors indicate different types of activities. This color coding helps quickly identify the nature of each class.</p>
+
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-color lecture"></div>
+                <strong>Lecture</strong> - Theoretical classes
+            </div>
+            <div class="legend-item">
+                <div class="legend-color lab"></div>
+                <strong>Lab</strong> - Practical laboratory sessions
+            </div>
+            <div class="legend-item">
+                <div class="legend-color practical"></div>
+                <strong>Practical</strong> - Hands-on practice
+            </div>
+            <div class="legend-item">
+                <div class="legend-color seminar"></div>
+                <strong>Seminar</strong> - Discussion & presentations
+            </div>
+            <div class="legend-item">
+                <div class="legend-color free-period"></div>
+                <strong>Free Period</strong> - No class scheduled
+            </div>
+        </div>
+
+        <h3>How to Read the Timetable:</h3>
+        <div class="info-box">
+            <ol>
+                <li><strong>Find your day</strong> - Locate the row for Monday through Friday</li>
+                <li><strong>Find your time</strong> - Look across the columns for your time slot</li>
+                <li><strong>Check the course</strong> - Read the subject code and lab/room number</li>
+                <li><strong>Note the location</strong> - Room numbers help you find the right venue</li>
+                <li><strong>Plan accordingly</strong> - Mark breaks between classes for meals and study</li>
+            </ol>
+        </div>
+
+        <h3>Tips for Using Your Timetable:</h3>
+        <ul>
+            <li>✓ Mark important classes and assignment deadlines</li>
+            <li>✓ Plan study time during free periods</li>
+            <li>✓ Check for lab timing changes at the beginning of each week</li>
+            <li>✓ Group similar subjects together for better learning</li>
+            <li>✓ Share with your study partners for coordinated planning</li>
+        </ul>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- SECTION 5: TIPS FOR CREATING TABLES -->
+    <!-- ============================================ -->
+    <div class="section">
+        <h2>5. Best Practices for HTML Tables</h2>
+
+        <div class="info-box">
+            <h3>Do's ✓</h3>
+            <ul>
+                <li>Use tables for tabular data (schedules, pricing, comparisons)</li>
+                <li>Include proper &lt;thead&gt;, &lt;tbody&gt;, and &lt;tfoot&gt;</li>
+                <li>Use &lt;th&gt; for headers with proper scope attribute</li>
+                <li>Add descriptive captions or titles</li>
+                <li>Use CSS for styling instead of deprecated attributes</li>
+                <li>Make tables responsive for mobile devices</li>
+            </ul>
+        </div>
+
+        <div class="warning-box">
+            <h3>Don'ts ✗</h3>
+            <ul>
+                <li>Don't use tables for page layout (use CSS Grid/Flexbox instead)</li>
+                <li>Don't leave table headers empty</li>
+                <li>Don't create overly complex nested tables</li>
+                <li>Don't use deprecated HTML attributes (border, cellpadding, cellspacing)</li>
+                <li>Don't ignore accessibility (screen readers rely on proper table markup)</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <hr>
+    <footer style="text-align: center; margin-top: 40px; padding: 20px; color: #666;">
+        <p><strong>SEC Frontend Development - Practical 3</strong></p>
+        <p>✓ HTML Table Basics   |   ✓ Table Structure   |   ✓ Semester Timetable   |   ✓ Color Coding</p>
+        <p>Master the art of organizing data with semantic HTML tables</p>
+    </footer>
+
+</body>
+</html>

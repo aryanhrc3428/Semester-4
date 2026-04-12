@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>SEC Practical 7 - Event-Driven JavaScript Programs</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, rgb(250, 243, 225) 0%, rgb(245, 231, 198) 100%);
+            padding: 30px 20px;
+            min-height: 100vh;
+        }
+
+        /* Main container */
+        .main-container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        header {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            text-align: center;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        header h1 {
+            color: rgb(250, 129, 18);
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            color: rgb(34, 34, 34);
+            font-size: 16px;
+        }
+
+        /* Program container */
+        .program-section {
+            background: rgb(245, 231, 198);
+            border-radius: 10px;
+            padding: 30px;
+            margin-bottom: 25px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            animation: slideIn 0.5s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Program heading */
+        .program-section h2 {
+            color: rgb(250, 129, 18);
+            font-size: 24px;
+            margin-bottom: 5px;
+            border-bottom: 3px solid rgb(250, 129, 18);
+            padding-bottom: 10px;
+        }
+
+        .program-number {
+            color: rgb(250, 129, 18);
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        /* Description */
+        .description {
+            background-color: rgb(250, 243, 225);
+            padding: 15px;
+            border-left: 4px solid rgb(250, 129, 18);
+            margin-bottom: 20px;
+            border-radius: 5px;
+            font-size: 14px;
+            color: rgb(34, 34, 34);
+            line-height: 1.6;
+        }
+
+        /* Form group */
+        .form-group {
+            margin-bottom: 15px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            align-items: end;
+        }
+
+        .form-group.full {
+            grid-template-columns: 1fr;
+        }
+
+        /* Input styling */
+        .input-wrapper {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            font-weight: 600;
+            color: rgb(34, 34, 34);
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+
+        input[type="number"],
+        input[type="text"],
+        textarea {
+            padding: 10px 15px;
+            border: 2px solid rgb(245, 231, 198);
+            border-radius: 5px;
+            font-size: 14px;
+            font-family: 'Segoe UI', sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        input[type="number"]:focus,
+        input[type="text"]:focus,
+        textarea:focus {
+            outline: none;
+            border-color: rgb(250, 129, 18);
+            box-shadow: 0 0 0 3px rgba(250, 129, 18, 0.1);
+        }
+
+        /* Button styling */
+        .button-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, rgb(250, 129, 18) 0%, rgb(34, 34, 34) 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(250, 129, 18, 0.4);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+
+        .btn-secondary {
+            background-color: rgb(250, 243, 225);
+            color: rgb(34, 34, 34);
+            border: 2px solid rgb(245, 231, 198);
+        }
+
+        .btn-secondary:hover {
+            background-color: rgb(245, 231, 198);
+            color: white;
+        }
+
+        /* Output display */
+        .output-box {
+            background: linear-gradient(135deg, rgb(250, 243, 225) 0%, rgb(245, 231, 198) 100%);
+            border: 2px solid rgb(250, 129, 18);
+            border-radius: 5px;
+            padding: 15px;
+            margin-top: 20px;
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .output-box.show {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .output-title {
+            font-weight: 600;
+            color: rgb(250, 129, 18);
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+
+        .output-content {
+            background: rgb(250, 243, 225);
+            padding: 15px;
+            border-radius: 4px;
+            color: rgb(34, 34, 34);
+            font-family: 'Courier New', monospace;
+            white-space: pre-wrap;
+            word-break: break-word;
+            line-height: 1.8;
+        }
+
+        /* Error message */
+        .error {
+            background-color: rgb(245, 231, 198);
+            border-left: 4px solid rgb(250, 129, 18);
+            color: rgb(34, 34, 34);
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 15px;
+            display: none;
+            animation: slideIn 0.3s ease;
+        }
+
+        .error.show {
+            display: block;
+        }
+
+        /* Success message */
+        .success {
+            background-color: rgb(250, 243, 225);
+            border-left: 4px solid rgb(250, 129, 18);
+            color: rgb(250, 129, 18);
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 15px;
+            display: none;
+        }
+
+        .success.show {
+            display: block;
+        }
+
+        /* Footer */
+        footer {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            text-align: center;
+            color: #666;
+            font-size: 14px;
+            margin-top: 30px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .form-group {
+                grid-template-columns: 1fr;
+            }
+
+            header h1 {
+                font-size: 24px;
+            }
+
+            .program-section {
+                padding: 20px;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+
+            button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="main-container">
+        <!-- Header -->
+        <header>
+            <h1>📱 JavaScript Event-Driven Programs</h1>
+            <p>Four interactive programs demonstrating event handling and algorithms</p>
+        </header>
+
+        <!-- ============================================ -->
+        <!-- PROGRAM 1: MULTIPLICATION TABLE -->
+        <!-- ============================================ -->
+        <div class="program-section">
+            <h2>1️⃣ Multiplication Table Generator</h2>
+            <div class="program-number">Program 1: Generate multiplication table for a given number</div>
+            
+            <div class="description">
+                <strong>What it does:</strong> Enter any number and click the button to generate its multiplication table (1 to 10). 
+                This program demonstrates event handling with the onclick event and loops in JavaScript.
+            </div>
+
+            <div class="form-group">
+                <div class="input-wrapper">
+                    <label for="multNum">Enter a Number:</label>
+                    <input 
+                        type="number" 
+                        id="multNum" 
+                        placeholder="e.g., 5" 
+                        value="5"
+                    >
+                </div>
+                <div class="button-group" style="grid-column: 2;">
+                    <button class="btn-primary" onclick="generateMultiplicationTable()">
+                        Generate Table
+                    </button>
+                    <button class="btn-secondary" onclick="clearOutput('mult')">
+                        Clear
+                    </button>
+                </div>
+            </div>
+
+            <div class="error" id="multError"></div>
+            <div class="output-box" id="multOutput">
+                <div class="output-title">📊 Multiplication Table:</div>
+                <div class="output-content" id="multResult"></div>
+            </div>
+        </div>
+
+        <!-- ============================================ -->
+        <!-- PROGRAM 2: LARGEST OF THREE NUMBERS -->
+        <!-- ============================================ -->
+        <div class="program-section">
+            <h2>2️⃣ Find Largest of Three Numbers</h2>
+            <div class="program-number">Program 2: Compare three numbers and find the largest</div>
+            
+            <div class="description">
+                <strong>What it does:</strong> Enter three numbers and click the button to find which one is the largest. 
+                Uses conditional statements (if-else) to compare values.
+            </div>
+
+            <div class="form-group">
+                <div class="input-wrapper">
+                    <label for="num1">First Number:</label>
+                    <input 
+                        type="number" 
+                        id="num1" 
+                        placeholder="e.g., 45" 
+                        value="45"
+                    >
+                </div>
+                <div class="input-wrapper">
+                    <label for="num2">Second Number:</label>
+                    <input 
+                        type="number" 
+                        id="num2" 
+                        placeholder="e.g., 23" 
+                        value="23"
+                    >
+                </div>
+                <div class="input-wrapper">
+                    <label for="num3">Third Number:</label>
+                    <input 
+                        type="number" 
+                        id="num3" 
+                        placeholder="e.g., 67" 
+                        value="67"
+                    >
+                </div>
+                <div class="button-group" style="grid-column: 2;">
+                    <button class="btn-primary" onclick="findLargest()">
+                        Find Largest
+                    </button>
+                    <button class="btn-secondary" onclick="clearOutput('largest')">
+                        Clear
+                    </button>
+                </div>
+            </div>
+
+            <div class="error" id="largestError"></div>
+            <div class="output-box" id="largestOutput">
+                <div class="output-title">🏆 Result:</div>
+                <div class="output-content" id="largestResult"></div>
+            </div>
+        </div>
+
+        <!-- ============================================ -->
+        <!-- PROGRAM 3: FACTORIAL -->
+        <!-- ============================================ -->
+        <div class="program-section">
+            <h2>3️⃣ Calculate Factorial</h2>
+            <div class="program-number">Program 3: Find factorial of a positive integer</div>
+            
+            <div class="description">
+                <strong>What it does:</strong> Enter a positive integer and find its factorial (n! = n × (n-1) × (n-2) × ... × 1). 
+                Demonstrates loops and mathematical calculations.
+            </div>
+
+            <div class="form-group">
+                <div class="input-wrapper">
+                    <label for="factNum">Enter a Number:</label>
+                    <input 
+                        type="number" 
+                        id="factNum" 
+                        placeholder="e.g., 5" 
+                        value="5"
+                        min="0"
+                    >
+                </div>
+                <div class="button-group" style="grid-column: 2;">
+                    <button class="btn-primary" onclick="calculateFactorial()">
+                        Calculate Factorial
+                    </button>
+                    <button class="btn-secondary" onclick="clearOutput('factorial')">
+                        Clear
+                    </button>
+                </div>
+            </div>
+
+            <div class="error" id="factError"></div>
+            <div class="output-box" id="factOutput">
+                <div class="output-title">📐 Result:</div>
+                <div class="output-content" id="factResult"></div>
+            </div>
+        </div>
+
+        <!-- ============================================ -->
+        <!-- PROGRAM 4: SUM AND AVERAGE -->
+        <!-- ============================================ -->
+        <div class="program-section">
+            <h2>4️⃣ Sum & Average of Numbers</h2>
+            <div class="program-number">Program 4: Calculate sum and average of positive numbers</div>
+            
+            <div class="description">
+                <strong>What it does:</strong> Click the button to enter a list of positive numbers one by one using prompts. 
+                Enter 0 to terminate. The program calculates the sum and average of all entered numbers. 
+                Use to demonstrate loops with user input via prompt().
+            </div>
+
+            <div class="form-group full">
+                <div class="button-group">
+                    <button class="btn-primary" onclick="sumAndAverage()">
+                        Enter Numbers (Terminate with 0)
+                    </button>
+                    <button class="btn-secondary" onclick="clearOutput('sumavg')">
+                        Clear
+                    </button>
+                </div>
+            </div>
+
+            <div class="error" id="sumavgError"></div>
+            <div class="output-box" id="sumavgOutput">
+                <div class="output-title">📊 Result:</div>
+                <div class="output-content" id="sumavgResult"></div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer>
+            <p><strong>SEC Frontend Development - Practical 7</strong></p>
+            <p>Event-driven JavaScript programs demonstrating user interaction and algorithms</p>
+            <p>All programs use event handlers (onclick) to trigger JavaScript functions</p>
+        </footer>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- JAVASCRIPT EVENT-DRIVEN PROGRAMS -->
+    <!-- ============================================ -->
+    <script>
+        /**
+         * PROGRAM 1: MULTIPLICATION TABLE
+         * Event: onclick button
+         * Generates multiplication table for entered number
+         */
+        function generateMultiplicationTable() {
+            const errorBox = document.getElementById('multError');
+            const outputBox = document.getElementById('multOutput');
+            const resultBox = document.getElementById('multResult');
+
+            // Clear previous errors
+            errorBox.classList.remove('show');
+            errorBox.textContent = '';
+
+            const num = parseInt(document.getElementById('multNum').value);
+
+            // Validation
+            if (isNaN(num)) {
+                errorBox.textContent = '❌ Error: Please enter a valid number';
+                errorBox.classList.add('show');
+                outputBox.classList.remove('show');
+                return;
+            }
+
+            // Generate multiplication table
+            let result = `Multiplication Table of ${num}\n`;
+            result += '='.repeat(30) + '\n\n';
+
+            for (let i = 1; i <= 10; i++) {
+                result += `${num} × ${i.toString().padStart(2)} = ${(num * i).toString().padStart(3)}\n`;
+            }
+
+            // Display result
+            resultBox.textContent = result;
+            outputBox.classList.add('show');
+        }
+
+        /**
+         * PROGRAM 2: LARGEST OF THREE NUMBERS
+         * Event: onclick button
+         * Uses conditional statements to compare three numbers
+         */
+        function findLargest() {
+            const errorBox = document.getElementById('largestError');
+            const outputBox = document.getElementById('largestOutput');
+            const resultBox = document.getElementById('largestResult');
+
+            // Clear previous errors
+            errorBox.classList.remove('show');
+            errorBox.textContent = '';
+
+            const num1 = parseFloat(document.getElementById('num1').value);
+            const num2 = parseFloat(document.getElementById('num2').value);
+            const num3 = parseFloat(document.getElementById('num3').value);
+
+            // Validation
+            if (isNaN(num1) || isNaN(num2) || isNaN(num3)) {
+                errorBox.textContent = '❌ Error: Please enter valid numbers for all three fields';
+                errorBox.classList.add('show');
+                outputBox.classList.remove('show');
+                return;
+            }
+
+            // Find largest using conditional statements
+            let largest;
+            if (num1 >= num2 && num1 >= num3) {
+                largest = num1;
+            } else if (num2 >= num1 && num2 >= num3) {
+                largest = num2;
+            } else {
+                largest = num3;
+            }
+
+            // Alternative approach: using Math.max()
+            const largestAlt = Math.max(num1, num2, num3);
+
+            let result = 'Input Numbers:\n';
+            result += `  First Number:  ${num1}\n`;
+            result += `  Second Number: ${num2}\n`;
+            result += `  Third Number:  ${num3}\n\n`;
+            result += '='.repeat(40) + '\n\n';
+            result += `🏆 Largest Number: ${largest}\n\n`;
+            result += `Alternative (using Math.max()): ${largestAlt}`;
+
+            // Display result
+            resultBox.textContent = result;
+            outputBox.classList.add('show');
+        }
+
+        /**
+         * PROGRAM 3: FACTORIAL
+         * Event: onclick button
+         * Calculates factorial using loops
+         */
+        function calculateFactorial() {
+            const errorBox = document.getElementById('factError');
+            const outputBox = document.getElementById('factOutput');
+            const resultBox = document.getElementById('factResult');
+
+            // Clear previous errors
+            errorBox.classList.remove('show');
+            errorBox.textContent = '';
+
+            const num = parseInt(document.getElementById('factNum').value);
+
+            // Validation
+            if (isNaN(num) || num < 0) {
+                errorBox.textContent = '❌ Error: Please enter a non-negative integer';
+                errorBox.classList.add('show');
+                outputBox.classList.remove('show');
+                return;
+            }
+
+            if (!Number.isInteger(num)) {
+                errorBox.textContent = '❌ Error: Factorial is only defined for whole numbers';
+                errorBox.classList.add('show');
+                outputBox.classList.remove('show');
+                return;
+            }
+
+            // Calculate factorial using loop
+            let factorial = 1;
+            let calculation = '';
+
+            for (let i = num; i > 1; i--) {
+                factorial *= i;
+                calculation += i + ' × ';
+            }
+
+            calculation += '1';
+
+            let result = `Calculate Factorial of ${num}\n`;
+            result += '='.repeat(40) + '\n\n';
+            result += `${num}! = ${calculation}\n\n`;
+            result += `Result: ${factorial}\n\n`;
+
+            // Special cases
+            if (num === 0 || num === 1) {
+                result += '📝 Note: 0! = 1 and 1! = 1 (by definition)';
+            }
+
+            // Display result
+            resultBox.textContent = result;
+            outputBox.classList.add('show');
+        }
+
+        /**
+         * PROGRAM 4: SUM AND AVERAGE
+         * Event: onclick button
+         * Uses prompt() for user input in a loop
+         */
+        function sumAndAverage() {
+            const errorBox = document.getElementById('sumavgError');
+            const outputBox = document.getElementById('sumavgOutput');
+            const resultBox = document.getElementById('sumavgResult');
+
+            // Clear previous errors
+            errorBox.classList.remove('show');
+            errorBox.textContent = '';
+
+            let numbers = [];
+            let sum = 0;
+            let count = 0;
+
+            // Loop to get numbers from user
+            while (true) {
+                let input = prompt(
+                    `Enter a positive number (${count + 1}):\n\nEnter 0 to terminate:`,
+                    ''
+                );
+
+                // If user cancels the prompt
+                if (input === null) {
+                    errorBox.textContent = '⚠️ Input cancelled by user';
+                    errorBox.classList.add('show');
+                    return;
+                }
+
+                let num = parseFloat(input);
+
+                // Validation
+                if (isNaN(num)) {
+                    errorBox.textContent = '❌ Error: Invalid input. Please enter a valid number.';
+                    errorBox.classList.add('show');
+                    return;
+                }
+
+                // Check for termination (0)
+                if (num === 0) {
+                    break;
+                }
+
+                // Only accept positive numbers
+                if (num < 0) {
+                    alert('⚠️ Please enter only positive numbers!');
+                    continue;
+                }
+
+                numbers.push(num);
+                sum += num;
+                count++;
+            }
+
+            // Check if at least one number was entered
+            if (count === 0) {
+                errorBox.textContent = '❌ Error: Please enter at least one positive number';
+                errorBox.classList.add('show');
+                outputBox.classList.remove('show');
+                return;
+            }
+
+            // Calculate average
+            const average = sum / count;
+
+            // Format numbers list
+            let numbersList = numbers.map(n => n.toString()).join(', ');
+
+            let result = `Sum and Average Calculation\n`;
+            result += '='.repeat(40) + '\n\n';
+            result += `Numbers Entered: ${numbersList}\n\n`;
+            result += `Total Count: ${count}\n`;
+            result += `Sum: ${sum}\n`;
+            result += `Average: ${average.toFixed(2)}\n\n`;
+            result += '='.repeat(40) + '\n';
+            result += `📊 Min Value: ${Math.min(...numbers)}\n`;
+            result += `📊 Max Value: ${Math.max(...numbers)}`;
+
+            // Display result
+            resultBox.textContent = result;
+            outputBox.classList.add('show');
+        }
+
+        /**
+         * Clear output and error displays
+         */
+        function clearOutput(program) {
+            const sections = {
+                'mult': ['multOutput', 'multError'],
+                'largest': ['largestOutput', 'largestError'],
+                'factorial': ['factOutput', 'factError'],
+                'sumavg': ['sumavgOutput', 'sumavgError']
+            };
+
+            if (sections[program]) {
+                sections[program].forEach(id => {
+                    const element = document.getElementById(id);
+                    if (element) {
+                        element.classList.remove('show');
+                    }
+                });
+            }
+        }
+
+        /**
+         * Allow Enter key to trigger functions
+         */
+        document.getElementById('multNum').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') generateMultiplicationTable();
+        });
+
+        document.getElementById('num1').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') findLargest();
+        });
+
+        document.getElementById('num3').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') findLargest();
+        });
+
+        document.getElementById('factNum').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') calculateFactorial();
+        });
+    </script>
+
+</body>
+</html>

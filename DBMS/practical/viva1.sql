@@ -1,0 +1,121 @@
+DROP DATABASE IF EXISTS UniversityDB;   
+CREATE DATABASE IF NOT EXISTS UniversityDB;
+USE UniversityDB;
+
+-- Table: COLLEGE
+DROP TABLE IF EXISTS COLLEGE;
+CREATE TABLE COLLEGE (
+    CName VARCHAR(100) PRIMARY KEY,
+    COffice VARCHAR(50),
+    CPhone VARCHAR(20),
+    DeanID INT -- We will link this to INSTRUCTOR later
+);
+
+-- Table: DEPT (Department)
+DROP TABLE IF EXISTS DEPT;
+CREATE TABLE DEPT (
+    DName VARCHAR(100) PRIMARY KEY,
+    DCode VARCHAR(10) UNIQUE,
+    DOffice VARCHAR(50),
+    DPhone VARCHAR(20),
+    CName VARCHAR(100), -- Belongs to College
+    ChairID INT,        -- Links to INSTRUCTOR
+    CStartDate DATE
+);
+
+-- Table: INSTRUCTOR
+DROP TABLE IF EXISTS INSTRUCTOR;
+CREATE TABLE INSTRUCTOR (
+    Id INT PRIMARY KEY,
+    `Rank` VARCHAR(50),
+    IName VARCHAR(100),
+    IOffice VARCHAR(50),
+    IPhone VARCHAR(20),
+    DName VARCHAR(100) -- Works for a Department
+);
+
+-- Table: STUDENT
+DROP TABLE IF EXISTS STUDENT;
+CREATE TABLE STUDENT (
+    Sid INT PRIMARY KEY,
+    FName VARCHAR(50),
+    MName VARCHAR(50),
+    LName VARCHAR(50),
+    Addr VARCHAR(200),
+    Phone VARCHAR(20),
+    Major VARCHAR(100), -- Links to DEPT
+    DoB DATE
+);
+
+-- Table: COURSE
+DROP TABLE IF EXISTS COURSE;
+CREATE TABLE COURSE (
+    CCode VARCHAR(20) PRIMARY KEY,
+    CoName VARCHAR(100),
+    Level INT,
+    Credits INT,
+    CDesc TEXT,
+    DName VARCHAR(100) -- Offered by DEPT
+);
+
+-- Table: SECTION
+DROP TABLE IF EXISTS SECTION;
+CREATE TABLE SECTION (
+    SecID INT PRIMARY KEY,
+    SecNo INT,
+    Sem VARCHAR(20),
+    Year INT,
+    CRoom VARCHAR(20),
+    Bldg VARCHAR(50),
+    RoomNo VARCHAR(20),
+    DaysTime VARCHAR(50),
+    CCode VARCHAR(20), -- Links to COURSE
+    InstructorID INT   -- Taught by INSTRUCTOR
+);
+
+-- Table: TAKES (The relationship between Student and Section with Grade)
+DROP TABLE IF EXISTS TAKES;
+CREATE TABLE TAKES (
+    Sid INT,
+    SecID INT,
+    Grade VARCHAR(2),
+    PRIMARY KEY (Sid, SecID),
+    FOREIGN KEY (Sid) REFERENCES STUDENT(Sid),
+    FOREIGN KEY (SecID) REFERENCES SECTION(SecID)
+);
+
+-- Connect DEPT to COLLEGE
+ALTER TABLE DEPT
+ADD CONSTRAINT FK_Dept_College
+FOREIGN KEY (CName) REFERENCES COLLEGE(CName);
+
+-- Connect INSTRUCTOR to DEPT
+ALTER TABLE INSTRUCTOR
+ADD CONSTRAINT FK_Instructor_Dept
+FOREIGN KEY (DName) REFERENCES DEPT(DName);
+
+-- Connect STUDENT to DEPT (Major)
+ALTER TABLE STUDENT
+ADD CONSTRAINT FK_Student_Dept
+FOREIGN KEY (Major) REFERENCES DEPT(DName);
+
+-- Connect COURSE to DEPT
+ALTER TABLE COURSE
+ADD CONSTRAINT FK_Course_Dept
+FOREIGN KEY (DName) REFERENCES DEPT(DName);
+
+-- Connect SECTION to COURSE and INSTRUCTOR
+ALTER TABLE SECTION
+ADD CONSTRAINT FK_Section_Course FOREIGN KEY (CCode) REFERENCES COURSE(CCode),
+ADD CONSTRAINT FK_Section_Instructor FOREIGN KEY (InstructorID) REFERENCES INSTRUCTOR(Id);
+
+-- Add Circular Keys (Dean and Chair)
+-- We do this last because the tables had to exist first!
+
+ALTER TABLE COLLEGE
+ADD CONSTRAINT FK_College_Dean
+FOREIGN KEY (DeanID) REFERENCES INSTRUCTOR(Id);
+
+ALTER TABLE DEPT
+ADD CONSTRAINT FK_Dept_Chair
+FOREIGN KEY (ChairID) REFERENCES INSTRUCTOR(Id);

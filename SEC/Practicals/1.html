@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Title: Appears in browser tab and search results -->
+    <title>SEC Practical 1 - HTML Text Formatting Guide</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Internal CSS for styling -->
+    <style>
+        /* Main background for entire page */
+        body {
+            background-color: rgb(250, 243, 225);
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 20px;
+        }
+        
+        /* Style for each section container */
+        .section {
+            background-color: rgb(245, 231, 198);
+            margin: 20px 0;
+            padding: 20px;
+            border-left: 4px solid rgb(250, 129, 18);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Section heading style */
+        .section h2 {
+            color: rgb(250, 129, 18);
+            border-bottom: 2px solid rgb(245, 231, 198);
+            padding-bottom: 10px;
+        }
+        
+        /* Example boxes for demonstration */
+        .example {
+            background-color: rgb(250, 243, 225);
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid rgb(245, 231, 198);
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Main Page Title - Most important heading -->
+    <h1>HTML Text Formatting & Styling Practical Guide</h1>
+    <p><em>Learn how different HTML elements style text for better web presentations</em></p>
+    <hr>
+
+    <!-- ============================================ -->
+    <!-- SECTION 1: HEADINGS -->
+    <!-- ============================================ -->
+    <div class="section">
+        <h2>1. Headings (h1 to h6)</h2>
+        <p>Headings are used to create a hierarchy of information. h1 is most important, h6 is least. Search engines and assistive technology rely on them.</p>
+        
+        <div class="example">
+            <h1>This is Heading 1 (h1) - Main Title</h1>
+            <h2>This is Heading 2 (h2) - Section Title</h2>
+            <h3>This is Heading 3 (h3) - Subsection</h3>
+            <h4>This is Heading 4 (h4) - Minor heading</h4>
+            <h5>This is Heading 5 (h5) - Smaller heading</h5>
+            <h6>This is Heading 6 (h6) - Smallest heading</h6>
+        </div>
+        
+        <p><strong>Use case:</strong> Structure your content logically. Start with H1, don't skip levels.</p>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- SECTION 2: TEXT FORMATTING (Bold, Italic, Underline) -->
+    <!-- ============================================ -->
+    <div class="section">
+        <h2>2. Text Formatting</h2>
+        <p>Make text stand out with bold, italics, and underline formatting.</p>
+        
+        <div class="example">
+            <p>
+                <!-- Bold: Used for strong importance -->
+                <strong>This text is bold using &lt;strong&gt;</strong> - semantically important<br>
+                <b>This text is bold using &lt;b&gt;</b> - just visually bold<br>
+                <br>
+                <!-- Italics: Used for emphasis -->
+                <em>This text is italicized using &lt;em&gt;</em> - emphasized<br>
+                <i>This text is italicized using &lt;i&gt;</i> - just visually italic<br>
+                <br>
+                <!-- Underline: Used for links or important content -->
+                <u>This text is underlined</u> - draws attention<br>
+                <br>
+                <!-- Combined formatting -->
+                <strong><em>This is bold AND italic</em></strong> - maximum emphasis<br>
+                <strong><u>Bold and underlined</u></strong> - for critical information
+            </p>
+        </div>
+        
+        <p><strong>Best Practice:</strong> Use &lt;strong&gt; and &lt;em&gt; for semantic meaning, not just visual effect.</p>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- SECTION 3: COLOR -->
+    <!-- ============================================ -->
+    <div class="section">
+        <h2>3. Text Color</h2>
+        <p>Change text color to highlight important information or create visual hierarchy.</p>
+        
+        <div class="example">
+            <!-- Using inline style attribute -->
+            <p style="color: red;">This text is RED - use for warnings or errors</p>
+            <p style="color: green;">This text is GREEN - use for success messages</p>
+            <p style="color: blue;">This text is BLUE - commonly used for links</p>
+            <p style="color: #ff6b6b;">This text uses HEX color #ff6b6b</p>
+            <p style="color: rgb(153, 102, 204);">This text uses RGB color values</p>
+            <p style="color: #333333; background-color: #ffff00;">Dark text on YELLOW background</p>
+        </div>
+        
+        <p><strong>Use case:</strong> Status messages (red=error, green=success, blue=info), visual appeal, and accessibility.</p>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- SECTION 4: FONTS -->
+    <!-- ============================================ -->
+    <div class="section">
+        <h2>4. Font Families</h2>
+        <p>Different fonts create different moods and readability levels in your website.</p>
+        
+        <div class="example">
+            <!-- Sans-serif: Modern, clean look -->
+            <p style="font-family: Arial, sans-serif;">
+                <strong>Arial (Sans-serif):</strong> Clean, modern, great for body text
+            </p>
+            
+            <!-- Serif: Traditional look -->
+            <p style="font-family: 'Times New Roman', serif;">
+                <strong>Times New Roman (Serif):</strong> Traditional, newspaper-like appearance
+            </p>
+            
+            <!-- Monospace: For code or technical content -->
+            <p style="font-family: 'Courier New', monospace;">
+                <strong>Courier New (Monospace):</strong> For code snippets: if (x > 5) { return true; }
+            </p>
+            
+            <!-- Georgia: Elegant serif -->
+            <p style="font-family: Georgia, serif;">
+                <strong>Georgia (Serif):</strong> Elegant and readable, great for blogs
+            </p>
+            
+            <!-- Trebuchet MS: Internet-friendly -->
+            <p style="font-family: 'Trebuchet MS', sans-serif;">
+                <strong>Trebuchet MS (Sans-serif):</strong> Web-safe and friendly appearance
+            </p>
+        </div>
+        
+        <p><strong>Best Practice:</strong> Combine fonts with fallbacks: <code>font-family: 'Primary Font', 'Fallback Font', generic-family;</code></p>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- SECTION 5: FONT SIZE & FONT WIDTH -->
+    <!-- ============================================ -->
+    <div class="section">
+        <h2>5. Font Size and Font Weight</h2>
+        <p>Control how large text appears and how bold/thick the letters are.</p>
+        
+        <div class="example">
+            <!-- Font sizes in different units -->
+            <p style="font-size: 12px;">This is 12px - Small text, often for fine print</p>
+            <p style="font-size: 16px;">This is 16px - Standard body text</p>
+            <p style="font-size: 20px;">This is 20px - Larger text for emphasis</p>
+            <p style="font-size: 28px;">This is 28px - Heading-like size</p>
+            <p style="font-size: 2em;">This is 2em - Relative to parent (2 times)</p>
+            
+            <hr>
+            
+            <!-- Font weight (thickness) -->
+            <p style="font-weight: 100;">Font weight 100 - Extra Light</p>
+            <p style="font-weight: 400;">Font weight 400 - Normal</p>
+            <p style="font-weight: 700;">Font weight 700 - Bold</p>
+            <p style="font-weight: 900;">Font weight 900 - Extra Bold (heaviest)</p>
+        </div>
+        
+        <p><strong>Use case:</strong> Create visual hierarchy, improve readability, and guide user attention.</p>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- SECTION 6: BACKGROUND -->
+    <!-- ============================================ -->
+    <div class="section">
+        <h2>6. Background Color & Styling</h2>
+        <p>Backgrounds add visual interest and can organize content into sections.</p>
+        
+        <div class="example">
+            <!-- Simple background color -->
+            <div style="background-color: #e3f2fd; padding: 15px; margin: 10px 0; border-radius: 5px;">
+                <p style="color: #1565c0; margin: 0;"><strong>Light Blue Background</strong> - Good for informational boxes</p>
+            </div>
+            
+            <!-- Different background for emphasis -->
+            <div style="background-color: #f3e5f5; padding: 15px; margin: 10px 0; border-radius: 5px;">
+                <p style="color: #6a1b9a; margin: 0;"><strong>Light Purple Background</strong> - For special highlights</p>
+            </div>
+            
+            <!-- Dark background with light text -->
+            <div style="background-color: #212121; padding: 15px; margin: 10px 0; border-radius: 5px;">
+                <p style="color: #ffffff; margin: 0;"><strong>Dark Background with Light Text</strong> - For dark themes</p>
+            </div>
+            
+            <!-- Gradient-like effect -->
+            <div style="background-color: rgb(250, 243, 225); padding: 15px; margin: 10px 0; border-radius: 5px; border-left: 4px solid rgb(250, 129, 18);">
+                <p style="color: #e65100; margin: 0;"><strong>Warning/Alert Style</strong> - Orange theme for caution</p>
+            </div>
+        </div>
+        
+        <p><strong>Use case:</strong> Highlight important sections, create visual separation, improve scannability.</p>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- SECTION 7: PARAGRAPHS & LINE BREAKS -->
+    <!-- ============================================ -->
+    <div class="section">
+        <h2>7. Paragraphs and Line Breaks</h2>
+        <p>Organize text into readable chunks using paragraphs and line breaks.</p>
+        
+        <div class="example">
+            <!-- Multiple paragraphs -->
+            <p>This is the first paragraph. Paragraphs automatically have spacing above and below them, making text easier to read. They're perfect for body content.</p>
+            
+            <p>This is the second paragraph. Notice how browsers automatically add space between paragraphs. This improves readability and document structure.</p>
+            
+            <!-- Line breaks within paragraph -->
+            <p>
+                This is a single paragraph
+                <br>
+                with line breaks
+                <br>
+                using the &lt;br&gt; tag.
+                <br>
+                <br>
+                The double &lt;br&gt; creates extra space between lines.
+            </p>
+            
+            <!-- Preformatted text - preserves spacing -->
+            <pre>
+This is preformatted text.
+    It preserves spaces
+        and line breaks
+            exactly as typed.
+            </pre>
+        </div>
+        
+        <p><strong>Best Practice:</strong> Use &lt;p&gt; for paragraphs, &lt;br&gt; for line breaks within content, &lt;pre&gt; for code or formatted text.</p>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- SECTION 8: HORIZONTAL LINE -->
+    <!-- ============================================ -->
+    <div class="section">
+        <h2>8. Horizontal Lines (HR)</h2>
+        <p>The &lt;hr&gt; tag creates a thematic break or visual separator between content sections.</p>
+        
+        <div class="example">
+            <p>Content above the line...</p>
+            <hr>
+            <p>Content below the line. The horizontal line above separates topics or marks transitions.</p>
+            <hr style="border: none; border-top: 3px dashed #ccc;">
+            <p>This is a dashed horizontal line - different styling option.</p>
+            <hr style="border: none; border-top: 5px double #e0e0e0;">
+            <p>This is a double-line horizontal rule.</p>
+        </div>
+        
+        <p><strong>Use case:</strong> Section dividers, thematic breaks, visual organization of long pages.</p>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- SECTION 9: MARQUEE (SCROLLING TEXT) -->
+    <!-- ============================================ -->
+    <div class="section">
+        <h2>9. Marquee Text (Scrolling Animation)</h2>
+        <p>The &lt;marquee&gt; tag creates scrolling text. Note: This is deprecated HTML, but shown here for educational purposes.</p>
+        
+        <div class="example">
+            <!-- Scrolling from right to left (default) -->
+            <marquee style="background-color: #ffffcc; padding: 10px; border: 1px solid #ccc;">
+                🎯 This text scrolls from right to left - Default behavior
+            </marquee>
+            
+            <br>
+            
+            <!-- Scrolling from left to right -->
+            <marquee direction="right" style="background-color: #e8f5e9; padding: 10px; border: 1px solid #ccc;">
+                ➡️ This text scrolls from left to right
+            </marquee>
+            
+            <br>
+            
+            <!-- Scrolling up and down -->
+            <marquee direction="up" height="60px" style="background-color: #f3e5f5; border: 1px solid #ccc;">
+                📣 Scrolling up
+            </marquee>
+            
+            <br>
+            
+            <!-- Slower scroll speed -->
+            <marquee scrollamount="3" style="background-color: rgb(250, 243, 225); padding: 10px; border: 1px solid rgb(245, 231, 198);">
+                🐢 This scrolls slowly - scrollamount="3"
+            </marquee>
+        </div>
+        
+        <p><strong>⚠️ Important:</strong> &lt;marquee&gt; is deprecated HTML (not recommended for new projects). Use CSS animations instead for modern websites.</p>
+        <p><strong>Use case:*** Limited use - might annoy users. Better for educational examples or attention-grabbing alerts.</p>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- TABLE SUMMARY -->
+    <!-- ============================================ -->
+    <div class="section">
+        <h2>Quick Reference Summary</h2>
+        <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
+            <tr style="background-color: #007bff; color: white;">
+                <th style="border: 1px solid #ddd; padding: 10px; text-align: left;">Concept</th>
+                <th style="border: 1px solid #ddd; padding: 10px; text-align: left;">HTML Element/CSS</th>
+                <th style="border: 1px solid #ddd; padding: 10px; text-align: left;">Purpose</th>
+            </tr>
+            <tr style="background-color: #f9f9f9;">
+                <td style="border: 1px solid #ddd; padding: 10px;">Headings</td>
+                <td style="border: 1px solid #ddd; padding: 10px;">&lt;h1&gt; to &lt;h6&gt;</td>
+                <td style="border: 1px solid #ddd; padding: 10px;">Create content hierarchy</td>
+            </tr>
+            <tr>
+                <td style="border: 1px solid #ddd; padding: 10px;">Bold</td>
+                <td style="border: 1px solid #ddd; padding: 10px;">&lt;strong&gt; or &lt;b&gt;</td>
+                <td style="border: 1px solid #ddd; padding: 10px;">Emphasize important text</td>
+            </tr>
+            <tr style="background-color: #f9f9f9;">
+                <td style="border: 1px solid #ddd; padding: 10px;">Italics</td>
+                <td style="border: 1px solid #ddd; padding: 10px;">&lt;em&gt; or &lt;i&gt;</td>
+                <td style="border: 1px solid #ddd; padding: 10px;">Show emphasis or mention</td>
+            </tr>
+            <tr>
+                <td style="border: 1px solid #ddd; padding: 10px;">Underline</td>
+                <td style="border: 1px solid #ddd; padding: 10px;">&lt;u&gt;</td>
+                <td style="border: 1px solid #ddd; padding: 10px;">Highlight or draw attention</td>
+            </tr>
+            <tr style="background-color: #f9f9f9;">
+                <td style="border: 1px solid #ddd; padding: 10px;">Color</td>
+                <td style="border: 1px solid #ddd; padding: 10px;">style="color: [value]"</td>
+                <td style="border: 1px solid #ddd; padding: 10px;">Change text color</td>
+            </tr>
+            <tr>
+                <td style="border: 1px solid #ddd; padding: 10px;">Background</td>
+                <td style="border: 1px solid #ddd; padding: 10px;">style="background-color: [value]"</td>
+                <td style="border: 1px solid #ddd; padding: 10px;">Add background color</td>
+            </tr>
+            <tr style="background-color: #f9f9f9;">
+                <td style="border: 1px solid #ddd; padding: 10px;">Font</td>
+                <td style="border: 1px solid #ddd; padding: 10px;">style="font-family: [name]"</td>
+                <td style="border: 1px solid #ddd; padding: 10px;">Change text typeface</td>
+            </tr>
+            <tr>
+                <td style="border: 1px solid #ddd; padding: 10px;">Font Size</td>
+                <td style="border: 1px solid #ddd; padding: 10px;">style="font-size: [value]"</td>
+                <td style="border: 1px solid #ddd; padding: 10px;">Adjust text size</td>
+            </tr>
+            <tr style="background-color: #f9f9f9;">
+                <td style="border: 1px solid #ddd; padding: 10px;">Line Break</td>
+                <td style="border: 1px solid #ddd; padding: 10px;">&lt;br&gt;</td>
+                <td style="border: 1px solid #ddd; padding: 10px;">Break text into new line</td>
+            </tr>
+            <tr>
+                <td style="border: 1px solid #ddd; padding: 10px;">Horizontal Line</td>
+                <td style="border: 1px solid #ddd; padding: 10px;">&lt;hr&gt;</td>
+                <td style="border: 1px solid #ddd; padding: 10px;">Visual section separator</td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- Footer -->
+    <!-- ============================================ -->
+    <footer style="text-align: center; margin-top: 40px; padding: 20px; border-top: 2px solid #e0e0e0; color: #666;">
+        <p><strong>SEC Frontend Development - Practical 1</strong></p>
+        <p>Created for learning HTML text formatting and basic styling concepts</p>
+    </footer>
+
+</body>
+</html>

@@ -1,0 +1,1146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>CS Department - Hansraj College</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <style>
+        /* ============================================ */
+        /* RESET AND GLOBAL STYLES */
+        /* ============================================ */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Body - Universal style for all text */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: rgb(34, 34, 34);
+            background-color: rgb(250, 243, 225);
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* ============================================ */
+        /* TYPOGRAPHY RULES */
+        /* ============================================ */
+        h1, h2, h3, h4, h5, h6 {
+            color: rgb(34, 34, 34);
+            margin: 20px 0 15px 0;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        h1 {
+            font-size: 32px;
+        }
+
+        h2 {
+            font-size: 26px;
+            border-bottom: 2px solid rgb(250, 129, 18);
+            padding-bottom: 10px;
+        }
+
+        h3 {
+            font-size: 20px;
+        }
+
+        p {
+            font-size: 15px;
+            color: rgb(34, 34, 34);
+            margin-bottom: 15px;
+        }
+
+        a {
+            color: rgb(250, 129, 18);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        a:hover {
+            color: rgb(34, 34, 34);
+            text-decoration: underline;
+        }
+
+        /* ============================================ */
+        /* HEADER & NAVIGATION STYLES */
+        /* ============================================ */
+        
+        /* Header container */
+        header {
+            background: linear-gradient(135deg, rgb(250, 129, 18) 0%, rgb(34, 34, 34) 100%);
+            color: white;
+            padding: 20px 0;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        /* Header content wrapper */
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        /* Logo and title */
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo::before {
+            content: "💻";
+            font-size: 32px;
+        }
+
+        /* ============================================ */
+        /* DROPDOWN NAVIGATION MENU */
+        /* ============================================ */
+
+        /* Main navigation bar */
+        nav {
+            display: flex;
+            gap: 0;
+        }
+
+        /* Navigation list */
+        nav ul {
+            list-style: none;
+            display: flex;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Main navigation items */
+        nav > ul > li {
+            position: relative;
+        }
+
+        /* Navigation links */
+        nav a {
+            display: block;
+            padding: 15px 20px;
+            color: white;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        /* Hover effect for main menu items */
+        nav > ul > li > a:hover {
+            background-color: rgba(255, 255, 255, 0.15);
+            color: #fff;
+        }
+
+        /* Active/current page indicator */
+        nav > ul > li > a.active {
+            background-color: rgba(255, 255, 255, 0.25);
+            border-bottom: 3px solid #ffed4e;
+        }
+
+        /* ============================================ */
+        /* DROPDOWN SUBMENU STYLES */
+        /* ============================================ */
+
+        /* Dropdown menu container */
+        nav ul ul {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background-color: rgb(34, 34, 34);
+            flex-direction: column;
+            min-width: 220px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            border-radius: 0 0 5px 5px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        /* Show dropdown on hover */
+        nav li:hover > ul {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        /* Dropdown menu items */
+        nav ul ul li {
+            width: 100%;
+        }
+
+        /* Dropdown menu links */
+        nav ul ul a {
+            padding: 12px 20px;
+            color: #fff;
+            border-left: 3px solid transparent;
+            font-size: 14px;
+        }
+
+        /* Dropdown hover effect */
+        nav ul ul a:hover {
+            background-color: rgb(250, 129, 18);
+            border-left-color: white;
+            padding-left: 25px;
+        }
+
+        /* Dropdown item before content (arrow) */
+        nav ul ul a::before {
+            content: "→ ";
+            margin-right: 5px;
+            opacity: 0.7;
+        }
+
+        /* ============================================ */
+        /* MAIN CONTAINER */
+        /* ============================================ */
+
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* ============================================ */
+        /* HERO SECTION */
+        /* ============================================ */
+
+        .hero {
+            background: linear-gradient(135deg, rgba(250, 129, 18, 0.9) 0%, rgba(34, 34, 34, 0.9) 100%), 
+                        url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600"><rect fill="%23f0f0f0" width="1200" height="600"/></svg>');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 60px 40px;
+            border-radius: 10px;
+            margin-bottom: 50px;
+            text-align: center;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .hero h1 {
+            font-size: 44px;
+            color: white;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .hero p {
+            font-size: 18px;
+            color: rgba(255, 255, 255, 0.95);
+            margin-bottom: 30px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* ============================================ */
+        /* GRID LAYOUT FOR SECTIONS */
+        /* ============================================ */
+
+        .section-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+
+        /* Card styling */
+        .card {
+            background: rgb(245, 231, 198);
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            border-top: 4px solid rgb(250, 129, 18);
+        }
+
+        /* Card hover effect */
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            border-top-color: rgb(34, 34, 34);
+        }
+
+        .card h3 {
+            color: rgb(250, 129, 18);
+            margin-top: 0;
+        }
+
+        .card-icon {
+            font-size: 40px;
+            margin-bottom: 15px;
+        }
+
+        /* ============================================ */
+        /* SECTION STYLES */
+        /* ============================================ */
+
+        section {
+            margin-bottom: 50px;
+        }
+
+        section > h2 {
+            color: rgb(250, 129, 18);
+            margin-bottom: 30px;
+            position: relative;
+            padding-bottom: 15px;
+        }
+
+        section > h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(90deg, rgb(250, 129, 18), rgb(34, 34, 34));
+        }
+
+        /* ============================================ */
+        /* FACULTY SECTION */
+        /* ============================================ */
+
+        .faculty-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        .faculty-card {
+            background: rgb(245, 231, 198);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .faculty-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .faculty-avatar {
+            background: linear-gradient(135deg, rgb(250, 129, 18), rgb(34, 34, 34));
+            height: 150px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 60px;
+            color: white;
+        }
+
+        .faculty-info {
+            padding: 20px;
+        }
+
+        .faculty-info h4 {
+            color: rgb(34, 34, 34);
+            margin-bottom: 5px;
+            font-size: 16px;
+        }
+
+        .faculty-position {
+            color: rgb(250, 129, 18);
+            font-size: 13px;
+            font-weight: 500;
+            margin-bottom: 10px;
+        }
+
+        .faculty-email {
+            font-size: 12px;
+            color: rgb(250, 129, 18);
+        }
+
+        /* ============================================ */
+        /* COURSES SECTION */
+        /* ============================================ */
+
+        .course-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 20px;
+        }
+
+        .course-item {
+            background: rgb(245, 231, 198);
+            padding: 20px;
+            border-radius: 6px;
+            border-left: 4px solid rgb(250, 129, 18);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+        }
+
+        .course-item:hover {
+            border-left-color: rgb(34, 34, 34);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .course-item h4 {
+            color: rgb(250, 129, 18);
+            margin-bottom: 8px;
+            font-size: 16px;
+        }
+
+        .course-code {
+            display: inline-block;
+            background-color: rgb(250, 243, 225);
+            color: rgb(250, 129, 18);
+            padding: 4px 10px;
+            border-radius: 3px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .course-info {
+            display: flex;
+            gap: 20px;
+            font-size: 13px;
+            color: rgb(34, 34, 34);
+            margin-top: 12px;
+        }
+
+        /* ============================================ */
+        /* ACTIVITIES SECTION */
+        /* ============================================ */
+
+        .activities-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .activity-card {
+            background: rgb(245, 231, 198);
+            padding: 25px;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            border-bottom: 4px solid rgb(250, 129, 18);
+        }
+
+        .activity-card:nth-child(2) {
+            border-bottom-color: rgb(250, 129, 18);
+        }
+
+        .activity-card:nth-child(3) {
+            border-bottom-color: rgb(250, 129, 18);
+        }
+
+        .activity-card:nth-child(4) {
+            border-bottom-color: rgb(250, 129, 18);
+        }
+
+        .activity-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .activity-icon {
+            font-size: 50px;
+            margin-bottom: 15px;
+        }
+
+        .activity-card h4 {
+            color: rgb(34, 34, 34);
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+
+        .activity-card p {
+            font-size: 13px;
+            color: rgb(34, 34, 34);
+        }
+
+        /* ============================================ */
+        /* STATISTICS SECTION */
+        /* ============================================ */
+
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 25px;
+            margin: 30px 0;
+        }
+
+        .stat-box {
+            background: rgb(245, 231, 198);
+            padding: 30px;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease;
+        }
+
+        .stat-box:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-number {
+            font-size: 40px;
+            font-weight: bold;
+            color: rgb(250, 129, 18);
+            margin-bottom: 10px;
+        }
+
+        .stat-label {
+            color: rgb(34, 34, 34);
+            font-size: 14px;
+        }
+
+        /* ============================================ */
+        /* FACILITY SHOWCASE */
+        /* ============================================ */
+
+        .facilities-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .facility-item {
+            background: rgb(245, 231, 198);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+        }
+
+        .facility-image {
+            background: linear-gradient(135deg, rgb(250, 129, 18), rgb(34, 34, 34));
+            height: 180px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 60px;
+            color: white;
+        }
+
+        .facility-content {
+            padding: 20px;
+        }
+
+        .facility-item:hover {
+            transform: translateY(-8px);
+        }
+
+        /* ============================================ */
+        /* BUTTON STYLES */
+        /* ============================================ */
+
+        .btn {
+            display: inline-block;
+            padding: 12px 25px;
+            background-color: rgb(250, 129, 18);
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        .btn:hover {
+            background-color: rgb(34, 34, 34);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(250, 129, 18, 0.4);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 2px solid rgb(250, 129, 18);
+            color: rgb(250, 129, 18);
+        }
+
+        .btn-outline:hover {
+            background-color: rgb(250, 129, 18);
+            color: white;
+        }
+
+        /* ============================================ */
+        /* FOOTER */
+        /* ============================================ */
+
+        footer {
+            background-color: rgb(34, 34, 34);
+            color: white;
+            padding: 40px 20px;
+            margin-top: 60px;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .footer-section h4 {
+            color: white;
+            margin-bottom: 15px;
+            border-bottom: 2px solid rgb(250, 129, 18);
+            padding-bottom: 10px;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section li {
+            margin-bottom: 10px;
+        }
+
+        .footer-section a {
+            color: #bdc3c7;
+            transition: color 0.3s ease;
+        }
+
+        .footer-section a:hover {
+            color: rgb(250, 129, 18);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            border-top: 1px solid #34495e;
+            padding-top: 20px;
+            color: #95a5a6;
+            font-size: 13px;
+        }
+
+        /* ============================================ */
+        /* RESPONSIVE DESIGN - MEDIA QUERIES */
+        /* ============================================ */
+
+        @media (max-width: 768px) {
+            /* Header adjustments */
+            .header-content {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            /* Navigation adjustments */
+            nav ul {
+                flex-direction: column;
+            }
+
+            nav ul ul {
+                position: static;
+                opacity: 0;
+                max-height: 0;
+                overflow: hidden;
+                transform: none;
+                transition: all 0.3s ease;
+            }
+
+            nav li:hover > ul {
+                opacity: 1;
+                max-height: 500px;
+            }
+
+            /* Hero section */
+            .hero {
+                padding: 40px 20px;
+            }
+
+            .hero h1 {
+                font-size: 28px;
+            }
+
+            .hero p {
+                font-size: 16px;
+            }
+
+            /* Grid adjustments */
+            .section-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .faculty-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .course-list {
+                grid-template-columns: 1fr;
+            }
+
+            .activities-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .stats-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 480px) {
+            /* Font size reductions */
+            h1 {
+                font-size: 24px;
+            }
+
+            h2 {
+                font-size: 20px;
+            }
+
+            nav a {
+                padding: 10px 15px;
+            }
+
+            /* Single column for all grids */
+            .activities-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-container {
+                grid-template-columns: 1fr;
+            }
+
+            main {
+                padding: 20px 10px;
+            }
+
+            .hero {
+                padding: 30px 15px;
+            }
+        }
+
+        /* ============================================ */
+        /* UTILITY CLASSES */
+        /* ============================================ */
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .mt-20 {
+            margin-top: 20px;
+        }
+
+        .mb-30 {
+            margin-bottom: 30px;
+        }
+
+        .highlight {
+            background-color: #fff3cd;
+            padding: 2px 6px;
+            border-radius: 2px;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- ============================================ -->
+    <!-- HEADER WITH DROPDOWN NAVIGATION -->
+    <!-- ============================================ -->
+    <header>
+        <div class="header-content">
+            <div class="logo">CS Department</div>
+            
+            <!-- Main Navigation with Dropdowns -->
+            <nav>
+                <ul>
+                    <!-- Home link -->
+                    <li>
+                        <a href="#home" class="active">Home</a>
+                    </li>
+
+                    <!-- About dropdown -->
+                    <li>
+                        <a href="#about">About</a>
+                        <ul>
+                            <li><a href="#about-department">Department Overview</a></li>
+                            <li><a href="#mission">Mission & Vision</a></li>
+                            <li><a href="#history">History</a></li>
+                        </ul>
+                    </li>
+
+                    <!-- Faculty dropdown -->
+                    <li>
+                        <a href="#faculty">Faculty</a>
+                        <ul>
+                            <li><a href="#faculty-all">All Faculty</a></li>
+                            <li><a href="#faculty-research">Research Areas</a></li>
+                            <li><a href="#faculty-office">Office Hours</a></li>
+                        </ul>
+                    </li>
+
+                    <!-- Courses dropdown -->
+                    <li>
+                        <a href="#courses">Courses</a>
+                        <ul>
+                            <li><a href="#courses-ug">Undergrad Courses</a></li>
+                            <li><a href="#courses-specializations">Specializations</a></li>
+                            <li><a href="#courses-electives">Electives</a></li>
+                        </ul>
+                    </li>
+
+                    <!-- Programs dropdown -->
+                    <li>
+                        <a href="#programs">Programs</a>
+                        <ul>
+                            <li><a href="#programs-bsc">B.Sc. Computer Science</a></li>
+                            <li><a href="#programs-internships">Internships</a></li>
+                            <li><a href="#programs-projects">Projects</a></li>
+                        </ul>
+                    </li>
+
+                    <!-- Activities dropdown -->
+                    <li>
+                        <a href="#activities">Activities</a>
+                        <ul>
+                            <li><a href="#activities-clubs">Clubs & Societies</a></li>
+                            <li><a href="#activities-events">Events & Workshops</a></li>
+                            <li><a href="#activities-competitions">Competitions</a></li>
+                        </ul>
+                    </li>
+
+                    <!-- Resources dropdown -->
+                    <li>
+                        <a href="#resources">Resources</a>
+                        <ul>
+                            <li><a href="#resources-library">Library</a></li>
+                            <li><a href="#resources-labs">Labs & Equipment</a></li>
+                            <li><a href="#resources-placements">Placements</a></li>
+                        </ul>
+                    </li>
+
+                    <!-- Contact link -->
+                    <li>
+                        <a href="#contact">Contact</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- ============================================ -->
+    <!-- MAIN CONTENT -->
+    <!-- ============================================ -->
+    <main>
+        <!-- Hero Section -->
+        <section class="hero" id="home">
+            <h1>Welcome to the Computer Science Department</h1>
+            <p>Hansraj College - Delhi University</p>
+            <p>Empowering Future Leaders in Technology & Innovation</p>
+        </section>
+
+        <!-- ============================================ -->
+        <!-- ABOUT SECTION -->
+        <!-- ============================================ -->
+        <section id="about-department">
+            <h2>About Our Department</h2>
+            <div class="section-grid">
+                <div class="card">
+                    <div class="card-icon">📚</div>
+                    <h3>Excellence in Teaching</h3>
+                    <p>Our faculty members are committed to providing quality education with a focus on both theoretical knowledge and practical skills.</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">🔬</div>
+                    <h3>Research & Innovation</h3>
+                    <p>We encourage students and faculty to pursue research in emerging areas of computer science and technology.</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">💼</div>
+                    <h3>Industrial Partnerships</h3>
+                    <p>Strong ties with leading IT companies ensure our students get exposure to real-world projects and internship opportunities.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============================================ -->
+        <!-- STATISTICS SECTION -->
+        <!-- ============================================ -->
+        <section id="stats">
+            <h2>Department Statistics</h2>
+            <div class="stats-container">
+                <div class="stat-box">
+                    <div class="stat-number">12+</div>
+                    <div class="stat-label">Faculty Members</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number">500+</div>
+                    <div class="stat-label">Active Students</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number">95%</div>
+                    <div class="stat-label">Placement Rate</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number">50+</div>
+                    <div class="stat-label">Courses Offered</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============================================ -->
+        <!-- FACULTY SECTION -->
+        <!-- ============================================ -->
+        <section id="faculty-all">
+            <h2>Meet Our Faculty</h2>
+            <p>Experienced educators and researchers dedicated to your success.</p>
+            <div class="faculty-grid">
+                <div class="faculty-card">
+                    <div class="faculty-avatar">👨‍🏫</div>
+                    <div class="faculty-info">
+                        <h4>Dr. Rajesh Kumar</h4>
+                        <div class="faculty-position">Professor & HOD</div>
+                        <div class="faculty-email">Specialization: Data Structures & Algorithms</div>
+                    </div>
+                </div>
+                <div class="faculty-card">
+                    <div class="faculty-avatar">👩‍💼</div>
+                    <div class="faculty-info">
+                        <h4>Prof. Neha Sharma</h4>
+                        <div class="faculty-position">Associate Professor</div>
+                        <div class="faculty-email">Specialization: Web Technologies</div>
+                    </div>
+                </div>
+                <div class="faculty-card">
+                    <div class="faculty-avatar">👨‍💻</div>
+                    <div class="faculty-info">
+                        <h4>Dr. Anil Patel</h4>
+                        <div class="faculty-position">Assistant Professor</div>
+                        <div class="faculty-email">Specialization: Network Security</div>
+                    </div>
+                </div>
+                <div class="faculty-card">
+                    <div class="faculty-avatar">👩‍🔬</div>
+                    <div class="faculty-info">
+                        <h4>Prof. Priya Singh</h4>
+                        <div class="faculty-position">Lecturer</div>
+                        <div class="faculty-email">Specialization: Database Systems</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============================================ -->
+        <!-- COURSES SECTION -->
+        <!-- ============================================ -->
+        <section id="courses-ug">
+            <h2>Our Courses</h2>
+            <p>Comprehensive curriculum covering fundamental and advanced topics in computer science.</p>
+            <div class="course-list">
+                <div class="course-item">
+                    <span class="course-code">CS101</span>
+                    <h4>Data Structures</h4>
+                    <p>Fundamental data structures including arrays, linked lists, trees, and graphs.</p>
+                    <div class="course-info">
+                        <span>4 Credits</span>
+                        <span>Semester 1</span>
+                    </div>
+                </div>
+                <div class="course-item">
+                    <span class="course-code">CS102</span>
+                    <h4>Database Management</h4>
+                    <p>RDBMS concepts, SQL, normalization, and query optimization.</p>
+                    <div class="course-info">
+                        <span>3 Credits</span>
+                        <span>Semester 2</span>
+                    </div>
+                </div>
+                <div class="course-item">
+                    <span class="course-code">CS103</span>
+                    <h4>Web Development</h4>
+                    <p>HTML, CSS, JavaScript, and modern web frameworks.</p>
+                    <div class="course-info">
+                        <span>3 Credits</span>
+                        <span>Semester 3</span>
+                    </div>
+                </div>
+                <div class="course-item">
+                    <span class="course-code">CS104</span>
+                    <h4>Computer Networks</h4>
+                    <p>Network architecture, protocols, and communication systems.</p>
+                    <div class="course-info">
+                        <span>4 Credits</span>
+                        <span>Semester 4</span>
+                    </div>
+                </div>
+                <div class="course-item">
+                    <span class="course-code">CS105</span>
+                    <h4>Software Engineering</h4>
+                    <p>SDLC, design patterns, and software development best practices.</p>
+                    <div class="course-info">
+                        <span>3 Credits</span>
+                        <span>Semester 5</span>
+                    </div>
+                </div>
+                <div class="course-item">
+                    <span class="course-code">CS106</span>
+                    <h4>AI & Machine Learning</h4>
+                    <p>Algorithms, neural networks, and practical ML applications.</p>
+                    <div class="course-info">
+                        <span>4 Credits</span>
+                        <span>Semester 6</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============================================ -->
+        <!-- ACTIVITIES SECTION -->
+        <!-- ============================================ -->
+        <section id="activities-clubs">
+            <h2>Student Activities & Clubs</h2>
+            <div class="activities-grid">
+                <div class="activity-card">
+                    <div class="activity-icon">💻</div>
+                    <h4>Coding Club</h4>
+                    <p>Competitive programming, coding contests, and skill development workshops.</p>
+                </div>
+                <div class="activity-card">
+                    <div class="activity-icon">🤖</div>
+                    <h4>Robotics Club</h4>
+                    <p>AI, robotics projects, and hands-on automation experience.</p>
+                </div>
+                <div class="activity-card">
+                    <div class="activity-icon">🌐</div>
+                    <h4>Web Dev Society</h4>
+                    <p>Web technologies, frameworks, and collaborative projects.</p>
+                </div>
+                <div class="activity-card">
+                    <div class="activity-icon">🎓</div>
+                    <h4>Tech Seminar Series</h4>
+                    <p>Industry experts sharing insights and career guidance sessions.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============================================ -->
+        <!-- FACILITIES SECTION -->
+        <!-- ============================================ -->
+        <section id="resources-labs">
+            <h2>Our Facilities</h2>
+            <div class="facilities-grid">
+                <div class="facility-item">
+                    <div class="facility-image">🖥️</div>
+                    <div class="facility-content">
+                        <h4>Computer Labs</h4>
+                        <p>State-of-the-art laboratories with latest hardware and software for hands-on learning.</p>
+                    </div>
+                </div>
+                <div class="facility-item">
+                    <div class="facility-image">📚</div>
+                    <div class="facility-content">
+                        <h4>Digital Library</h4>
+                        <p>Access to journals, e-books, and research databases for academic excellence.</p>
+                    </div>
+                </div>
+                <div class="facility-item">
+                    <div class="facility-image">🌐</div>
+                    <div class="facility-content">
+                        <h4>High-Speed Internet</h4>
+                        <p>Reliable Wi-Fi connectivity throughout campus for research and development.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============================================ -->
+        <!-- CONTACT SECTION -->
+        <!-- ============================================ -->
+        <section id="contact">
+            <h2>Get in Touch</h2>
+            <div class="section-grid">
+                <div class="card">
+                    <h3 style="color: rgb(250, 129, 18);">📍 Location</h3>
+                    <p>
+                        Computer Science Department<br>
+                        Hansraj College, Malka Ganj<br>
+                        Delhi - 110007, India
+                    </p>
+                </div>
+                <div class="card">
+                    <h3 style="color: rgb(250, 129, 18);">📞 Contact</h3>
+                    <p>
+                        Phone: +91-11-3965-8010<br>
+                        Email: cs@hansrajcollege.ac.in<br>
+                        Web: www.hansrajcollege.ac.in
+                    </p>
+                </div>
+                <div class="card">
+                    <h3 style="color: rgb(250, 129, 18);">⏰ Office Hours</h3>
+                    <p>
+                        Monday - Friday: 9:00 AM - 5:00 PM<br>
+                        Saturday: 10:00 AM - 2:00 PM<br>
+                        Sunday: Closed
+                    </p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- ============================================ -->
+    <!-- FOOTER -->
+    <!-- ============================================ -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>Department</h4>
+                <ul>
+                    <li><a href="#about-department">About Us</a></li>
+                    <li><a href="#faculty-all">Faculty</a></li>
+                    <li><a href="#courses-ug">Courses</a></li>
+                    <li><a href="#resources-labs">Facilities</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Student Resources</h4>
+                <ul>
+                    <li><a href="#activities-clubs">Clubs & Activities</a></li>
+                    <li><a href="#resources-library">Library</a></li>
+                    <li><a href="#resources-placements">Placements</a></li>
+                    <li><a href="#courses-electives">Electives</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="#">Admissions</a></li>
+                    <li><a href="#">Academic Calendar</a></li>
+                    <li><a href="#">Notifications</a></li>
+                    <li><a href="#">Downloads</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Computer Science Department, Hansraj College, Delhi University. All rights reserved.</p>
+        </div>
+    </footer>
+
+</body>
+</html>

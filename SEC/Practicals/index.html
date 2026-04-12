@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personal Information</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, rgb(250, 243, 225) 0%, rgb(245, 231, 198) 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: rgb(245, 231, 198);
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            max-width: 600px;
+            width: 100%;
+        }
+        
+        h1 {
+            text-align: center;
+            color: rgb(34, 34, 34);
+            margin-bottom: 30px;
+            font-size: 28px;
+        }
+        
+        .display-section {
+            background: rgb(250, 243, 225);
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            border-left: 4px solid rgb(250, 129, 18);
+        }
+        
+        .info-item {
+            margin: 15px 0;
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .info-label {
+            font-weight: bold;
+            color: rgb(34, 34, 34);
+            min-width: 100px;
+        }
+        
+        .info-value {
+            color: #333;
+            word-break: break-word;
+            flex: 1;
+            margin-left: 20px;
+        }
+        
+        .edit-section {
+            background: rgb(250, 243, 225);
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid rgb(245, 231, 198);
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: rgb(34, 34, 34);
+        }
+        
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid rgb(245, 231, 198);
+            border-radius: 5px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+        
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="tel"]:focus {
+            outline: none;
+            border-color: rgb(250, 129, 18);
+            box-shadow: 0 0 5px rgba(250, 129, 18, 0.3);
+        }
+        
+        button {
+            background: linear-gradient(135deg, rgb(250, 129, 18) 0%, rgb(34, 34, 34) 100%);
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(250, 129, 18, 0.4);
+        }
+        
+        .success-message {
+            background: #d4edda;
+            color: #155724;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 10px;
+            display: none;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>My Personal Information</h1>
+        
+        <!-- Display Section -->
+        <div class="display-section">
+            <div class="info-item">
+                <span class="info-label">Name:</span>
+                <span class="info-value" id="displayName">--</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">Address:</span>
+                <span class="info-value" id="displayAddress">--</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">Phone:</span>
+                <span class="info-value" id="displayPhone">--</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">Email:</span>
+                <span class="info-value" id="displayEmail">--</span>
+            </div>
+        </div>
+        
+        <!-- Edit Section -->
+        <div class="edit-section">
+            <h2 style="margin-bottom: 20px; color: #333; font-size: 18px;">Update Your Information</h2>
+            
+            <div class="form-group">
+                <label for="inputName">Name:</label>
+                <input type="text" id="inputName" placeholder="Enter your name">
+            </div>
+            
+            <div class="form-group">
+                <label for="inputAddress">Address:</label>
+                <input type="text" id="inputAddress" placeholder="Enter your address">
+            </div>
+            
+            <div class="form-group">
+                <label for="inputPhone">Phone Number:</label>
+                <input type="tel" id="inputPhone" placeholder="Enter your phone number">
+            </div>
+            
+            <div class="form-group">
+                <label for="inputEmail">Email ID:</label>
+                <input type="email" id="inputEmail" placeholder="Enter your email">
+            </div>
+            
+            <button onclick="updateInformation()">Save Changes</button>
+            <div class="success-message" id="successMessage">✓ Information updated successfully!</div>
+        </div>
+    </div>
+    
+    <script>
+        // Update information when Save Changes button is clicked
+        function updateInformation() {
+            const name = document.getElementById('inputName').value.trim();
+            const address = document.getElementById('inputAddress').value.trim();
+            const phone = document.getElementById('inputPhone').value.trim();
+            const email = document.getElementById('inputEmail').value.trim();
+            
+            // Validation
+            if (!name || !address || !phone || !email) {
+                alert('Please fill in all fields!');
+                return;
+            }
+            
+            // Email validation
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailPattern.test(email)) {
+                alert('Please enter a valid email address!');
+                return;
+            }
+            
+            // Update display section
+            document.getElementById('displayName').textContent = name;
+            document.getElementById('displayAddress').textContent = address;
+            document.getElementById('displayPhone').textContent = phone;
+            document.getElementById('displayEmail').textContent = email;
+            
+            // Clear input fields
+            document.getElementById('inputName').value = '';
+            document.getElementById('inputAddress').value = '';
+            document.getElementById('inputPhone').value = '';
+            document.getElementById('inputEmail').value = '';
+            
+            // Show success message
+            const successMessage = document.getElementById('successMessage');
+            successMessage.style.display = 'block';
+            setTimeout(() => {
+                successMessage.style.display = 'none';
+            }, 3000);
+        }
+        
+        // Allow Enter key to update information
+        document.addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                updateInformation();
+            }
+        });
+    </script>
+</body>
+</html>
