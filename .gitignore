@@ -7,3 +7,10 @@ DBMS/ref_*.pdf
 DSE/ref_*.pdf
 EVS/EVS Presentation.pdf
 
+# Executable files
+*.exe
+*.out
+*.o
+*.a
+*.so
+directed_graph
