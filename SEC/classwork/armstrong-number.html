@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Armstrong Number</title>
+</head>
+<body>
+    <h2>Check Armstrong Number</h2>
+    Enter number: <input type="text" id="num">
+    <button onclick="checkArmstrong()">Check</button>
+    <p id="result"></p>
+
+    <script>
+        function checkArmstrong() {
+            var n = parseInt(document.getElementById("num").value);
+            var original = n;
+            var sum = 0;
+            
+            while (n > 0) {
+                var digit = n % 10;
+                sum = sum + (digit * digit * digit);
+                n = parseInt(n / 10);
+            }
+            
+            if (original == sum) {
+                document.getElementById("result").innerHTML = original + " is Armstrong";
+            } else {
+                document.getElementById("result").innerHTML = original + " is not Armstrong";
+            }
+        }
+    </script>
+</body>
+</html>

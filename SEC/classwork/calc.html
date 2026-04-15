@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Calculator</title>
+</head>
+<body>
+    <h2>Simple Calculator</h2>
+    
+    First Number: <input type="text" id="num1"><br><br>
+    Second Number: <input type="text" id="num2"><br><br>
+    
+    <button onclick="calculate('+')">+</button>
+    <button onclick="calculate('-')">-</button>
+    <button onclick="calculate('*')">*</button>
+    <button onclick="calculate('/')">/</button>
+
+    <script>
+        function calculate(op) {
+            var n1 = parseFloat(document.getElementById("num1").value);
+            var n2 = parseFloat(document.getElementById("num2").value);
+            var result;
+            
+            if (op == '+') result = n1 + n2;
+            else if (op == '-') result = n1 - n2;
+            else if (op == '*') result = n1 * n2;
+            else if (op == '/') result = n1 / n2;
+            
+            alert("Result: " + result);
+        }
+    </script>
+</body>
+</html>

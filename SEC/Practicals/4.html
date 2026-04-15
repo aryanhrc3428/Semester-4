@@ -1,99 +1,80 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Hansraj College - SEC Practical 4</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
+    <title>Practical 4: Frames in HTML</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            display: flex;
-            flex-direction: column;
-            height: 100vh;
-            background-color: rgb(250, 243, 225);
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f5f5f5;
         }
 
-        /* ============================================ */
-        /* TOP HORIZONTAL FRAME - HEADER */
-        /* ============================================ */
-        .top-frame {
-            background: linear-gradient(135deg, rgb(34, 34, 34) 0%, rgb(250, 129, 18) 100%);
-            color: white;
-            padding: 20px 30px;
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            flex-shrink: 0;
-            height: auto;
-        }
-
-        /* College logo placeholder */
-        .college-logo {
-            width: 80px;
-            height: 80px;
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            font-size: 36px;
-            color: #ffed4e;
-            border: 3px solid white;
-            flex-shrink: 0;
-        }
-
-        /* College header information */
-        .college-info h1 {
-            font-size: 32px;
-            margin-bottom: 5px;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
-        }
-
-        .college-info p {
-            font-size: 14px;
-            opacity: 0.95;
-            letter-spacing: 0.5px;
-        }
-
-        /* ============================================ */
-        /* BOTTOM HORIZONTAL FRAME - SPLIT INTO 2 VERTICAL FRAMES */
-        /* ============================================ */
-        .bottom-frame {
-            display: flex;
-            flex: 1;
-            overflow: hidden;
-        }
-
-        /* LEFT VERTICAL FRAME - NAVIGATION */
-        .left-frame {
-            width: 220px;
-            background-color: rgb(34, 34, 34);
-            color: white;
-            padding: 0;
-            overflow-y: auto;
-            flex-shrink: 0;
-            box-shadow: 2px 0 4px rgba(0, 0, 0, 0.2);
-        }
-
-        .nav-title {
-            background-color: rgb(250, 129, 18);
-            padding: 15px;
-            font-weight: bold;
-            font-size: 16px;
-            border-bottom: 3px solid rgb(250, 129, 18);
+        h1 {
+            color: #333;
             text-align: center;
         }
 
-        /* Navigation list items */
+        h2 {
+            color: #555;
+            border-bottom: 2px solid #007bff;
+            padding-bottom: 5px;
+        }
+
+        h3 {
+            color: #666;
+        }
+
+        .section {
+            background-color: white;
+            margin: 20px 0;
+            padding: 15px;
+            border-left: 5px solid #007bff;
+        }
+
+        .example {
+            background-color: #f9f9f9;
+            padding: 15px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+        }
+
+        /* Frame demonstration styles */
+        .frame-demo {
+            border: 2px solid #333;
+            margin: 15px 0;
+        }
+
+        .frame-header {
+            background-color: #333;
+            color: white;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .frame-container {
+            border: 1px solid #ccc;
+            height: 300px;
+            overflow: auto;
+        }
+
+        .frame-sidebar {
+            width: 25%;
+            float: left;
+            background-color: #f0f0f0;
+            height: 100%;
+            border-right: 1px solid #ccc;
+        }
+
+        .frame-content {
+            width: 75%;
+            float: left;
+            background-color: white;
+            height: 100%;
+            padding: 15px;
+        }
+
         .nav-menu {
             list-style: none;
             padding: 0;
@@ -101,632 +82,210 @@
         }
 
         .nav-menu li {
-            margin: 0;
+            border-bottom: 1px solid #ddd;
         }
 
         .nav-menu a {
             display: block;
-            padding: 12px 15px;
-            color: white;
+            padding: 10px;
             text-decoration: none;
-            border-bottom: 1px solid rgb(245, 231, 198);
-            transition: all 0.3s ease;
-            cursor: pointer;
-            font-size: 14px;
+            color: #333;
         }
 
         .nav-menu a:hover {
-            background-color: rgb(250, 129, 18);
-            padding-left: 20px;
+            background-color: #007bff;
             color: white;
-            font-weight: 500;
         }
 
-        .nav-menu a.active {
-            background-color: rgb(250, 129, 18);
-            border-left: 4px solid rgb(34, 34, 34);
-            padding-left: 20px;
-            color: white;
-            font-weight: bold;
+        code {
+            background-color: #f4f4f4;
+            padding: 2px 5px;
+            font-family: monospace;
         }
 
-        /* RIGHT VERTICAL FRAME - CONTENT */
-        .right-frame {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            background-color: rgb(245, 231, 198);
-            overflow: hidden;
+        pre {
+            background-color: #f4f4f4;
+            padding: 10px;
+            overflow-x: auto;
+            border: 1px solid #ddd;
         }
 
-        /* Content header in right frame */
-        .content-header {
-            background-color: rgb(250, 243, 225);
-            padding: 15px 20px;
-            border-bottom: 2px solid rgb(245, 231, 198);
-            font-weight: bold;
-            color: rgb(34, 34, 34);
-            font-size: 16px;
-        }
-
-        /* Iframe container */
-        .content-body {
-            flex: 1;
-            overflow: auto;
-            padding: 0;
-        }
-
-        .content-iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
-
-        /* ============================================ */
-        /* SCROLLBAR STYLING */
-        /* ============================================ */
-        .left-frame::-webkit-scrollbar,
-        .content-body::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        .left-frame::-webkit-scrollbar-track,
-        .content-body::-webkit-scrollbar-track {
-            background: transparent;
-        }
-
-        .left-frame::-webkit-scrollbar-thumb {
-            background: rgb(250, 129, 18);
-            border-radius: 4px;
-        }
-
-        .content-body::-webkit-scrollbar-thumb {
-            background: rgb(250, 129, 18);
-            border-radius: 4px;
-        }
-
-        .left-frame::-webkit-scrollbar-thumb:hover {
-            background: rgb(250, 129, 18);
-        }
-
-        .content-body::-webkit-scrollbar-thumb:hover {
-            background: rgb(250, 129, 18);
-        }
-
-        /* UTILITY CLASSES */
-        /* ============================================ */
-        .info-message {
-            background-color: rgb(245, 231, 198);
-            border-left: 4px solid rgb(250, 129, 18);
-            padding: 15px;
-            margin: 20px;
-            border-radius: 4px;
-            color: rgb(34, 34, 34);
-            font-size: 13px;
-            display: none;
-        }
-
-        .info-message.show {
-            display: block;
-        }
-
-        /* Loading indicator */
-        .loading {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 100%;
-            color: #7f8c8d;
-            font-size: 16px;
-        }
-
-        /* ============================================ */
-        /* RESPONSIVE DESIGN */
-        /* ============================================ */
-        @media (max-width: 768px) {
-            .college-info h1 {
-                font-size: 24px;
-            }
-
-            .college-logo {
-                width: 60px;
-                height: 60px;
-                font-size: 28px;
-            }
-
-            .left-frame {
-                width: 150px;
-            }
-
-            .nav-menu a {
-                font-size: 12px;
-                padding: 10px 12px;
-            }
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 10px;
+            margin: 10px 0;
         }
     </style>
 </head>
-
 <body>
-    <!-- ============================================ -->
-    <!-- TOP HORIZONTAL FRAME - HEADER WITH COLLEGE NAME & LOGO -->
-    <!-- ============================================ -->
-    <div class="top-frame">
-        <!-- College Logo -->
-        <div class="college-logo">
-            HC
+    <h1>Practical 4: Frames in HTML</h1>
+    <hr>
+
+    <!-- Section 1: What are Frames -->
+    <div class="section">
+        <h2>1. What are Frames?</h2>
+        <p>Frames allow you to divide a browser window into multiple independent sections, each capable of displaying a different HTML document.</p>
+        
+        <div class="note">
+            <strong>Note:</strong> The <code>&lt;frameset&gt;</code> tag is not supported in HTML5. Modern websites use CSS or <code>&lt;iframe&gt;</code> instead.
         </div>
 
-        <!-- College Information -->
-        <div class="college-info">
-            <h1>Hansraj College</h1>
-            <p>Delhi University | Excellence in Education Since 1954</p>
-        </div>
+        <h3>Basic Frame Structure (Deprecated)</h3>
+        <pre>&lt;frameset cols="25%,75%"&gt;
+    &lt;frame src="menu.html" name="menu"&gt;
+    &lt;frame src="content.html" name="content"&gt;
+&lt;/frameset&gt;</pre>
     </div>
 
-    <!-- ============================================ -->
-    <!-- BOTTOM HORIZONTAL FRAME - SPLIT INTO 2 VERTICAL FRAMES -->
-    <!-- ============================================ -->
-    <div class="bottom-frame">
-        <!-- LEFT VERTICAL FRAME - NAVIGATION LINKS -->
-        <div class="left-frame">
-            <div class="nav-title">📚 Navigation</div>
-            <ul class="nav-menu">
-                <li>
-                    <a onclick="loadContent('home')" class="nav-link active">
-                        🏠 Home
-                    </a>
-                </li>
-                <li>
-                    <a onclick="loadContent('faculty')" class="nav-link">
-                        👨‍🏫 Faculty
-                    </a>
-                </li>
-                <li>
-                    <a onclick="loadContent('courses')" class="nav-link">
-                        📖 Courses
-                    </a>
-                </li>
-                <li>
-                    <a onclick="loadContent('activities')" class="nav-link">
-                        🎭 Student Activities
-                    </a>
-                </li>
-                <li>
-                    <a onclick="loadContent('about')" class="nav-link">
-                        ℹ️ About Frames
-                    </a>
-                </li>
-                <li>
-                    <a onclick="loadContent('contact')" class="nav-link">
-                        📞 Contact
-                    </a>
-                </li>
-            </ul>
+    <!-- Section 2: Modern Alternative - iframe -->
+    <div class="section">
+        <h2>2. Using iframes (HTML5 Standard)</h2>
+        <p>The <code>&lt;iframe&gt;</code> tag embeds another HTML page within the current page.</p>
+
+        <h3>Example: Basic iframe</h3>
+        <div class="example">
+            <p><strong>Code:</strong></p>
+            <pre>&lt;iframe src="https://example.com" width="400" height="200"&gt;
+    Your browser does not support iframes.
+&lt;/iframe&gt;</pre>
+            
+            <p><strong>Result:</strong></p>
+            <iframe src="about:blank" width="400" height="200" style="border: 1px solid #ccc;">
+                Your browser does not support iframes.
+            </iframe>
         </div>
 
-        <!-- RIGHT VERTICAL FRAME - CONTENT DISPLAY -->
-        <div class="right-frame">
-            <div class="content-header" id="contentHeader">Welcome to Hansraj College</div>
-            <div class="content-body" id="contentBody">
-                <!-- Content will be loaded here -->
+        <h3>Common iframe Attributes</h3>
+        <table border="1" cellpadding="8" style="border-collapse: collapse; width: 100%;">
+            <tr style="background-color: #f0f0f0;">
+                <th>Attribute</th>
+                <th>Description</th>
+                <th>Example</th>
+            </tr>
+            <tr>
+                <td><code>src</code></td>
+                <td>URL of the page to embed</td>
+                <td>src="page.html"</td>
+            </tr>
+            <tr>
+                <td><code>width</code></td>
+                <td>Width of the iframe</td>
+                <td>width="500"</td>
+            </tr>
+            <tr>
+                <td><code>height</code></td>
+                <td>Height of the iframe</td>
+                <td>height="300"</td>
+            </tr>
+            <tr>
+                <td><code>name</code></td>
+                <td>Name for targeting</td>
+                <td>name="content"</td>
+            </tr>
+            <tr>
+                <td><code>frameborder</code></td>
+                <td>Border around iframe (0 or 1)</td>
+                <td>frameborder="0"</td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- Section 3: CSS-based Layout Alternative -->
+    <div class="section">
+        <h2>3. CSS-Based Frame Layout</h2>
+        <p>Modern websites use CSS to create frame-like layouts without using actual frame tags.</p>
+
+        <h3>Example: Two-Column Layout</h3>
+        <div class="example">
+            <div class="frame-demo">
+                <div class="frame-header">
+                    College Website Layout
+                </div>
+                <div class="frame-container">
+                    <div class="frame-sidebar">
+                        <ul class="nav-menu">
+                            <li><a href="#">Home</a></li>
+                            <li><a href="#">About</a></li>
+                            <li><a href="#">Courses</a></li>
+                            <li><a href="#">Contact</a></li>
+                        </ul>
+                    </div>
+                    <div class="frame-content">
+                        <h3>Welcome to Our College</h3>
+                        <p>This is the main content area. Click on the navigation links in the left sidebar to explore different sections.</p>
+                        <p>This layout mimics a frame-based design using CSS positioning.</p>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
-    <script>
-        /**
-         * This script demonstrates frame-based navigation
-         * Using JavaScript to dynamically load content into frames
-         */
+    <!-- Section 4: Targeting Frames -->
+    <div class="section">
+        <h2>4. Linking to Frames</h2>
+        <p>You can make links open in specific frames using the <code>target</code> attribute.</p>
 
-        // Store the content body and header elements
-        const contentBody = document.getElementById('contentBody');
-        const contentHeader = document.getElementById('contentHeader');
-        const navLinks = document.querySelectorAll('.nav-link');
+        <h3>Target Attribute Values</h3>
+        <ul>
+            <li><code>_self</code> - Opens in same frame (default)</li>
+            <li><code>_blank</code> - Opens in new window/tab</li>
+            <li><code>_parent</code> - Opens in parent frame</li>
+            <li><code>_top</code> - Opens in full window</li>
+            <li><code>framename</code> - Opens in named frame</li>
+        </ul>
 
-        // Define content for each section
-        const contentData = {
-            home: {
-                title: '🏠 Welcome to Hansraj College',
-                content: `
-                    <div style="padding: 30px; background-color: rgb(245, 231, 198); color: rgb(34, 34, 34);">
-                        <h2 style="color: rgb(34, 34, 34); margin-bottom: 20px;">Welcome to Hansraj College</h2>
-                        <p style="line-height: 1.8; margin-bottom: 15px;">
-                            Hansraj College is a prestigious institution of higher learning affiliated with Delhi University. 
-                            Founded in 1954, the college has consistently maintained excellence in academics and extracurricular activities.
-                        </p>
-                        
-                        <h3 style="color: rgb(250, 129, 18); margin-top: 25px; margin-bottom: 15px;">Our Highlights:</h3>
-                        <ul style="margin-left: 30px; line-height: 2;">
-                            <li>✓ Top-ranked college in Delhi University</li>
-                            <li>✓ Excellent faculty with international exposure</li>
-                            <li>✓ State-of-the-art laboratories and infrastructure</li>
-                            <li>✓ Active student societies and cultural programs</li>
-                            <li>✓ Strong placement record</li>
-                            <li>✓ Research and innovation initiatives</li>
-                        </ul>
+        <div class="example">
+            <p><strong>Example:</strong></p>
+            <pre>&lt;a href="page.html" target="contentFrame"&gt;Open in Frame&lt;/a&gt;
+&lt;iframe name="contentFrame" src="default.html"&gt;&lt;/iframe&gt;</pre>
+        </div>
+    </div>
 
-                        <div style="background-color: rgb(250, 243, 225); padding: 15px; margin-top: 25px; border-radius: 5px; border-left: 4px solid rgb(250, 129, 18);">
-                            <strong>Note:</strong> Use the left navigation panel to explore Faculty, Courses, and Student Activities. 
-                            The right panel will display the corresponding content from the college website.
+    <!-- Section 5: Practical Application -->
+    <div class="section">
+        <h2>5. Practical Application: Photo Gallery</h2>
+        <p>A common use case for frames is creating a photo gallery with thumbnails on one side and full image on the other.</p>
+
+        <div class="example">
+            <h3>Photo Gallery Layout</h3>
+            <div style="border: 2px solid #333; padding: 10px;">
+                <div style="background-color: #333; color: white; padding: 10px; text-align: center;">
+                    My Photo Gallery
+                </div>
+                <div style="border: 1px solid #ccc; overflow: hidden;">
+                    <div style="width: 30%; float: left; background-color: #f5f5f5; padding: 10px; border-right: 1px solid #ccc;">
+                        <p><strong>Thumbnails</strong></p>
+                        <div style="background-color: #ddd; padding: 20px; margin: 5px 0; text-align: center;">Photo 1</div>
+                        <div style="background-color: #ddd; padding: 20px; margin: 5px 0; text-align: center;">Photo 2</div>
+                        <div style="background-color: #ddd; padding: 20px; margin: 5px 0; text-align: center;">Photo 3</div>
+                    </div>
+                    <div style="width: 70%; float: left; padding: 20px; text-align: center; min-height: 200px;">
+                        <p><strong>Full Image View</strong></p>
+                        <div style="background-color: #eee; padding: 50px; border: 2px dashed #ccc;">
+                            [Selected photo displays here]
                         </div>
                     </div>
-                `
-            },
-            faculty: {
-                title: '👨‍🏫 Faculty Directory',
-                url: 'https://www.hansrajcollege.ac.in/academics/departments/science/alldepartments?type=faculty',
-                sampleContent: `
-                    <div style="padding: 30px; background-color: rgb(245, 231, 198); color: rgb(34, 34, 34);">
-                        <h2 style="color: rgb(34, 34, 34); margin-bottom: 20px;">Faculty Directory - Sample View</h2>
-                        <p style="background-color: rgb(250, 243, 225); border-left: 4px solid rgb(250, 129, 18); padding: 15px; border-radius: 5px; margin-bottom: 20px;">
-                            <strong>Note:</strong> This is a sample representation of the faculty page. The actual faculty directory is hosted on the official Hansraj College website (opens in new tab above).
-                        </p>
+                </div>
+            </div>
+        </div>
+    </div>
 
-                        <div style="display: grid; gap: 20px;">
-                            <!-- Faculty Member 1 -->
-                            <div style="border: 1px solid rgb(245, 231, 198); padding: 15px; border-radius: 5px; background-color: rgb(250, 243, 225);">
-                                <h3 style="color: rgb(34, 34, 34); margin-bottom: 10px;">Dr. Rajesh Kumar (CSE Department)</h3>
-                                <ul style="margin-left: 20px; font-size: 14px; line-height: 1.8; color: rgb(34, 34, 34);">
-                                    <li><strong>Specialization:</strong> Data Structures & Algorithms</li>
-                                    <li><strong>Qualification:</strong> Ph.D. in Computer Science</li>
-                                    <li><strong>Experience:</strong> 15+ years</li>
-                                    <li><strong>Email:</strong> rajesh.kumar@hansrajcollege.ac.in</li>
-                                </ul>
-                            </div>
+    <!-- Section 6: Summary -->
+    <div class="section">
+        <h2>6. Summary</h2>
+        <ul>
+            <li>Frames divide browser window into multiple sections</li>
+            <li><code>&lt;frameset&gt;</code> is deprecated in HTML5</li>
+            <li>Use <code>&lt;iframe&gt;</code> for embedding external content</li>
+            <li>Use CSS for creating frame-like layouts</li>
+            <li><code>target</code> attribute controls where links open</li>
+        </ul>
 
-                            <!-- Faculty Member 2 -->
-                            <div style="border: 1px solid rgb(245, 231, 198); padding: 15px; border-radius: 5px; background-color: rgb(250, 243, 225);">
-                                <h3 style="color: rgb(34, 34, 34); margin-bottom: 10px;">Prof. Neha Sharma (CSE Department)</h3>
-                                <ul style="margin-left: 20px; font-size: 14px; line-height: 1.8; color: rgb(34, 34, 34);">
-                                    <li><strong>Specialization:</strong> Web Technologies & Databases</li>
-                                    <li><strong>Qualification:</strong> M.Tech in Computer Science</li>
-                                    <li><strong>Experience:</strong> 10+ years</li>
-                                    <li><strong>Email:</strong> neha.sharma@hansrajcollege.ac.in</li>
-                                </ul>
-                            </div>
-
-                            <!-- Faculty Member 3 -->
-                            <div style="border: 1px solid rgb(245, 231, 198); padding: 15px; border-radius: 5px; background-color: rgb(250, 243, 225);">
-                                <h3 style="color: rgb(34, 34, 34); margin-bottom: 10px;">Dr. Anil Patel (CSE Department)</h3>
-                                <ul style="margin-left: 20px; font-size: 14px; line-height: 1.8; color: #666;">
-                                    <li><strong>Specialization:</strong> Networks & Security</li>
-                                    <li><strong>Qualification:</strong> Ph.D. in Network Security</li>
-                                    <li><strong>Experience:</strong> 12+ years</li>
-                                    <li><strong>Email:</strong> anil.patel@hansrajcollege.ac.in</li>
-                                </ul>
-                            </div>
-                        </div>
-
-                        <div style="background-color: #e8f5e9; border-left: 4px solid #4caf50; padding: 15px; border-radius: 5px; margin-top: 30px;">
-                            <strong>✓ Complete Faculty Information</strong>
-                            <p style="margin-top: 10px; font-size: 14px;">
-                                Click "Open in New Tab" button above to view the complete faculty directory with all departments and qualifications.
-                            </p>
-                        </div>
-                    </div>
-                `
-            },
-            courses: {
-                title: '📖 Undergraduate Courses',
-                url: 'https://www.hansrajcollege.ac.in/academics/ugcourses',
-                sampleContent: `
-                    <div style="padding: 30px; background-color: rgb(245, 231, 198); color: rgb(34, 34, 34);">
-                        <h2 style="color: rgb(34, 34, 34); margin-bottom: 20px;">Undergraduate Courses - Sample View</h2>
-                        <p style="background-color: rgb(250, 243, 225); border-left: 4px solid rgb(250, 129, 18); padding: 15px; border-radius: 5px; margin-bottom: 20px;">
-                            <strong>Note:</strong> This is a sample representation of the courses page. The actual course list is hosted on the official Hansraj College website (opens in new tab above).
-                        </p>
-
-                        <h3 style="color: rgb(250, 129, 18); margin-top: 20px; margin-bottom: 15px;">🎓 Science Courses (3-Year)</h3>
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
-                            <div style="border: 1px solid rgb(245, 231, 198); padding: 12px; border-radius: 5px; background-color: rgb(250, 243, 225);">
-                                <h4 style="color: rgb(34, 34, 34); margin-bottom: 8px;">B.Sc. Physics Honours</h4>
-                                <p style="font-size: 13px; color: rgb(34, 34, 34); margin: 0;">Seats: 40 | Duration: 3 Years</p>
-                            </div>
-                            <div style="border: 1px solid rgb(245, 231, 198); padding: 12px; border-radius: 5px; background-color: rgb(250, 243, 225);">
-                                <h4 style="color: rgb(34, 34, 34); margin-bottom: 8px;">B.Sc. Chemistry Honours</h4>
-                                <p style="font-size: 13px; color: rgb(34, 34, 34); margin: 0;">Seats: 40 | Duration: 3 Years</p>
-                            </div>
-                            <div style="border: 1px solid rgb(245, 231, 198); padding: 12px; border-radius: 5px; background-color: rgb(250, 243, 225);">
-                                <h4 style="color: rgb(34, 34, 34); margin-bottom: 8px;">B.Sc. Mathematics Honours</h4>
-                                <p style="font-size: 13px; color: rgb(34, 34, 34); margin: 0;">Seats: 40 | Duration: 3 Years</p>
-                            </div>
-                            <div style="border: 1px solid rgb(245, 231, 198); padding: 12px; border-radius: 5px; background-color: rgb(250, 243, 225);">
-                                <h4 style="color: rgb(34, 34, 34); margin-bottom: 8px;">B.Sc. Computer Science Honours</h4>
-                                <p style="font-size: 13px; color: rgb(34, 34, 34); margin: 0;">Seats: 60 | Duration: 3 Years</p>
-                            </div>
-                        </div>
-
-                        <h3 style="color: rgb(250, 129, 18); margin-top: 30px; margin-bottom: 15px;">📚 General Courses</h3>
-                        <div style="border: 1px solid rgb(245, 231, 198); padding: 15px; border-radius: 5px; background-color: rgb(250, 243, 225);">
-                            <p style="margin: 0; color: rgb(34, 34, 34);">
-                                B.Sc. General (Physics, Chemistry, Biology)<br>
-                                B.Sc. General (Physics, Chemistry, Mathematics)<br>
-                                B.A. Honours (Economics, English, etc.)
-                            </p>
-                        </div>
-
-                        <div style="background-color: rgb(250, 243, 225); border-left: 4px solid rgb(250, 129, 18); padding: 15px; border-radius: 5px; margin-top: 30px;">
-                            <strong>✓ Complete Course Information</strong>
-                            <p style="margin-top: 10px; font-size: 14px;">
-                                Click "Open in New Tab" above to view detailed course descriptions, eligibility criteria, and admission procedures.
-                            </p>
-                        </div>
-                    </div>
-                `
-            },
-            activities: {
-                title: '🎭 Student Activities & Societies',
-                url: 'https://www.hansrajcollege.ac.in/studentcorner/allsocities',
-                sampleContent: `
-                    <div style="padding: 30px; background-color: rgb(245, 231, 198); color: rgb(34, 34, 34);">
-                        <h2 style="color: rgb(34, 34, 34); margin-bottom: 20px;">Student Activities & Societies - Sample View</h2>
-                        <p style="background-color: rgb(250, 243, 225); border-left: 4px solid rgb(250, 129, 18); padding: 15px; border-radius: 5px; margin-bottom: 20px;">
-                            <strong>Note:</strong> This is a sample representation of student activities. The actual complete list is hosted on the official Hansraj College website (opens in new tab above).
-                        </p>
-
-                        <h3 style="color: rgb(250, 129, 18); margin-top: 20px; margin-bottom: 15px;">🎨 Cultural Societies</h3>
-                        <div style="display: grid; gap: 12px;">
-                            <div style="border-left: 4px solid rgb(250, 129, 18); padding: 12px; background-color: rgb(250, 243, 225); border-radius: 3px;">
-                                <strong>🎭 Drama & Theatre Society</strong>
-                                <p style="margin: 5px 0 0 0; font-size: 13px; color: rgb(34, 34, 34);">Stage productions, workshops, and performances</p>
-                            </div>
-                            <div style="border-left: 4px solid rgb(250, 129, 18); padding: 12px; background-color: rgb(250, 243, 225); border-radius: 3px;">
-                                <strong>🎵 Music Society</strong>
-                                <p style="margin: 5px 0 0 0; font-size: 13px; color: rgb(34, 34, 34);">Classical, western, and contemporary music</p>
-                            </div>
-                            <div style="border-left: 4px solid rgb(250, 129, 18); padding: 12px; background-color: rgb(250, 243, 225); border-radius: 3px;">
-                                <strong>💃 Dance Society</strong>
-                                <p style="margin: 5px 0 0 0; font-size: 13px; color: rgb(34, 34, 34);">Classical and contemporary dance forms</p>
-                            </div>
-                        </div>
-
-                        <h3 style="color: rgb(250, 129, 18); margin-top: 30px; margin-bottom: 15px;">⚙️ Technical Clubs</h3>
-                        <div style="display: grid; gap: 12px;">
-                            <div style="border-left: 4px solid rgb(250, 129, 18); padding: 12px; background-color: rgb(250, 243, 225); border-radius: 3px;">
-                                <strong>💻 Computer Science Club</strong>
-                                <p style="margin: 5px 0 0 0; font-size: 13px; color: rgb(34, 34, 34);">Coding competitions, hackathons, tech talks</p>
-                            </div>
-                            <div style="border-left: 4px solid rgb(250, 129, 18); padding: 12px; background-color: rgb(250, 243, 225); border-radius: 3px;">
-                                <strong>🚀 Innovation & Robotics</strong>
-                                <p style="margin: 5px 0 0 0; font-size: 13px; color: rgb(34, 34, 34);">Robotics projects, AI workshops, innovation labs</p>
-                            </div>
-                        </div>
-
-                        <h3 style="color: rgb(250, 129, 18); margin-top: 30px; margin-bottom: 15px;">🌍 Cultural & Social</h3>
-                        <div style="display: grid; gap: 12px;">
-                            <div style="border-left: 4px solid rgb(250, 129, 18); padding: 12px; background-color: rgb(250, 243, 225); border-radius: 3px;">
-                                <strong>🤝 NSS (National Service Scheme)</strong>
-                                <p style="margin: 5px 0 0 0; font-size: 13px; color: rgb(34, 34, 34);">Community service and social activities</p>
-                            </div>
-                            <div style="border-left: 4px solid rgb(250, 129, 18); padding: 12px; background-color: rgb(250, 243, 225); border-radius: 3px;">
-                                <strong>🌱 Environmental Club</strong>
-                                <p style="margin: 5px 0 0 0; font-size: 13px; color: rgb(34, 34, 34);">Sustainability initiatives and conservation</p>
-                            </div>
-                        </div>
-
-                        <div style="background-color: rgb(250, 243, 225); border-left: 4px solid rgb(250, 129, 18); padding: 15px; border-radius: 5px; margin-top: 30px;">
-                            <strong>✓ Complete Activities List</strong>
-                            <p style="margin-top: 10px; font-size: 14px;">
-                                Click "Open in New Tab" above to view all student societies, joining procedures, and event schedules.
-                            </p>
-                        </div>
-                    </div>
-                `
-            },
-            about: {
-                title: 'ℹ️ About Frame-Based Layouts',
-                content: `
-                    <div style="padding: 30px; background-color: white; color: #333;">
-                        <h2 style="color: #2c3e50; margin-bottom: 20px;">Understanding Frame-Based Layouts</h2>
-                        
-                        <h3 style="color: rgb(250, 129, 18); margin-top: 25px; margin-bottom: 15px;">📚 What Are Frames?</h3>
-                        <p style="line-height: 1.8; margin-bottom: 15px;">
-                            HTML frames are a method of dividing a web page into rectangular regions, each displaying a separate HTML document. 
-                            This practical demonstrates a frame-based design pattern using modern HTML5 and CSS.
-                        </p>
-
-                        <h3 style="color: rgb(250, 129, 18); margin-top: 25px; margin-bottom: 15px;">🏗️ Layout Structure (This Page):</h3>
-                        <ul style="margin-left: 30px; line-height: 2;">
-                            <li><strong>Top Horizontal Frame:</strong> Header with college name and logo</li>
-                            <li><strong>Left Vertical Frame:</strong> Navigation menu with links</li>
-                            <li><strong>Right Vertical Frame:</strong> Content display area (uses iframes)</li>
-                        </ul>
-
-                        <h3 style="color: rgb(250, 129, 18); margin-top: 25px; margin-bottom: 15px;">⚠️ Important Notes</h3>
-                        <div style="background-color: #fff3e0; border-left: 4px solid #ff9800; padding: 15px; margin: 15px 0; border-radius: 4px;">
-                            <strong>External Content Limitation:</strong> 
-                            <p style="margin-top: 10px; font-size: 14px;">
-                                External websites like Hansraj College's site cannot be embedded due to CORS (Cross-Origin Resource Sharing) security policies. 
-                                We show sample content instead and provide direct links to the official pages.
-                            </p>
-                        </div>
-
-                        <div style="background-color: #fff3e0; border-left: 4px solid #ff9800; padding: 15px; margin: 15px 0; border-radius: 4px;">
-                            <strong>Deprecated HTML Frames:</strong> 
-                            <p style="margin-top: 10px; font-size: 14px;">
-                                The old HTML <code>&lt;frameset&gt;</code> and <code>&lt;frame&gt;</code> 
-                                tags are deprecated in HTML5. This practical uses modern approaches:
-                                <ul style="margin-top: 10px; margin-left: 30px;">
-                                    <li>CSS Flexbox for layout structure</li>
-                                    <li>JavaScript for navigation handling</li>
-                                    <li>Iframes for embedding when applicable</li>
-                                </ul>
-                            </p>
-                        </div>
-
-                        <h3 style="color: rgb(250, 129, 18); margin-top: 25px; margin-bottom: 15px;">✅ Advantages of This Approach:</h3>
-                        <ul style="margin-left: 30px; line-height: 2;">
-                            <li>✓ Responsive design (works on mobile & desktop)</li>
-                            <li>✓ Modern HTML5 standards compliant</li>
-                            <li>✓ Better SEO and accessibility</li>
-                            <li>✓ Flexible and maintainable code</li>
-                            <li>✓ Smooth navigation with JavaScript</li>
-                        </ul>
-
-                        <h3 style="color: rgb(250, 129, 18); margin-top: 25px; margin-bottom: 15px;">📝 Key Concepts Demonstrated:</h3>
-                        <ul style="margin-left: 30px; line-height: 2;">
-                            <li>CSS Flexbox for responsive layout</li>
-                            <li>Event handling with onclick</li>
-                            <li>Dynamic content loading</li>
-                            <li>Iframe integration and limitations</li>
-                            <li>DOM manipulation with JavaScript</li>
-                            <li>CORS and web security concepts</li>
-                        </ul>
-                    </div>
-                `
-            },
-            contact: {
-                title: '📞 Contact Information',
-                content: `
-                    <div style="padding: 30px; background-color: white; color: #333;">
-                        <h2 style="color: #2c3e50; margin-bottom: 20px;">Contact Hansraj College</h2>
-                        
-                        <div style="background-color: #e8f5e9; border-left: 4px solid #4caf50; padding: 20px; margin: 20px 0; border-radius: 5px;">
-                            <h3 style="color: #2e7d32; margin-bottom: 15px;">📍 Location</h3>
-                            <p style="line-height: 1.8;">
-                                <strong>Hansraj College</strong><br>
-                                Malka Ganj, Delhi - 110007<br>
-                                India
-                            </p>
-                        </div>
-
-                        <div style="background-color: #e3f2fd; border-left: 4px solid #2196f3; padding: 20px; margin: 20px 0; border-radius: 5px;">
-                            <h3 style="color: #1565c0; margin-bottom: 15px;">📞 Phone</h3>
-                            <p style="line-height: 1.8;">
-                                <strong>Main Office:</strong> +91-11-3965-8010<br>
-                                <strong>Admissions:</strong> +91-11-3965-8011
-                            </p>
-                        </div>
-
-                        <div style="background-color: #f3e5f5; border-left: 4px solid #9c27b0; padding: 20px; margin: 20px 0; border-radius: 5px;">
-                            <h3 style="color: #6a1b9a; margin-bottom: 15px;">✉️ Email</h3>
-                            <p style="line-height: 1.8;">
-                                <a href="mailto:info@hansrajcollege.ac.in" style="color: #6a1b9a; text-decoration: none;">
-                                    info@hansrajcollege.ac.in
-                                </a><br>
-                                <a href="mailto:admissions@hansrajcollege.ac.in" style="color: #6a1b9a; text-decoration: none;">
-                                    admissions@hansrajcollege.ac.in
-                                </a>
-                            </p>
-                        </div>
-
-                        <div style="background-color: #fce4ec; border-left: 4px solid #e91e63; padding: 20px; margin: 20px 0; border-radius: 5px;">
-                            <h3 style="color: #ad1457; margin-bottom: 15px;">🌐 Official Links</h3>
-                            <p style="line-height: 1.8;">
-                                <strong>Website:</strong> <a href="https://www.hansrajcollege.ac.in" target="_blank" style="color: #ad1457;">
-                                    www.hansrajcollege.ac.in
-                                </a>
-                            </p>
-                        </div>
-                    </div>
-                `
-            }
-        };
-
-        /**
-         * Load content based on the selected menu item
-         * @param {string} section - The section to load
-         */
-        function loadContent(section) {
-            // Update active navigation link
-            navLinks.forEach(link => link.classList.remove('active'));
-            event.target.closest('.nav-link').classList.add('active');
-
-            const data = contentData[section];
-            
-            // Update header
-            contentHeader.textContent = data.title;
-
-            // Clear previous content
-            contentBody.innerHTML = '';
-
-            if (data.url) {
-                // Check if sample content is available for external links
-                if (data.sampleContent) {
-                    // Display sample content with link to official page
-                    const container = document.createElement('div');
-                    container.innerHTML = `
-                        <div style="padding: 0;">
-                            <div style="background-color: rgb(250, 243, 225); padding: 15px 30px; border-bottom: 2px solid rgb(250, 129, 18); display: flex; justify-content: space-between; align-items: center;">
-                                <p style="margin: 0; color: rgb(34, 34, 34); font-size: 14px;">
-                                    📌 This is sample content. Click the button to view the official page →
-                                </p>
-                                <a href="${data.url}" target="_blank" rel="noopener noreferrer" 
-                                   style="background-color: rgb(250, 129, 18); color: white; padding: 8px 16px; 
-                                          text-decoration: none; border-radius: 4px; white-space: nowrap; font-weight: bold;">
-                                    🔗 Official Page
-                                </a>
-                            </div>
-                            <div style="overflow-y: auto; height: calc(100% - 50px);">
-                                ${data.sampleContent}
-                            </div>
-                        </div>
-                    `;
-                    contentBody.appendChild(container);
-                } else {
-                    // External links cannot be embedded due to security policies (CORS)
-                    const externalContent = document.createElement('div');
-                    externalContent.style.cssText = `
-                        padding: 40px;
-                        background: white;
-                        color: #333;
-                        display: flex;
-                        flex-direction: column;
-                        align-items: center;
-                        justify-content: center;
-                        height: 100%;
-                    `;
-                    
-                    externalContent.innerHTML = `
-                        <div style="max-width: 500px; text-align: center;">
-                            <h2 style="color: #2c3e50; margin-bottom: 20px; font-size: 24px;">
-                                🔒 External Content
-                            </h2>
-                            <p style="line-height: 1.8; margin-bottom: 20px; color: #666;">
-                                This page is hosted on an external website and cannot be displayed directly in an embedded frame 
-                                due to security policies (CORS protection).
-                            </p>
-                            
-                            <div style="background-color: rgb(250, 243, 225); border-left: 4px solid rgb(250, 129, 18); padding: 15px; 
-                                        margin: 20px 0; border-radius: 5px; text-align: left;">
-                                <strong>Why?</strong>
-                                <p style="margin: 10px 0 0 0; font-size: 13px;">
-                                    Websites can prevent being embedded in iframes for security reasons. 
-                                    This is standard web security practice.
-                                </p>
-                            </div>
-
-                            <p style="margin: 30px 0 20px 0; font-size: 16px; color: #2c3e50;">
-                                <strong>Click below to view the official page:</strong>
-                            </p>
-                            
-                            <a href="${data.url}" target="_blank" rel="noopener noreferrer" 
-                               style="display: inline-block; background-color: rgb(250, 129, 18); color: white; 
-                                      padding: 12px 30px; text-decoration: none; border-radius: 5px; 
-                                      font-weight: bold; transition: 0.3s; margin-bottom: 10px;">
-                                🔗 Open in New Tab
-                            </a>
-                            
-                            <p style="font-size: 12px; color: #999; margin-top: 15px;">
-                                This will open the official Hansraj College website in a new tab.
-                            </p>
-                        </div>
-                    `;
-                    
-                    contentBody.appendChild(externalContent);
-                }
-            } else if (data.content) {
-                // Load internal HTML content
-                contentBody.innerHTML = data.content;
-            }
-        }
-
-        // Load home content on page load
-        window.addEventListener('load', () => {
-            loadContent('home');
-        });
-    </script>
+        <div class="note">
+            <strong>Best Practice:</strong> For modern web development, prefer CSS layouts over frames for better accessibility, SEO, and mobile responsiveness.
+        </div>
+    </div>
 
 </body>
 </html>

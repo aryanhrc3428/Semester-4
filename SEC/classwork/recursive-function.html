@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Recursive Function</title>
+</head>
+<body>
+    <h2>Factorial using Recursion</h2>
+    Enter number: <input type="text" id="num">
+    <button onclick="calculate()">Calculate</button>
+    <p id="result"></p>
+
+    <script>
+        function factorial(n) {
+            if (n == 0 || n == 1) {
+                return 1;
+            } else {
+                return n * factorial(n - 1);
+            }
+        }
+
+        function calculate() {
+            var n = parseInt(document.getElementById("num").value);
+            document.getElementById("result").innerHTML = "Factorial: " + factorial(n);
+        }
+    </script>
+</body>
+</html>

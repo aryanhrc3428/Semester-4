@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Staff Board</title>
+</head>
+<body>
+    <h1>Staff Board</h1>
+    
+    <h2 id="staff-name">Junior Developer</h2>
+    
+    <ul id="employee-list">
+        <li>Alice - Marketing</li>
+    </ul>
+    
+    <br>
+    
+    <button onclick="hireIntern()">Hire Intern</button>
+    <button onclick="promoteManager()">Promote Manager</button>
+    <button onclick="resignEmployee()">Resign Employee</button>
+
+    <script>
+        function hireIntern() {
+            var newItem = document.createElement("li");
+            newItem.innerHTML = "New Intern";
+            document.getElementById("employee-list").appendChild(newItem);
+        }
+
+        function promoteManager() {
+            var staffName = document.getElementById("staff-name");
+            staffName.innerHTML = "Senior Project Manager";
+            staffName.style.backgroundColor = "gold";
+            staffName.style.fontSize = "30px";
+        }
+
+        function resignEmployee() {
+            document.getElementById("employee-list").remove();
+        }
+    </script>
+</body>
+</html>

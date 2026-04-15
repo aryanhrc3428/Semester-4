@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Focus Demo</title>
+</head>
+<body>
+    <h2>Text Box Focus Effect</h2>
+    
+    Name: <input type="text" onfocus="changeColor(this)" onblur="resetColor(this)"><br><br>
+    Email: <input type="text" onfocus="changeColor(this)" onblur="resetColor(this)"><br><br>
+    Phone: <input type="text" onfocus="changeColor(this)" onblur="resetColor(this)">
+
+    <script>
+        function changeColor(textbox) {
+            textbox.style.backgroundColor = "yellow";
+        }
+        
+        function resetColor(textbox) {
+            textbox.style.backgroundColor = "white";
+        }
+    </script>
+</body>
+</html>

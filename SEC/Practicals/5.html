@@ -1,702 +1,468 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>SEC Practical 5 - Student Registration Form</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
+    <title>Practical 5 - HTML Forms</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
         body {
-            background: linear-gradient(135deg, rgb(250, 243, 225) 0%, rgb(245, 231, 198) 100%);
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f5f5f5;
+        }
+        
+        h1 {
+            color: #333;
+            border-bottom: 2px solid #333;
+            padding-bottom: 10px;
+        }
+        
+        h2 {
+            color: #555;
+            margin-top: 30px;
+        }
+        
+        .section {
+            background-color: white;
+            margin: 20px 0;
             padding: 20px;
-            min-height: 100vh;
+            border: 1px solid #ddd;
         }
-
-        /* Main container */
-        .container {
-            max-width: 700px;
-            margin: 0 auto;
-            background: rgb(245, 231, 198);
-            border-radius: 10px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
-            overflow: hidden;
+        
+        .example {
+            background-color: #f9f9f9;
+            padding: 15px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
         }
-
-        /* Header styling */
-        .form-header {
-            background: linear-gradient(135deg, rgb(250, 129, 18) 0%, rgb(34, 34, 34) 100%);
-            color: white;
-            padding: 30px;
-            text-align: center;
+        
+        /* Basic Form Styling */
+        form {
+            background-color: #fafafa;
+            padding: 20px;
+            border: 1px solid #ddd;
+            margin: 15px 0;
         }
-
-        .form-header h1 {
-            font-size: 28px;
-            margin-bottom: 10px;
-        }
-
-        .form-header p {
-            font-size: 14px;
-            opacity: 0.9;
-        }
-
-        /* Form wrapper */
-        .form-wrapper {
-            padding: 40px;
-        }
-
-        /* Form group - Each input field container */
+        
         .form-group {
-            margin-bottom: 25px;
+            margin-bottom: 15px;
         }
-
-        .form-group:last-child {
-            margin-bottom: 10px;
-        }
-
-        /* Label styling */
+        
         label {
             display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            color: rgb(34, 34, 34);
-            font-size: 14px;
-            letter-spacing: 0.5px;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #333;
         }
-
-        .required {
-            color: #e74c3c;
-        }
-
-        /* Text Input Boxes */
+        
         input[type="text"],
         input[type="email"],
         input[type="tel"],
         input[type="date"],
+        input[type="password"],
+        input[type="number"],
         textarea,
         select {
             width: 100%;
-            padding: 12px 15px;
-            border: 2px solid rgb(250, 243, 225);
-            border-radius: 5px;
+            max-width: 400px;
+            padding: 8px;
+            border: 1px solid #ccc;
+            font-family: Arial, sans-serif;
             font-size: 14px;
-            font-family: 'Segoe UI', sans-serif;
-            transition: all 0.3s ease;
-            background-color: rgb(250, 243, 225);
         }
-
-        /* Focus state - Interactive effect */
-        input[type="text"]:focus,
-        input[type="email"]:focus,
-        input[type="tel"]:focus,
-        input[type="date"]:focus,
-        textarea:focus,
-        select:focus {
-            outline: none;
-            border-color: rgb(250, 129, 18);
-            background-color: white;
-            box-shadow: 0 0 0 3px rgba(250, 129, 18, 0.1);
-            transform: translateY(-2px);
-        }
-
-        /* Hover state for inputs */
-        input[type="text"]:hover,
-        input[type="email"]:hover,
-        input[type="tel"]:hover,
-        input[type="date"]:hover,
-        textarea:hover,
-        select:hover {
-            border-color: rgb(250, 129, 18);
-            background-color: rgb(250, 243, 225);
-        }
-
-        /* Dropdown/Select styling */
-        select {
-            cursor: pointer;
-            appearance: none;
-            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
-            background-repeat: no-repeat;
-            background-position: right 12px center;
-            background-size: 20px;
-            padding-right: 40px;
-        }
-
-        /* Textarea styling */
+        
         textarea {
+            height: 100px;
             resize: vertical;
-            min-height: 100px;
         }
-
-        /* Radio button and Checkbox styling */
+        
+        /* Radio and Checkbox */
         .radio-group,
         .checkbox-group {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
+            margin: 10px 0;
         }
-
+        
         .radio-item,
         .checkbox-item {
-            display: flex;
-            align-items: center;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            padding: 10px;
-            border-radius: 5px;
-            margin: -10px;
-            padding: 10px;
+            margin: 5px 0;
         }
-
-        .radio-item:hover,
-        .checkbox-item:hover {
-            background-color: rgba(250, 129, 18, 0.05);
-            color: rgb(250, 129, 18);
-        }
-
+        
         input[type="radio"],
         input[type="checkbox"] {
-            width: 18px;
-            height: 18px;
-            cursor: pointer;
-            accent-color: rgb(250, 129, 18);
-            margin-right: 12px;
-            transition: all 0.2s ease;
+            margin-right: 8px;
         }
-
-        input[type="radio"]:hover,
-        input[type="checkbox"]:hover {
-            transform: scale(1.1);
-        }
-
-        input[type="radio"]:checked,
-        input[type="checkbox"]:checked {
-            accent-color: rgb(34, 34, 34);
-        }
-
-        .radio-item label,
-        .checkbox-item label {
-            margin: 0;
-            cursor: pointer;
-            font-weight: 400;
-            color: rgb(34, 34, 34);
-        }
-
-        /* Helper text - For form instructions */
-        .helper-text {
-            font-size: 12px;
-            color: rgb(250, 129, 18);
-            margin-top: 6px;
-            font-style: italic;
-        }
-
-        /* Form section heading */
-        .section-heading {
-            background-color: rgb(250, 243, 225);
-            padding: 15px;
-            margin: 30px -40px 20px -40px;
-            padding-left: 40px;
-            font-size: 16px;
-            font-weight: bold;
-            color: rgb(250, 129, 18);
-            border-left: 4px solid rgb(250, 129, 18);
-        }
-
-        /* Button styling */
-        .button-group {
-            display: flex;
-            gap: 15px;
-            margin-top: 35px;
-            padding-top: 25px;
-            border-top: 2px solid rgb(250, 243, 225);
-        }
-
+        
+        /* Buttons */
         button {
-            flex: 1;
-            padding: 12px 20px;
-            font-size: 16px;
-            font-weight: 600;
-            border: none;
-            border-radius: 5px;
+            padding: 10px 20px;
+            margin: 5px;
+            border: 1px solid #333;
+            background-color: #333;
+            color: white;
             cursor: pointer;
-            transition: all 0.3s ease;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+            font-size: 14px;
         }
-
-        /* Submit button */
-        button[type="submit"] {
-            background: linear-gradient(135deg, rgb(250, 129, 18) 0%, rgb(34, 34, 34) 100%);
-            color: white;
-        }
-
-        button[type="submit"]:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 20px rgba(250, 129, 18, 0.4);
-        }
-
-        button[type="submit"]:active {
-            transform: translateY(0);
-        }
-
-        /* Reset button */
+        
         button[type="reset"] {
-            background-color: rgb(250, 243, 225);
-            color: rgb(34, 34, 34);
-            border: 2px solid rgb(245, 231, 198);
+            background-color: #666;
+            border-color: #666;
         }
-
-        button[type="reset"]:hover {
-            background-color: rgb(245, 231, 198);
-            color: white;
-            transform: translateY(-2px);
+        
+        button:hover {
+            background-color: #555;
         }
-
-        button[type="reset"]:active {
-            transform: translateY(0);
+        
+        /* Code display */
+        code {
+            background-color: #f0f0f0;
+            padding: 2px 5px;
+            font-family: "Courier New", monospace;
         }
-
-        /* Success message (hidden by default) */
-        .success-message {
-            background-color: rgb(250, 243, 225);
-            border-left: 4px solid rgb(250, 129, 18);
-            color: rgb(250, 129, 18);
+        
+        pre {
+            background-color: #f0f0f0;
             padding: 15px;
-            border-radius: 5px;
-            margin-bottom: 20px;
-            display: none;
-            animation: slideIn 0.3s ease;
+            border: 1px solid #ddd;
+            overflow-x: auto;
         }
-
+        
+        /* Success message */
+        .success-message {
+            background-color: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+            padding: 15px;
+            margin: 10px 0;
+            display: none;
+        }
+        
         .success-message.show {
             display: block;
         }
-
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateY(-10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* Responsive design */
-        @media (max-width: 600px) {
-            .form-wrapper {
-                padding: 25px;
-            }
-
-            .form-header {
-                padding: 20px;
-            }
-
-            .form-header h1 {
-                font-size: 22px;
-            }
-
-            .button-group {
-                flex-direction: column;
-            }
-
-            button {
-                width: 100%;
-            }
-
-            .radio-group,
-            .checkbox-group {
-                gap: 10px;
-            }
-        }
-
-        /* Print styles */
-        @media print {
-            body {
-                background: white;
-            }
-
-            button {
-                display: none;
-            }
-        }
     </style>
 </head>
-
 <body>
-    <div class="container">
-        <!-- Form Header -->
-        <div class="form-header">
-            <h1>📋 Student Registration Form</h1>
-            <p>Complete the form below to register as a student at Hansraj College</p>
+    <h1>Practical 5: HTML Forms</h1>
+    <p>Learn to create interactive forms for collecting user data.</p>
+    <hr>
+
+    <!-- Section 1: What are Forms -->
+    <div class="section">
+        <h2>1. What are HTML Forms?</h2>
+        <p><strong>Concept:</strong> Forms are used to collect user input and send it to a server for processing.</p>
+        
+        <div class="example">
+            <h3>Basic Form Structure</h3>
+            <p>The <code>&lt;form&gt;</code> element wraps all form controls. Key attributes:</p>
+            <ul>
+                <li><code>action</code> - Where to send the data</li>
+                <li><code>method</code> - How to send (GET or POST)</li>
+            </ul>
+            
+            <pre>&lt;form action="/submit" method="POST"&gt;
+    &lt;!-- form controls go here --&gt;
+&lt;/form&gt;</pre>
         </div>
+        
+        <p><strong>Use Case:</strong> Login pages, registration forms, search boxes, contact forms.</p>
+    </div>
 
-        <!-- Success Message (shown after submission) -->
-        <div class="form-wrapper">
-            <div class="success-message" id="successMessage">
-                ✓ <strong>Registration Successful!</strong> Your form has been submitted successfully.
-            </div>
-
-            <!-- Main Form -->
-            <form id="registrationForm" onsubmit="handleSubmit(event)">
-
-                <!-- ============================================ -->
-                <!-- SECTION 1: PERSONAL INFORMATION -->
-                <!-- ============================================ -->
-                <h2 class="section-heading">👤 Personal Information</h2>
-
-                <!-- Text Box: Full Name -->
+    <!-- Section 2: Text Input -->
+    <div class="section">
+        <h2>2. Text Input Fields</h2>
+        <p><strong>Concept:</strong> The <code>&lt;input&gt;</code> element creates various types of input fields based on the <code>type</code> attribute.</p>
+        
+        <div class="example">
+            <h3>Example: Text Inputs</h3>
+            <form id="textForm">
                 <div class="form-group">
-                    <label for="fullName">Full Name <span class="required">*</span></label>
-                    <input 
-                        type="text" 
-                        id="fullName" 
-                        name="fullName" 
-                        placeholder="Enter your full name"
-                        required
-                    >
-                    <div class="helper-text">Example: John Doe Kumar</div>
+                    <label for="fullname">Full Name:</label>
+                    <input type="text" id="fullname" name="fullname" placeholder="Enter your name">
                 </div>
-
-                <!-- Text Box: Email -->
+                
                 <div class="form-group">
-                    <label for="email">Email Address <span class="required">*</span></label>
-                    <input 
-                        type="email" 
-                        id="email" 
-                        name="email" 
-                        placeholder="your.email@example.com"
-                        required
-                    >
-                    <div class="helper-text">We'll never share your email with anyone</div>
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" placeholder="your@email.com">
                 </div>
-
-                <!-- Text Box: Phone -->
+                
                 <div class="form-group">
-                    <label for="phone">Phone Number <span class="required">*</span></label>
-                    <input 
-                        type="tel" 
-                        id="phone" 
-                        name="phone" 
-                        placeholder="+91-XXXXXXXXXX"
-                        required
-                    >
-                    <div class="helper-text">Include country code: +91</div>
+                    <label for="phone">Phone:</label>
+                    <input type="tel" id="phone" name="phone" placeholder="123-456-7890">
                 </div>
-
-                <!-- Text Box: Date of Birth -->
+                
                 <div class="form-group">
-                    <label for="dob">Date of Birth <span class="required">*</span></label>
-                    <input 
-                        type="date" 
-                        id="dob" 
-                        name="dob" 
-                        required
-                    >
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" name="password">
                 </div>
+                
+                <button type="submit">Submit</button>
+                <button type="reset">Reset</button>
+            </form>
+            <div id="textSuccess" class="success-message">Form submitted successfully!</div>
+        </div>
+        
+        <p><strong>Common Input Types:</strong> text, email, tel, password, number, date</p>
+    </div>
 
-                <!-- ============================================ -->
-                <!-- SECTION 2: ACADEMIC INFORMATION -->
-                <!-- ============================================ -->
-                <h2 class="section-heading">📚 Academic Information</h2>
-
-                <!-- Dropdown: Select Course -->
-                <div class="form-group">
-                    <label for="course">Course <span class="required">*</span></label>
-                    <select id="course" name="course" required>
-                        <option value="">-- Select Your Course --</option>
-                        <option value="bsc-cs">B.Sc. Computer Science Honours</option>
-                        <option value="bsc-math">B.Sc. Mathematics Honours</option>
-                        <option value="bsc-physics">B.Sc. Physics Honours</option>
-                        <option value="bsc-chemistry">B.Sc. Chemistry Honours</option>
-                        <option value="ba-eco">B.A. Economics Honours</option>
-                        <option value="ba-english">B.A. English Honours</option>
-                        <option value="bsc-general">B.Sc. General</option>
-                        <option value="ba-general">B.A. General</option>
-                    </select>
-                    <div class="helper-text">Click to see available courses</div>
-                </div>
-
-                <!-- Dropdown: Select Semester -->
-                <div class="form-group">
-                    <label for="semester">Semester <span class="required">*</span></label>
-                    <select id="semester" name="semester" required>
-                        <option value="">-- Select Semester --</option>
-                        <option value="sem1">Semester 1</option>
-                        <option value="sem2">Semester 2</option>
-                        <option value="sem3">Semester 3</option>
-                        <option value="sem4">Semester 4</option>
-                        <option value="sem5">Semester 5</option>
-                        <option value="sem6">Semester 6</option>
-                    </select>
-                </div>
-
-                <!-- ============================================ -->
-                <!-- SECTION 3: GENDER & CATEGORY -->
-                <!-- ============================================ -->
-                <h2 class="section-heading">⚙️ Additional Information</h2>
-
-                <!-- Radio Buttons: Gender -->
-                <div class="form-group">
-                    <label>Gender <span class="required">*</span></label>
-                    <div class="radio-group">
-                        <div class="radio-item">
-                            <input 
-                                type="radio" 
-                                id="male" 
-                                name="gender" 
-                                value="male"
-                                required
-                            >
-                            <label for="male">Male</label>
-                        </div>
-                        <div class="radio-item">
-                            <input 
-                                type="radio" 
-                                id="female" 
-                                name="gender" 
-                                value="female"
-                                required
-                            >
-                            <label for="female">Female</label>
-                        </div>
-                        <div class="radio-item">
-                            <input 
-                                type="radio" 
-                                id="other" 
-                                name="gender" 
-                                value="other"
-                                required
-                            >
-                            <label for="other">Other</label>
-                        </div>
+    <!-- Section 3: Radio Buttons -->
+    <div class="section">
+        <h2>3. Radio Buttons</h2>
+        <p><strong>Concept:</strong> Radio buttons allow users to select ONE option from a group. All radio buttons in a group share the same <code>name</code> attribute.</p>
+        
+        <div class="example">
+            <h3>Example: Select Gender</h3>
+            <form id="radioForm">
+                <div class="radio-group">
+                    <div class="radio-item">
+                        <input type="radio" id="male" name="gender" value="male">
+                        <label for="male">Male</label>
                     </div>
-                    <div class="helper-text">Select one option</div>
-                </div>
-
-                <!-- Radio Buttons: Category -->
-                <div class="form-group">
-                    <label>Category <span class="required">*</span></label>
-                    <div class="radio-group">
-                        <div class="radio-item">
-                            <input 
-                                type="radio" 
-                                id="general" 
-                                name="category" 
-                                value="general"
-                                required
-                            >
-                            <label for="general">General</label>
-                        </div>
-                        <div class="radio-item">
-                            <input 
-                                type="radio" 
-                                id="obc" 
-                                name="category" 
-                                value="obc"
-                                required
-                            >
-                            <label for="obc">OBC</label>
-                        </div>
-                        <div class="radio-item">
-                            <input 
-                                type="radio" 
-                                id="sc" 
-                                name="category" 
-                                value="sc"
-                                required
-                            >
-                            <label for="sc">SC</label>
-                        </div>
-                        <div class="radio-item">
-                            <input 
-                                type="radio" 
-                                id="st" 
-                                name="category" 
-                                value="st"
-                                required
-                            >
-                            <label for="st">ST</label>
-                        </div>
+                    <div class="radio-item">
+                        <input type="radio" id="female" name="gender" value="female">
+                        <label for="female">Female</label>
+                    </div>
+                    <div class="radio-item">
+                        <input type="radio" id="other" name="gender" value="other">
+                        <label for="other">Other</label>
                     </div>
                 </div>
+                <button type="submit">Submit</button>
+            </form>
+            <div id="radioSuccess" class="success-message">Selection recorded!</div>
+        </div>
+        
+        <p><strong>Use Case:</strong> Gender selection, payment method, subscription plan, yes/no questions.</p>
+    </div>
 
-                <!-- Checkboxes: Interests -->
+    <!-- Section 4: Checkboxes -->
+    <div class="section">
+        <h2>4. Checkboxes</h2>
+        <p><strong>Concept:</strong> Checkboxes allow users to select MULTIPLE options. Each checkbox has its own <code>name</code> attribute.</p>
+        
+        <div class="example">
+            <h3>Example: Select Hobbies</h3>
+            <form id="checkboxForm">
+                <div class="checkbox-group">
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="reading" name="hobby" value="reading">
+                        <label for="reading">Reading</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="sports" name="hobby" value="sports">
+                        <label for="sports">Sports</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="music" name="hobby" value="music">
+                        <label for="music">Music</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="travel" name="hobby" value="travel">
+                        <label for="travel">Travel</label>
+                    </div>
+                </div>
+                <button type="submit">Submit</button>
+            </form>
+            <div id="checkboxSuccess" class="success-message">Hobbies saved!</div>
+        </div>
+        
+        <p><strong>Use Case:</strong> Select multiple interests, agree to terms, choose toppings, feature selection.</p>
+    </div>
+
+    <!-- Section 5: Dropdown Select -->
+    <div class="section">
+        <h2>5. Dropdown Select</h2>
+        <p><strong>Concept:</strong> The <code>&lt;select&gt;</code> element creates a dropdown list with <code>&lt;option&gt;</code> elements.</p>
+        
+        <div class="example">
+            <h3>Example: Select Country</h3>
+            <form id="selectForm">
                 <div class="form-group">
-                    <label>Interests & Activities <span class="required">*</span></label>
+                    <label for="country">Country:</label>
+                    <select id="country" name="country">
+                        <option value="">-- Select a country --</option>
+                        <option value="india">India</option>
+                        <option value="usa">United States</option>
+                        <option value="uk">United Kingdom</option>
+                        <option value="canada">Canada</option>
+                        <option value="australia">Australia</option>
+                    </select>
+                </div>
+                <button type="submit">Submit</button>
+            </form>
+            <div id="selectSuccess" class="success-message">Country selected!</div>
+        </div>
+        
+        <p><strong>Use Case:</strong> Country selection, category filters, date pickers, language selection.</p>
+    </div>
+
+    <!-- Section 6: Textarea -->
+    <div class="section">
+        <h2>6. Textarea</h2>
+        <p><strong>Concept:</strong> The <code>&lt;textarea&gt;</code> element creates a multi-line text input for longer content.</p>
+        
+        <div class="example">
+            <h3>Example: Comments</h3>
+            <form id="textareaForm">
+                <div class="form-group">
+                    <label for="comments">Your Comments:</label>
+                    <textarea id="comments" name="comments" placeholder="Enter your message here..."></textarea>
+                </div>
+                <button type="submit">Submit</button>
+            </form>
+            <div id="textareaSuccess" class="success-message">Comment submitted!</div>
+        </div>
+        
+        <p><strong>Use Case:</strong> Comments, feedback, descriptions, addresses, messages.</p>
+    </div>
+
+    <!-- Section 7: Complete Registration Form -->
+    <div class="section">
+        <h2>7. Complete Registration Form</h2>
+        <p><strong>Concept:</strong> Combine all form elements to create a complete user registration form.</p>
+        
+        <div class="example">
+            <h3>Example: Student Registration</h3>
+            <form id="registrationForm">
+                <div class="form-group">
+                    <label for="regName">Full Name: *</label>
+                    <input type="text" id="regName" name="regName" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="regEmail">Email: *</label>
+                    <input type="email" id="regEmail" name="regEmail" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="regPhone">Phone:</label>
+                    <input type="tel" id="regPhone" name="regPhone">
+                </div>
+                
+                <div class="form-group">
+                    <label for="regDob">Date of Birth:</label>
+                    <input type="date" id="regDob" name="regDob">
+                </div>
+                
+                <div class="form-group">
+                    <label>Gender:</label>
+                    <div class="radio-group">
+                        <div class="radio-item">
+                            <input type="radio" id="regMale" name="regGender" value="male">
+                            <label for="regMale">Male</label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="regFemale" name="regGender" value="female">
+                            <label for="regFemale">Female</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="regCourse">Course:</label>
+                    <select id="regCourse" name="regCourse">
+                        <option value="">-- Select Course --</option>
+                        <option value="bsc">B.Sc Computer Science</option>
+                        <option value="bca">BCA</option>
+                        <option value="mca">MCA</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>Subjects (select all that apply):</label>
                     <div class="checkbox-group">
                         <div class="checkbox-item">
-                            <input 
-                                type="checkbox" 
-                                id="sports" 
-                                name="interests" 
-                                value="sports"
-                            >
-                            <label for="sports">Sports</label>
+                            <input type="checkbox" id="math" name="subjects" value="math">
+                            <label for="math">Mathematics</label>
                         </div>
                         <div class="checkbox-item">
-                            <input 
-                                type="checkbox" 
-                                id="music" 
-                                name="interests" 
-                                value="music"
-                            >
-                            <label for="music">Music</label>
+                            <input type="checkbox" id="physics" name="subjects" value="physics">
+                            <label for="physics">Physics</label>
                         </div>
                         <div class="checkbox-item">
-                            <input 
-                                type="checkbox" 
-                                id="coding" 
-                                name="interests" 
-                                value="coding"
-                            >
-                            <label for="coding">Coding & Programming</label>
-                        </div>
-                        <div class="checkbox-item">
-                            <input 
-                                type="checkbox" 
-                                id="debate" 
-                                name="interests" 
-                                value="debate"
-                            >
-                            <label for="debate">Debate & Public Speaking</label>
-                        </div>
-                        <div class="checkbox-item">
-                            <input 
-                                type="checkbox" 
-                                id="drama" 
-                                name="interests" 
-                                value="drama"
-                            >
-                            <label for="drama">Drama & Theatre</label>
-                        </div>
-                        <div class="checkbox-item">
-                            <input 
-                                type="checkbox" 
-                                id="volunteering" 
-                                name="interests" 
-                                value="volunteering"
-                            >
-                            <label for="volunteering">Volunteering & Social Service</label>
+                            <input type="checkbox" id="cs" name="subjects" value="cs">
+                            <label for="cs">Computer Science</label>
                         </div>
                     </div>
-                    <div class="helper-text">Select one or more interests</div>
                 </div>
-
-                <!-- Checkboxes: Terms & Conditions -->
+                
                 <div class="form-group">
-                    <div class="checkbox-item">
-                        <input 
-                            type="checkbox" 
-                            id="terms" 
-                            name="terms" 
-                            value="agreed"
-                            required
-                        >
-                        <label for="terms">
-                            I agree to the terms and conditions <span class="required">*</span>
-                        </label>
-                    </div>
-                    <div class="helper-text">You must agree to proceed with registration</div>
+                    <label for="regAddress">Address:</label>
+                    <textarea id="regAddress" name="regAddress" placeholder="Enter your full address"></textarea>
                 </div>
-
-                <!-- Textarea: Additional Comments -->
-                <div class="form-group">
-                    <label for="comments">Additional Comments (Optional)</label>
-                    <textarea 
-                        id="comments" 
-                        name="comments" 
-                        placeholder="Share any additional information about yourself..."
-                    ></textarea>
+                
+                <div class="checkbox-item">
+                    <input type="checkbox" id="terms" name="terms" required>
+                    <label for="terms">I agree to the terms and conditions *</label>
                 </div>
-
-                <!-- ============================================ -->
-                <!-- BUTTONS: SUBMIT AND RESET -->
-                <!-- ============================================ -->
-                <div class="button-group">
-                    <button type="submit" class="submit-btn">
-                        ✓ Submit Registration
-                    </button>
-                    <button type="reset" class="reset-btn">
-                        ↻ Clear Form
-                    </button>
-                </div>
-
+                
+                <button type="submit">Register</button>
+                <button type="reset">Clear</button>
             </form>
+            <div id="regSuccess" class="success-message">Registration successful!</div>
         </div>
     </div>
 
+    <!-- Section 8: Summary -->
+    <div class="section">
+        <h2>8. Summary</h2>
+        <p><strong>Key Points:</strong></p>
+        <ul>
+            <li><code>&lt;form&gt;</code> - Container for all form elements</li>
+            <li><code>&lt;input&gt;</code> - Various types: text, email, password, radio, checkbox</li>
+            <li><code>&lt;select&gt;</code> - Dropdown menus with <code>&lt;option&gt;</code></li>
+            <li><code>&lt;textarea&gt;</code> - Multi-line text input</li>
+            <li><code>&lt;label&gt;</code> - Describes form controls (use <code>for</code> attribute)</li>
+            <li><code>&lt;button&gt;</code> - Submit and reset actions</li>
+            <li><code>required</code> - Makes a field mandatory</li>
+        </ul>
+        
+        <p><strong>Best Practices:</strong></p>
+        <ul>
+            <li>Always use labels for accessibility</li>
+            <li>Group related radio buttons with the same name</li>
+            <li>Use appropriate input types for better mobile experience</li>
+            <li>Provide clear error messages</li>
+            <li>Include both submit and reset buttons</li>
+        </ul>
+    </div>
+
     <script>
-        /**
-         * Handle form submission
-         */
-        function handleSubmit(event) {
-            event.preventDefault();
-
-            // Get form data
-            const formData = new FormData(document.getElementById('registrationForm'));
-            const data = Object.fromEntries(formData);
-
-            // Display success message
-            const successMessage = document.getElementById('successMessage');
-            successMessage.classList.add('show');
-
-            // Log form data (in real application, send to server)
-            console.log('Form Data Submitted:', data);
-
-            // Show details in alert (optional)
-            let message = 'Registration Details:\n\n';
-            message += `Name: ${data.fullName}\n`;
-            message += `Email: ${data.email}\n`;
-            message += `Phone: ${data.phone}\n`;
-            message += `Course: ${data.course}\n`;
-            message += `Gender: ${data.gender}\n`;
-            message += `Category: ${data.category}\n`;
-            
-            const interests = formData.getAll('interests');
-            if (interests.length > 0) {
-                message += `Interests: ${interests.join(', ')}\n`;
-            }
-
-            // Scroll to success message
-            setTimeout(() => {
-                document.querySelector('.form-header').scrollIntoView({ behavior: 'smooth' });
-            }, 100);
-
-            // Hide success message after 5 seconds
-            setTimeout(() => {
-                successMessage.classList.remove('show');
-            }, 5000);
-        }
-
-        /**
-         * Add visual feedback for keyboard users
-         */
-        document.addEventListener('DOMContentLoaded', () => {
-            // Focus event listener for better accessibility
-            const inputs = document.querySelectorAll('input, select, textarea');
-            
-            inputs.forEach(input => {
-                input.addEventListener('focus', function() {
-                    this.style.borderColor = 'rgb(250, 129, 18)';
-                });
-                
-                input.addEventListener('blur', function() {
-                    this.style.borderColor = '#ecf0f1';
-                });
-            });
-
-            // Prevent default form submission for demo
-            document.getElementById('registrationForm').addEventListener('submit', handleSubmit);
+        // Simple form submission handlers
+        document.getElementById('textForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            document.getElementById('textSuccess').classList.add('show');
+            setTimeout(() => document.getElementById('textSuccess').classList.remove('show'), 3000);
+        });
+        
+        document.getElementById('radioForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            document.getElementById('radioSuccess').classList.add('show');
+            setTimeout(() => document.getElementById('radioSuccess').classList.remove('show'), 3000);
+        });
+        
+        document.getElementById('checkboxForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            document.getElementById('checkboxSuccess').classList.add('show');
+            setTimeout(() => document.getElementById('checkboxSuccess').classList.remove('show'), 3000);
+        });
+        
+        document.getElementById('selectForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            document.getElementById('selectSuccess').classList.add('show');
+            setTimeout(() => document.getElementById('selectSuccess').classList.remove('show'), 3000);
+        });
+        
+        document.getElementById('textareaForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            document.getElementById('textareaSuccess').classList.add('show');
+            setTimeout(() => document.getElementById('textareaSuccess').classList.remove('show'), 3000);
+        });
+        
+        document.getElementById('registrationForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            document.getElementById('regSuccess').classList.add('show');
+            setTimeout(() => document.getElementById('regSuccess').classList.remove('show'), 3000);
         });
     </script>
-
 </body>
 </html>

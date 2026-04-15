@@ -9,7 +9,7 @@ struct Item {
     int id;
     double value;
     double weight;
-    double ratio; 
+    double ratio;
 };
 
 bool cmpMinWeight(const Item& a, const Item& b) {

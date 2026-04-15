@@ -1,757 +1,610 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>SEC Practical 7 - Event-Driven JavaScript Programs</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
+    <title>Practical 7 - JavaScript Events</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, rgb(250, 243, 225) 0%, rgb(245, 231, 198) 100%);
-            padding: 30px 20px;
-            min-height: 100vh;
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f5f5f5;
         }
-
-        /* Main container */
-        .main-container {
-            max-width: 1000px;
-            margin: 0 auto;
-        }
-
-        /* Header */
-        header {
-            background: white;
-            padding: 30px;
-            border-radius: 10px;
-            text-align: center;
-            margin-bottom: 30px;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-        }
-
-        header h1 {
-            color: rgb(250, 129, 18);
-            font-size: 32px;
-            margin-bottom: 10px;
-        }
-
-        header p {
-            color: rgb(34, 34, 34);
-            font-size: 16px;
-        }
-
-        /* Program container */
-        .program-section {
-            background: rgb(245, 231, 198);
-            border-radius: 10px;
-            padding: 30px;
-            margin-bottom: 25px;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-            animation: slideIn 0.5s ease;
-        }
-
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* Program heading */
-        .program-section h2 {
-            color: rgb(250, 129, 18);
-            font-size: 24px;
-            margin-bottom: 5px;
-            border-bottom: 3px solid rgb(250, 129, 18);
+        
+        h1 {
+            color: #333;
+            border-bottom: 2px solid #333;
             padding-bottom: 10px;
         }
-
-        .program-number {
-            color: rgb(250, 129, 18);
-            font-size: 14px;
-            margin-bottom: 20px;
+        
+        h2 {
+            color: #555;
+            margin-top: 30px;
         }
-
-        /* Description */
-        .description {
-            background-color: rgb(250, 243, 225);
+        
+        .section {
+            background-color: white;
+            margin: 20px 0;
+            padding: 20px;
+            border: 1px solid #ddd;
+        }
+        
+        .example {
+            background-color: #f9f9f9;
             padding: 15px;
-            border-left: 4px solid rgb(250, 129, 18);
-            margin-bottom: 20px;
-            border-radius: 5px;
-            font-size: 14px;
-            color: rgb(34, 34, 34);
-            line-height: 1.6;
+            margin: 10px 0;
+            border: 1px solid #ccc;
         }
-
-        /* Form group */
-        .form-group {
-            margin-bottom: 15px;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            align-items: end;
-        }
-
-        .form-group.full {
-            grid-template-columns: 1fr;
-        }
-
-        /* Input styling */
-        .input-wrapper {
-            display: flex;
-            flex-direction: column;
-        }
-
-        label {
-            font-weight: 600;
-            color: rgb(34, 34, 34);
-            margin-bottom: 5px;
-            font-size: 14px;
-        }
-
-        input[type="number"],
-        input[type="text"],
-        textarea {
-            padding: 10px 15px;
-            border: 2px solid rgb(245, 231, 198);
-            border-radius: 5px;
-            font-size: 14px;
-            font-family: 'Segoe UI', sans-serif;
-            transition: all 0.3s ease;
-        }
-
-        input[type="number"]:focus,
-        input[type="text"]:focus,
-        textarea:focus {
-            outline: none;
-            border-color: rgb(250, 129, 18);
-            box-shadow: 0 0 0 3px rgba(250, 129, 18, 0.1);
-        }
-
-        /* Button styling */
-        .button-group {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-
+        
+        /* Button styles */
         button {
             padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            font-size: 14px;
-            font-weight: 600;
+            margin: 5px;
+            border: 1px solid #333;
+            background-color: #333;
+            color: white;
             cursor: pointer;
-            transition: all 0.3s ease;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+            font-size: 14px;
         }
-
-        .btn-primary {
-            background: linear-gradient(135deg, rgb(250, 129, 18) 0%, rgb(34, 34, 34) 100%);
-            color: white;
+        
+        button:hover {
+            background-color: #555;
         }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(250, 129, 18, 0.4);
+        
+        /* Interactive elements */
+        .click-box {
+            background-color: #e6f3ff;
+            border: 2px solid #0066cc;
+            padding: 20px;
+            margin: 10px 0;
+            cursor: pointer;
+            text-align: center;
         }
-
-        .btn-primary:active {
-            transform: translateY(0);
+        
+        .hover-box {
+            background-color: #f0f0f0;
+            border: 2px solid #999;
+            padding: 20px;
+            margin: 10px 0;
+            text-align: center;
         }
-
-        .btn-secondary {
-            background-color: rgb(250, 243, 225);
-            color: rgb(34, 34, 34);
-            border: 2px solid rgb(245, 231, 198);
+        
+        .hover-box:hover {
+            background-color: #ffffcc;
         }
-
-        .btn-secondary:hover {
-            background-color: rgb(245, 231, 198);
-            color: white;
+        
+        /* Form styles */
+        .form-group {
+            margin-bottom: 15px;
         }
-
-        /* Output display */
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        
+        input[type="text"],
+        input[type="number"],
+        textarea {
+            width: 100%;
+            max-width: 300px;
+            padding: 8px;
+            border: 1px solid #ccc;
+            font-family: Arial, sans-serif;
+        }
+        
+        /* Output boxes */
         .output-box {
-            background: linear-gradient(135deg, rgb(250, 243, 225) 0%, rgb(245, 231, 198) 100%);
-            border: 2px solid rgb(250, 129, 18);
-            border-radius: 5px;
+            background-color: #f0f0f0;
+            border: 1px solid #333;
             padding: 15px;
-            margin-top: 20px;
+            margin: 10px 0;
             display: none;
-            animation: fadeIn 0.3s ease;
         }
-
+        
         .output-box.show {
             display: block;
         }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-            to {
-                opacity: 1;
-            }
+        
+        /* Color boxes for event demo */
+        .color-box {
+            width: 100px;
+            height: 100px;
+            border: 2px solid #333;
+            display: inline-block;
+            margin: 10px;
+            cursor: pointer;
         }
-
-        .output-title {
-            font-weight: 600;
-            color: rgb(250, 129, 18);
-            margin-bottom: 10px;
-            font-size: 14px;
+        
+        /* Counter display */
+        .counter-display {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+            margin: 10px 0;
         }
-
-        .output-content {
-            background: rgb(250, 243, 225);
+        
+        /* Code display */
+        code {
+            background-color: #f0f0f0;
+            padding: 2px 5px;
+            font-family: "Courier New", monospace;
+        }
+        
+        pre {
+            background-color: #f0f0f0;
             padding: 15px;
-            border-radius: 4px;
-            color: rgb(34, 34, 34);
-            font-family: 'Courier New', monospace;
-            white-space: pre-wrap;
-            word-break: break-word;
-            line-height: 1.8;
+            border: 1px solid #ddd;
+            overflow-x: auto;
         }
-
-        /* Error message */
-        .error {
-            background-color: rgb(245, 231, 198);
-            border-left: 4px solid rgb(250, 129, 18);
-            color: rgb(34, 34, 34);
+        
+        /* Event log */
+        .event-log {
+            background-color: #333;
+            color: #0f0;
             padding: 15px;
-            border-radius: 5px;
-            margin-top: 15px;
-            display: none;
-            animation: slideIn 0.3s ease;
+            font-family: "Courier New", monospace;
+            height: 150px;
+            overflow-y: auto;
+            margin: 10px 0;
         }
-
-        .error.show {
-            display: block;
-        }
-
-        /* Success message */
-        .success {
-            background-color: rgb(250, 243, 225);
-            border-left: 4px solid rgb(250, 129, 18);
-            color: rgb(250, 129, 18);
-            padding: 15px;
-            border-radius: 5px;
-            margin-top: 15px;
-            display: none;
-        }
-
-        .success.show {
-            display: block;
-        }
-
-        /* Footer */
-        footer {
-            background: white;
-            padding: 25px;
-            border-radius: 10px;
+        
+        /* Keyboard demo */
+        .key-display {
+            background-color: #f0f0f0;
+            border: 2px solid #333;
+            padding: 20px;
             text-align: center;
-            color: #666;
-            font-size: 14px;
-            margin-top: 30px;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-        }
-
-        /* Responsive design */
-        @media (max-width: 768px) {
-            .form-group {
-                grid-template-columns: 1fr;
-            }
-
-            header h1 {
-                font-size: 24px;
-            }
-
-            .program-section {
-                padding: 20px;
-            }
-
-            .button-group {
-                flex-direction: column;
-            }
-
-            button {
-                width: 100%;
-            }
+            font-size: 18px;
+            margin: 10px 0;
         }
     </style>
 </head>
-
 <body>
-    <div class="main-container">
-        <!-- Header -->
-        <header>
-            <h1>📱 JavaScript Event-Driven Programs</h1>
-            <p>Four interactive programs demonstrating event handling and algorithms</p>
-        </header>
+    <h1>Practical 7: JavaScript Events</h1>
+    <p>Learn to handle user interactions with JavaScript events.</p>
+    <hr>
 
-        <!-- ============================================ -->
-        <!-- PROGRAM 1: MULTIPLICATION TABLE -->
-        <!-- ============================================ -->
-        <div class="program-section">
-            <h2>1️⃣ Multiplication Table Generator</h2>
-            <div class="program-number">Program 1: Generate multiplication table for a given number</div>
-            
-            <div class="description">
-                <strong>What it does:</strong> Enter any number and click the button to generate its multiplication table (1 to 10). 
-                This program demonstrates event handling with the onclick event and loops in JavaScript.
-            </div>
-
-            <div class="form-group">
-                <div class="input-wrapper">
-                    <label for="multNum">Enter a Number:</label>
-                    <input 
-                        type="number" 
-                        id="multNum" 
-                        placeholder="e.g., 5" 
-                        value="5"
-                    >
-                </div>
-                <div class="button-group" style="grid-column: 2;">
-                    <button class="btn-primary" onclick="generateMultiplicationTable()">
-                        Generate Table
-                    </button>
-                    <button class="btn-secondary" onclick="clearOutput('mult')">
-                        Clear
-                    </button>
-                </div>
-            </div>
-
-            <div class="error" id="multError"></div>
-            <div class="output-box" id="multOutput">
-                <div class="output-title">📊 Multiplication Table:</div>
-                <div class="output-content" id="multResult"></div>
-            </div>
+    <!-- Section 1: What are Events -->
+    <div class="section">
+        <h2>1. What are Events?</h2>
+        <p><strong>Concept:</strong> Events are actions that happen in the browser, like clicks, key presses, or mouse movements. JavaScript can "listen" for these events and respond.</p>
+        
+        <div class="example">
+            <h3>Common Event Types</h3>
+            <ul>
+                <li><strong>Mouse Events:</strong> click, dblclick, mouseover, mouseout, mousemove</li>
+                <li><strong>Keyboard Events:</strong> keydown, keyup, keypress</li>
+                <li><strong>Form Events:</strong> submit, change, focus, blur</li>
+                <li><strong>Window Events:</strong> load, resize, scroll</li>
+            </ul>
         </div>
-
-        <!-- ============================================ -->
-        <!-- PROGRAM 2: LARGEST OF THREE NUMBERS -->
-        <!-- ============================================ -->
-        <div class="program-section">
-            <h2>2️⃣ Find Largest of Three Numbers</h2>
-            <div class="program-number">Program 2: Compare three numbers and find the largest</div>
-            
-            <div class="description">
-                <strong>What it does:</strong> Enter three numbers and click the button to find which one is the largest. 
-                Uses conditional statements (if-else) to compare values.
-            </div>
-
-            <div class="form-group">
-                <div class="input-wrapper">
-                    <label for="num1">First Number:</label>
-                    <input 
-                        type="number" 
-                        id="num1" 
-                        placeholder="e.g., 45" 
-                        value="45"
-                    >
-                </div>
-                <div class="input-wrapper">
-                    <label for="num2">Second Number:</label>
-                    <input 
-                        type="number" 
-                        id="num2" 
-                        placeholder="e.g., 23" 
-                        value="23"
-                    >
-                </div>
-                <div class="input-wrapper">
-                    <label for="num3">Third Number:</label>
-                    <input 
-                        type="number" 
-                        id="num3" 
-                        placeholder="e.g., 67" 
-                        value="67"
-                    >
-                </div>
-                <div class="button-group" style="grid-column: 2;">
-                    <button class="btn-primary" onclick="findLargest()">
-                        Find Largest
-                    </button>
-                    <button class="btn-secondary" onclick="clearOutput('largest')">
-                        Clear
-                    </button>
-                </div>
-            </div>
-
-            <div class="error" id="largestError"></div>
-            <div class="output-box" id="largestOutput">
-                <div class="output-title">🏆 Result:</div>
-                <div class="output-content" id="largestResult"></div>
-            </div>
-        </div>
-
-        <!-- ============================================ -->
-        <!-- PROGRAM 3: FACTORIAL -->
-        <!-- ============================================ -->
-        <div class="program-section">
-            <h2>3️⃣ Calculate Factorial</h2>
-            <div class="program-number">Program 3: Find factorial of a positive integer</div>
-            
-            <div class="description">
-                <strong>What it does:</strong> Enter a positive integer and find its factorial (n! = n × (n-1) × (n-2) × ... × 1). 
-                Demonstrates loops and mathematical calculations.
-            </div>
-
-            <div class="form-group">
-                <div class="input-wrapper">
-                    <label for="factNum">Enter a Number:</label>
-                    <input 
-                        type="number" 
-                        id="factNum" 
-                        placeholder="e.g., 5" 
-                        value="5"
-                        min="0"
-                    >
-                </div>
-                <div class="button-group" style="grid-column: 2;">
-                    <button class="btn-primary" onclick="calculateFactorial()">
-                        Calculate Factorial
-                    </button>
-                    <button class="btn-secondary" onclick="clearOutput('factorial')">
-                        Clear
-                    </button>
-                </div>
-            </div>
-
-            <div class="error" id="factError"></div>
-            <div class="output-box" id="factOutput">
-                <div class="output-title">📐 Result:</div>
-                <div class="output-content" id="factResult"></div>
-            </div>
-        </div>
-
-        <!-- ============================================ -->
-        <!-- PROGRAM 4: SUM AND AVERAGE -->
-        <!-- ============================================ -->
-        <div class="program-section">
-            <h2>4️⃣ Sum & Average of Numbers</h2>
-            <div class="program-number">Program 4: Calculate sum and average of positive numbers</div>
-            
-            <div class="description">
-                <strong>What it does:</strong> Click the button to enter a list of positive numbers one by one using prompts. 
-                Enter 0 to terminate. The program calculates the sum and average of all entered numbers. 
-                Use to demonstrate loops with user input via prompt().
-            </div>
-
-            <div class="form-group full">
-                <div class="button-group">
-                    <button class="btn-primary" onclick="sumAndAverage()">
-                        Enter Numbers (Terminate with 0)
-                    </button>
-                    <button class="btn-secondary" onclick="clearOutput('sumavg')">
-                        Clear
-                    </button>
-                </div>
-            </div>
-
-            <div class="error" id="sumavgError"></div>
-            <div class="output-box" id="sumavgOutput">
-                <div class="output-title">📊 Result:</div>
-                <div class="output-content" id="sumavgResult"></div>
-            </div>
-        </div>
-
-        <!-- Footer -->
-        <footer>
-            <p><strong>SEC Frontend Development - Practical 7</strong></p>
-            <p>Event-driven JavaScript programs demonstrating user interaction and algorithms</p>
-            <p>All programs use event handlers (onclick) to trigger JavaScript functions</p>
-        </footer>
+        
+        <p><strong>Use Case:</strong> Interactive websites, form validation, games, animations, user feedback.</p>
     </div>
 
-    <!-- ============================================ -->
-    <!-- JAVASCRIPT EVENT-DRIVEN PROGRAMS -->
-    <!-- ============================================ -->
+    <!-- Section 2: Click Event -->
+    <div class="section">
+        <h2>2. Click Event</h2>
+        <p><strong>Concept:</strong> The click event fires when a user clicks on an element.</p>
+        
+        <div class="example">
+            <h3>Example: Click Handler</h3>
+            <pre>// Add click event listener
+element.addEventListener('click', function() {
+    // Code to run when clicked
+});</pre>
+            
+            <div id="clickBox" class="click-box">
+                Click me!
+            </div>
+            <p id="clickMessage"></p>
+            
+            <button id="clickButton">Click this button</button>
+            <p id="buttonMessage"></p>
+        </div>
+        
+        <p><strong>Use Case:</strong> Buttons, navigation, toggling content, triggering actions.</p>
+    </div>
+
+    <!-- Section 3: Mouse Events -->
+    <div class="section">
+        <h2>3. Mouse Events</h2>
+        <p><strong>Concept:</strong> Track mouse movements and interactions with elements.</p>
+        
+        <div class="example">
+            <h3>Example: Mouse Over and Out</h3>
+            <pre>element.addEventListener('mouseover', function() {
+    // Mouse entered element
+});
+
+element.addEventListener('mouseout', function() {
+    // Mouse left element
+});</pre>
+            
+            <div id="hoverBox" class="hover-box">
+                Hover over this box!
+            </div>
+            <p id="hoverMessage"></p>
+        </div>
+        
+        <div class="example">
+            <h3>Example: Color Changer</h3>
+            <p>Click the boxes to change their colors:</p>
+            <div id="box1" class="color-box" style="background-color: red;"></div>
+            <div id="box2" class="color-box" style="background-color: blue;"></div>
+            <div id="box3" class="color-box" style="background-color: green;"></div>
+            <p id="colorMessage"></p>
+        </div>
+        
+        <p><strong>Use Case:</strong> Hover effects, tooltips, drag and drop, interactive elements.</p>
+    </div>
+
+    <!-- Section 4: Keyboard Events -->
+    <div class="section">
+        <h2>4. Keyboard Events</h2>
+        <p><strong>Concept:</strong> Detect when keys are pressed, held, or released.</p>
+        
+        <div class="example">
+            <h3>Example: Key Press Detection</h3>
+            <pre>document.addEventListener('keydown', function(event) {
+    console.log('Key pressed: ' + event.key);
+});</pre>
+            
+            <div class="key-display" id="keyDisplay">
+                Press any key...
+            </div>
+            <p>Type in this input:</p>
+            <input type="text" id="keyInput" placeholder="Type here...">
+            <p id="keyMessage"></p>
+        </div>
+        
+        <p><strong>Use Case:</strong> Keyboard shortcuts, games, form navigation, accessibility.</p>
+    </div>
+
+    <!-- Section 5: Form Events -->
+    <div class="section">
+        <h2>5. Form Events</h2>
+        <p><strong>Concept:</strong> Handle form interactions like focus, blur, change, and submit.</p>
+        
+        <div class="example">
+            <h3>Example: Focus and Blur</h3>
+            <pre>input.addEventListener('focus', function() {
+    // Input is active
+});
+
+input.addEventListener('blur', function() {
+    // Input lost focus
+});</pre>
+            
+            <div class="form-group">
+                <label for="focusInput">Click in and out of this field:</label>
+                <input type="text" id="focusInput" placeholder="Focus events...">
+            </div>
+            <p id="focusMessage"></p>
+        </div>
+        
+        <div class="example">
+            <h3>Example: Input Event (Real-time)</h3>
+            <div class="form-group">
+                <label for="liveInput">Type to see live updates:</label>
+                <input type="text" id="liveInput" placeholder="Type here...">
+            </div>
+            <p>You typed: <span id="liveOutput">(nothing yet)</span></p>
+        </div>
+        
+        <p><strong>Use Case:</strong> Form validation, auto-save, character counters, search suggestions.</p>
+    </div>
+
+    <!-- Section 6: Event Object -->
+    <div class="section">
+        <h2>6. The Event Object</h2>
+        <p><strong>Concept:</strong> When an event occurs, JavaScript creates an event object with information about the event.</p>
+        
+        <div class="example">
+            <h3>Example: Event Information</h3>
+            <pre>element.addEventListener('click', function(event) {
+    console.log(event.target);     // Element clicked
+    console.log(event.type);       // Type of event
+    console.log(event.clientX);    // X coordinate
+    console.log(event.clientY);    // Y coordinate
+});</pre>
+            
+            <div id="eventBox" class="click-box" style="height: 100px;">
+                Click anywhere in this box
+            </div>
+            <div id="eventInfo" class="output-box">
+                <p><strong>Event Information:</strong></p>
+                <p>Target: <span id="eventTarget"></span></p>
+                <p>Type: <span id="eventType"></span></p>
+                <p>X Position: <span id="eventX"></span></p>
+                <p>Y Position: <span id="eventY"></span></p>
+            </div>
+        </div>
+        
+        <p><strong>Use Case:</strong> Getting click coordinates, identifying clicked elements, event delegation.</p>
+    </div>
+
+    <!-- Section 7: Event Delegation -->
+    <div class="section">
+        <h2>7. Event Delegation</h2>
+        <p><strong>Concept:</strong> Attach a single event listener to a parent element to handle events from multiple child elements.</p>
+        
+        <div class="example">
+            <h3>Example: Dynamic List Items</h3>
+            <pre>// Parent handles clicks for all children
+list.addEventListener('click', function(event) {
+    if (event.target.tagName === 'LI') {
+        // Handle the click
+    }
+});</pre>
+            
+            <p>Click any item in the list:</p>
+            <ul id="delegationList" style="cursor: pointer;">
+                <li>Item 1</li>
+                <li>Item 2</li>
+                <li>Item 3</li>
+                <li>Item 4</li>
+                <li>Item 5</li>
+            </ul>
+            <p id="delegationMessage"></p>
+            <button id="addItem">Add New Item</button>
+        </div>
+        
+        <p><strong>Use Case:</strong> Dynamic content, performance optimization, simpler code.</p>
+    </div>
+
+    <!-- Section 8: Practical Calculator -->
+    <div class="section">
+        <h2>8. Practical Example: Simple Calculator</h2>
+        <p><strong>Concept:</strong> Combine multiple events to create an interactive calculator.</p>
+        
+        <div class="example">
+            <h3>Calculator</h3>
+            <div class="form-group">
+                <label for="num1">Number 1:</label>
+                <input type="number" id="num1" value="0">
+            </div>
+            <div class="form-group">
+                <label for="num2">Number 2:</label>
+                <input type="number" id="num2" value="0">
+            </div>
+            <div>
+                <button onclick="calculate('add')">Add (+)</button>
+                <button onclick="calculate('subtract')">Subtract (-)</button>
+                <button onclick="calculate('multiply')">Multiply (×)</button>
+                <button onclick="calculate('divide')">Divide (÷)</button>
+            </div>
+            <div id="calcResult" class="output-box" style="margin-top: 15px;">
+                <strong>Result: </strong><span id="resultValue">0</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Section 9: Counter Application -->
+    <div class="section">
+        <h2>9. Counter Application</h2>
+        <p><strong>Concept:</strong> Use events to update and display data.</p>
+        
+        <div class="example">
+            <h3>Click Counter</h3>
+            <div class="counter-display" id="counter">0</div>
+            <button id="incrementBtn">Increment (+1)</button>
+            <button id="decrementBtn">Decrement (-1)</button>
+            <button id="resetBtn">Reset</button>
+        </div>
+    </div>
+
+    <!-- Section 10: Event Logger -->
+    <div class="section">
+        <h2>10. Event Logger</h2>
+        <p><strong>Concept:</strong> Monitor multiple events in real-time.</p>
+        
+        <div class="example">
+            <h3>Live Event Log</h3>
+            <p>Interact with the page to see events logged:</p>
+            <div class="event-log" id="eventLog">
+Event log started...
+            </div>
+            <button onclick="clearLog()">Clear Log</button>
+        </div>
+    </div>
+
+    <!-- Section 11: Summary -->
+    <div class="section">
+        <h2>11. Summary</h2>
+        <p><strong>Key Concepts:</strong></p>
+        <ul>
+            <li><strong>Events</strong> - Actions that occur in the browser</li>
+            <li><strong>Event Listeners</strong> - Functions that wait for events</li>
+            <li><strong>Event Object</strong> - Contains information about the event</li>
+            <li><strong>Event Delegation</strong> - Handle events efficiently</li>
+        </ul>
+        
+        <p><strong>Common Event Types:</strong></p>
+        <table border="1" cellpadding="10" style="border-collapse: collapse; width: 100%;">
+            <tr style="background-color: #333; color: white;">
+                <th>Category</th>
+                <th>Events</th>
+            </tr>
+            <tr>
+                <td>Mouse</td>
+                <td>click, dblclick, mouseover, mouseout, mousemove</td>
+            </tr>
+            <tr>
+                <td>Keyboard</td>
+                <td>keydown, keyup, keypress</td>
+            </tr>
+            <tr>
+                <td>Form</td>
+                <td>submit, change, input, focus, blur</td>
+            </tr>
+            <tr>
+                <td>Window</td>
+                <td>load, resize, scroll, unload</td>
+            </tr>
+        </table>
+        
+        <p><strong>Best Practices:</strong></p>
+        <ul>
+            <li>Use addEventListener instead of inline event handlers</li>
+            <li>Remove event listeners when no longer needed</li>
+            <li>Use event delegation for dynamic content</li>
+            <li>Prevent default behavior when necessary (event.preventDefault())</li>
+            <li>Stop event bubbling when needed (event.stopPropagation())</li>
+        </ul>
+    </div>
+
     <script>
-        /**
-         * PROGRAM 1: MULTIPLICATION TABLE
-         * Event: onclick button
-         * Generates multiplication table for entered number
-         */
-        function generateMultiplicationTable() {
-            const errorBox = document.getElementById('multError');
-            const outputBox = document.getElementById('multOutput');
-            const resultBox = document.getElementById('multResult');
-
-            // Clear previous errors
-            errorBox.classList.remove('show');
-            errorBox.textContent = '';
-
-            const num = parseInt(document.getElementById('multNum').value);
-
-            // Validation
-            if (isNaN(num)) {
-                errorBox.textContent = '❌ Error: Please enter a valid number';
-                errorBox.classList.add('show');
-                outputBox.classList.remove('show');
-                return;
-            }
-
-            // Generate multiplication table
-            let result = `Multiplication Table of ${num}\n`;
-            result += '='.repeat(30) + '\n\n';
-
-            for (let i = 1; i <= 10; i++) {
-                result += `${num} × ${i.toString().padStart(2)} = ${(num * i).toString().padStart(3)}\n`;
-            }
-
-            // Display result
-            resultBox.textContent = result;
-            outputBox.classList.add('show');
-        }
-
-        /**
-         * PROGRAM 2: LARGEST OF THREE NUMBERS
-         * Event: onclick button
-         * Uses conditional statements to compare three numbers
-         */
-        function findLargest() {
-            const errorBox = document.getElementById('largestError');
-            const outputBox = document.getElementById('largestOutput');
-            const resultBox = document.getElementById('largestResult');
-
-            // Clear previous errors
-            errorBox.classList.remove('show');
-            errorBox.textContent = '';
-
-            const num1 = parseFloat(document.getElementById('num1').value);
-            const num2 = parseFloat(document.getElementById('num2').value);
-            const num3 = parseFloat(document.getElementById('num3').value);
-
-            // Validation
-            if (isNaN(num1) || isNaN(num2) || isNaN(num3)) {
-                errorBox.textContent = '❌ Error: Please enter valid numbers for all three fields';
-                errorBox.classList.add('show');
-                outputBox.classList.remove('show');
-                return;
-            }
-
-            // Find largest using conditional statements
-            let largest;
-            if (num1 >= num2 && num1 >= num3) {
-                largest = num1;
-            } else if (num2 >= num1 && num2 >= num3) {
-                largest = num2;
-            } else {
-                largest = num3;
-            }
-
-            // Alternative approach: using Math.max()
-            const largestAlt = Math.max(num1, num2, num3);
-
-            let result = 'Input Numbers:\n';
-            result += `  First Number:  ${num1}\n`;
-            result += `  Second Number: ${num2}\n`;
-            result += `  Third Number:  ${num3}\n\n`;
-            result += '='.repeat(40) + '\n\n';
-            result += `🏆 Largest Number: ${largest}\n\n`;
-            result += `Alternative (using Math.max()): ${largestAlt}`;
-
-            // Display result
-            resultBox.textContent = result;
-            outputBox.classList.add('show');
-        }
-
-        /**
-         * PROGRAM 3: FACTORIAL
-         * Event: onclick button
-         * Calculates factorial using loops
-         */
-        function calculateFactorial() {
-            const errorBox = document.getElementById('factError');
-            const outputBox = document.getElementById('factOutput');
-            const resultBox = document.getElementById('factResult');
-
-            // Clear previous errors
-            errorBox.classList.remove('show');
-            errorBox.textContent = '';
-
-            const num = parseInt(document.getElementById('factNum').value);
-
-            // Validation
-            if (isNaN(num) || num < 0) {
-                errorBox.textContent = '❌ Error: Please enter a non-negative integer';
-                errorBox.classList.add('show');
-                outputBox.classList.remove('show');
-                return;
-            }
-
-            if (!Number.isInteger(num)) {
-                errorBox.textContent = '❌ Error: Factorial is only defined for whole numbers';
-                errorBox.classList.add('show');
-                outputBox.classList.remove('show');
-                return;
-            }
-
-            // Calculate factorial using loop
-            let factorial = 1;
-            let calculation = '';
-
-            for (let i = num; i > 1; i--) {
-                factorial *= i;
-                calculation += i + ' × ';
-            }
-
-            calculation += '1';
-
-            let result = `Calculate Factorial of ${num}\n`;
-            result += '='.repeat(40) + '\n\n';
-            result += `${num}! = ${calculation}\n\n`;
-            result += `Result: ${factorial}\n\n`;
-
-            // Special cases
-            if (num === 0 || num === 1) {
-                result += '📝 Note: 0! = 1 and 1! = 1 (by definition)';
-            }
-
-            // Display result
-            resultBox.textContent = result;
-            outputBox.classList.add('show');
-        }
-
-        /**
-         * PROGRAM 4: SUM AND AVERAGE
-         * Event: onclick button
-         * Uses prompt() for user input in a loop
-         */
-        function sumAndAverage() {
-            const errorBox = document.getElementById('sumavgError');
-            const outputBox = document.getElementById('sumavgOutput');
-            const resultBox = document.getElementById('sumavgResult');
-
-            // Clear previous errors
-            errorBox.classList.remove('show');
-            errorBox.textContent = '';
-
-            let numbers = [];
-            let sum = 0;
-            let count = 0;
-
-            // Loop to get numbers from user
-            while (true) {
-                let input = prompt(
-                    `Enter a positive number (${count + 1}):\n\nEnter 0 to terminate:`,
-                    ''
-                );
-
-                // If user cancels the prompt
-                if (input === null) {
-                    errorBox.textContent = '⚠️ Input cancelled by user';
-                    errorBox.classList.add('show');
-                    return;
-                }
-
-                let num = parseFloat(input);
-
-                // Validation
-                if (isNaN(num)) {
-                    errorBox.textContent = '❌ Error: Invalid input. Please enter a valid number.';
-                    errorBox.classList.add('show');
-                    return;
-                }
-
-                // Check for termination (0)
-                if (num === 0) {
-                    break;
-                }
-
-                // Only accept positive numbers
-                if (num < 0) {
-                    alert('⚠️ Please enter only positive numbers!');
-                    continue;
-                }
-
-                numbers.push(num);
-                sum += num;
-                count++;
-            }
-
-            // Check if at least one number was entered
-            if (count === 0) {
-                errorBox.textContent = '❌ Error: Please enter at least one positive number';
-                errorBox.classList.add('show');
-                outputBox.classList.remove('show');
-                return;
-            }
-
-            // Calculate average
-            const average = sum / count;
-
-            // Format numbers list
-            let numbersList = numbers.map(n => n.toString()).join(', ');
-
-            let result = `Sum and Average Calculation\n`;
-            result += '='.repeat(40) + '\n\n';
-            result += `Numbers Entered: ${numbersList}\n\n`;
-            result += `Total Count: ${count}\n`;
-            result += `Sum: ${sum}\n`;
-            result += `Average: ${average.toFixed(2)}\n\n`;
-            result += '='.repeat(40) + '\n';
-            result += `📊 Min Value: ${Math.min(...numbers)}\n`;
-            result += `📊 Max Value: ${Math.max(...numbers)}`;
-
-            // Display result
-            resultBox.textContent = result;
-            outputBox.classList.add('show');
-        }
-
-        /**
-         * Clear output and error displays
-         */
-        function clearOutput(program) {
-            const sections = {
-                'mult': ['multOutput', 'multError'],
-                'largest': ['largestOutput', 'largestError'],
-                'factorial': ['factOutput', 'factError'],
-                'sumavg': ['sumavgOutput', 'sumavgError']
-            };
-
-            if (sections[program]) {
-                sections[program].forEach(id => {
-                    const element = document.getElementById(id);
-                    if (element) {
-                        element.classList.remove('show');
-                    }
-                });
-            }
-        }
-
-        /**
-         * Allow Enter key to trigger functions
-         */
-        document.getElementById('multNum').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') generateMultiplicationTable();
+        // Section 2: Click Event
+        document.getElementById('clickBox').addEventListener('click', function() {
+            document.getElementById('clickMessage').textContent = 'Box was clicked!';
+            logEvent('click', 'Click Box');
         });
-
-        document.getElementById('num1').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') findLargest();
+        
+        document.getElementById('clickButton').addEventListener('click', function() {
+            document.getElementById('buttonMessage').textContent = 'Button was clicked!';
+            logEvent('click', 'Click Button');
         });
-
-        document.getElementById('num3').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') findLargest();
+        
+        // Section 3: Mouse Events
+        const hoverBox = document.getElementById('hoverBox');
+        hoverBox.addEventListener('mouseover', function() {
+            document.getElementById('hoverMessage').textContent = 'Mouse entered the box!';
+            logEvent('mouseover', 'Hover Box');
         });
-
-        document.getElementById('factNum').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') calculateFactorial();
+        hoverBox.addEventListener('mouseout', function() {
+            document.getElementById('hoverMessage').textContent = 'Mouse left the box!';
+            logEvent('mouseout', 'Hover Box');
+        });
+        
+        // Color boxes
+        const colors = ['red', 'blue', 'green', 'yellow', 'purple', 'orange'];
+        for (let i = 1; i <= 3; i++) {
+            document.getElementById('box' + i).addEventListener('click', function() {
+                const randomColor = colors[Math.floor(Math.random() * colors.length)];
+                this.style.backgroundColor = randomColor;
+                document.getElementById('colorMessage').textContent = 'Changed to ' + randomColor;
+                logEvent('click', 'Color Box ' + i);
+            });
+        }
+        
+        // Section 4: Keyboard Events
+        document.addEventListener('keydown', function(event) {
+            document.getElementById('keyDisplay').innerHTML = 
+                '<strong>Key pressed:</strong> ' + event.key + 
+                '<br>Code: ' + event.code;
+            logEvent('keydown', 'Key: ' + event.key);
+        });
+        
+        document.getElementById('keyInput').addEventListener('input', function() {
+            document.getElementById('keyMessage').textContent = 'Input value: ' + this.value;
+        });
+        
+        // Section 5: Form Events
+        const focusInput = document.getElementById('focusInput');
+        focusInput.addEventListener('focus', function() {
+            document.getElementById('focusMessage').textContent = 'Input is focused (active)';
+            this.style.backgroundColor = '#ffffcc';
+            logEvent('focus', 'Focus Input');
+        });
+        focusInput.addEventListener('blur', function() {
+            document.getElementById('focusMessage').textContent = 'Input lost focus';
+            this.style.backgroundColor = '';
+            logEvent('blur', 'Focus Input');
+        });
+        
+        // Live input
+        document.getElementById('liveInput').addEventListener('input', function() {
+            document.getElementById('liveOutput').textContent = this.value || '(nothing yet)';
+        });
+        
+        // Section 6: Event Object
+        document.getElementById('eventBox').addEventListener('click', function(event) {
+            document.getElementById('eventInfo').classList.add('show');
+            document.getElementById('eventTarget').textContent = event.target.tagName;
+            document.getElementById('eventType').textContent = event.type;
+            document.getElementById('eventX').textContent = event.clientX;
+            document.getElementById('eventY').textContent = event.clientY;
+            logEvent('click', 'Event Box (with object)');
+        });
+        
+        // Section 7: Event Delegation
+        document.getElementById('delegationList').addEventListener('click', function(event) {
+            if (event.target.tagName === 'LI') {
+                document.getElementById('delegationMessage').textContent = 
+                    'You clicked: ' + event.target.textContent;
+                event.target.style.backgroundColor = '#ffffcc';
+                logEvent('click', 'List item (delegated)');
+            }
+        });
+        
+        let itemCount = 5;
+        document.getElementById('addItem').addEventListener('click', function() {
+            itemCount++;
+            const newItem = document.createElement('li');
+            newItem.textContent = 'Item ' + itemCount;
+            document.getElementById('delegationList').appendChild(newItem);
+            logEvent('click', 'Add Item button');
+        });
+        
+        // Section 8: Calculator
+        function calculate(operation) {
+            const num1 = parseFloat(document.getElementById('num1').value) || 0;
+            const num2 = parseFloat(document.getElementById('num2').value) || 0;
+            let result = 0;
+            
+            switch(operation) {
+                case 'add': result = num1 + num2; break;
+                case 'subtract': result = num1 - num2; break;
+                case 'multiply': result = num1 * num2; break;
+                case 'divide': result = num2 !== 0 ? num1 / num2 : 'Error'; break;
+            }
+            
+            document.getElementById('resultValue').textContent = result;
+            document.getElementById('calcResult').classList.add('show');
+            logEvent('calculate', operation + ': ' + num1 + ' and ' + num2);
+        }
+        
+        // Section 9: Counter
+        let count = 0;
+        const counterDisplay = document.getElementById('counter');
+        
+        document.getElementById('incrementBtn').addEventListener('click', function() {
+            count++;
+            counterDisplay.textContent = count;
+            logEvent('click', 'Increment counter');
+        });
+        
+        document.getElementById('decrementBtn').addEventListener('click', function() {
+            count--;
+            counterDisplay.textContent = count;
+            logEvent('click', 'Decrement counter');
+        });
+        
+        document.getElementById('resetBtn').addEventListener('click', function() {
+            count = 0;
+            counterDisplay.textContent = count;
+            logEvent('click', 'Reset counter');
+        });
+        
+        // Section 10: Event Logger
+        function logEvent(type, target) {
+            const log = document.getElementById('eventLog');
+            const time = new Date().toLocaleTimeString();
+            log.innerHTML += '[' + time + '] ' + type + ' on ' + target + '\n';
+            log.scrollTop = log.scrollHeight;
+        }
+        
+        function clearLog() {
+            document.getElementById('eventLog').innerHTML = 'Event log cleared...\n';
+        }
+        
+        // Log page load
+        window.addEventListener('load', function() {
+            logEvent('load', 'Page');
         });
     </script>
-
 </body>
 </html>

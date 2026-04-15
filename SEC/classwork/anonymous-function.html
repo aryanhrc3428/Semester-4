@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Anonymous Function</title>
+</head>
+<body>
+    <h2>Anonymous Function Demo</h2>
+    <button onclick="show()">Click Me</button>
+    <p id="result"></p>
+
+    <script>
+        // Anonymous function assigned to variable
+        var greet = function(name) {
+            return "Hello " + name;
+        };
+
+        function show() {
+            document.getElementById("result").innerHTML = greet("Student");
+        }
+    </script>
+</body>
+</html>
