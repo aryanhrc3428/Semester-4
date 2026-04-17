@@ -1,10 +1,14 @@
 *.rpm
+SEC/.github/copilot-instructions.md
+SEC/SESSION_PROGRESS.md
+Sem 4.code-workspace
 
 # Large PDF files (>40 MB) - causing Git push issues
 CN/CISSP books/*.pdf
 CN/ref_*.pdf
 DBMS/ref_*.pdf
 DSE/ref_*.pdf
+DAA/ref+*.pdf
 EVS/EVS Presentation.pdf
 
 # Executable files
