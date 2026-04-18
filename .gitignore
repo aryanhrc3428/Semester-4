@@ -2,6 +2,7 @@
 SEC/.github/copilot-instructions.md
 SEC/SESSION_PROGRESS.md
 Sem 4.code-workspace
+git-push.sh
 
 # Large PDF files (>40 MB) - causing Git push issues
 CN/CISSP books/*.pdf
