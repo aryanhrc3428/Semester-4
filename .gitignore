@@ -12,6 +12,7 @@ DSE/ref_*.pdf
 DAA/ref+*.pdf
 EVS/EVS Presentation.pdf
 DAA/practical/abc*.pdf
+**/notes/
 
 # Executable files
 *.exe
