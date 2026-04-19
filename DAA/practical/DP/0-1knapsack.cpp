@@ -123,7 +123,6 @@ int main() {
         }
     }
 
-    // 0-1 Knapsack - Recursive
     cout << "\n[1] Recursive Approach:\n";
     auto start_time = high_resolution_clock::now();
     int recursiveResult = knapsackRecursive(n, capacity, items);
@@ -143,7 +142,6 @@ int main() {
     }
     cout << "\n";
 
-    // 0-1 Knapsack - Memoized
     cout << "\n[2] Memoized DP Approach:\n";
     vector<vector<int>> memoTable(n + 1, vector<int>(capacity + 1, -1));
     start_time = high_resolution_clock::now();
@@ -162,7 +160,6 @@ int main() {
     }
     cout << "\n";
 
-    // 0-1 Knapsack - Iterative DP
     cout << "\n[3] Iterative DP Approach:\n";
     start_time = high_resolution_clock::now();
     vector<vector<int>> dp(n + 1, vector<int>(capacity + 1, 0));

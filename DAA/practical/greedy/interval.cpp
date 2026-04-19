@@ -16,10 +16,6 @@ bool compareJobs(const Job& a, const Job& b) {
     return a.finish < b.finish;
 }
 
-// Greedy Interval Scheduling: Select maximum number of non-overlapping jobs
-// Strategy: Sort by finish time, greedily pick jobs that don't overlap
-// Time Complexity: O(n log n) due to sorting
-// Space Complexity: O(n)
 pair<int, vector<int>> greedyIntervalScheduling(const vector<Job>& jobs) {
     int n = jobs.size() - 1;
     vector<int> selected;
@@ -31,7 +27,6 @@ pair<int, vector<int>> greedyIntervalScheduling(const vector<Job>& jobs) {
     selected.push_back(1);
     
     for (int i = 2; i <= n; i++) {
-        // If job i starts after the last selected job finishes, select it
         if (jobs[i].start >= lastFinish) {
             count++;
             lastFinish = jobs[i].finish;
@@ -56,12 +51,10 @@ int main() {
         cin >> jobs[i].start >> jobs[i].finish;
     }
 
-    // Sort jobs by finish time
     sort(jobs.begin() + 1, jobs.end(), compareJobs);
 
     cout << "\n------------------------------------------------\n";
     
-    // Greedy Approach
     auto start_time = high_resolution_clock::now();
     auto greedyResult = greedyIntervalScheduling(jobs);
     auto end_time = high_resolution_clock::now();

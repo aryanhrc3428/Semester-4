@@ -2,22 +2,15 @@
 #include <vector>
 using namespace std;
 
-// Subset Sum Problem using Dynamic Programming
-// Problem: Given a set of non-negative integers and a target sum,
-// determine if there exists a subset with sum equal to target
-
 bool subsetSum(vector<int>& arr, int target) {
     int n = arr.size();
     
-    // dp[i][j] = true if sum j can be achieved using first i elements
     vector<vector<bool>> dp(n + 1, vector<bool>(target + 1, false));
-    
-    // Base case: sum 0 can always be achieved with empty subset
+ 
     for (int i = 0; i <= n; i++) {
         dp[i][0] = true;
     }
-    
-    // Fill the DP table
+
     for (int i = 1; i <= n; i++) {
         for (int j = 1; j <= target; j++) {
             // Don't include current element
@@ -71,7 +64,6 @@ bool subsetSumWithPath(vector<int>& arr, int target) {
         return false;
     }
     
-    // Backtrack to find the subset
     vector<int> subset;
     int i = n, j = target;
     while (i > 0 && j > 0) {
@@ -97,7 +89,6 @@ int main() {
     
     cout << "=== Subset Sum Problem (Dynamic Programming) ===" << endl << endl;
     
-    // Get number of elements from user
     cout << "Enter the number of elements in the set: ";
     cin >> n;
     
@@ -106,7 +97,6 @@ int main() {
         return 1;
     }
     
-    // Get array elements from user
     vector<int> arr(n);
     cout << "Enter " << n << " non-negative integers:" << endl;
     for (int i = 0; i < n; i++) {
@@ -118,7 +108,6 @@ int main() {
         }
     }
     
-    // Get target sum from user
     cout << "Enter the target sum: ";
     cin >> target;
     
@@ -134,7 +123,6 @@ int main() {
     cout << "Target Sum: " << target << endl;
     cout << "========================================" << endl << endl;
     
-    // Using 2D DP approach
     cout << "Using 2D DP approach:" << endl;
     if (subsetSum(arr, target)) {
         cout << "✓ Subset with sum " << target << " exists!" << endl;
@@ -145,7 +133,6 @@ int main() {
     
     cout << endl;
     
-    // Using space optimized approach
     cout << "Using space optimized (1D) approach:" << endl;
     if (subsetSumOptimized(arr, target)) {
         cout << "✓ Subset with sum " << target << " exists!" << endl;
