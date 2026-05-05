@@ -1,30 +1,185 @@
-task: make notes only according to the given instructions and if you have a strong sense of adding somthing to it then only you are allowed to add the content
+task: make notes only according to the given instructions and if you have a strong sense of adding somthing to it then only you are allowed to add the content. there are some rules you have to follow while making notes according to the "MAIN CONTENT":
+1. for algo, write the algo itself, working of that algo, solve the complexity of that algo, a visual walkthrough of each iteration using an example and proof of correctness.
+2. for theorems, define the theorem and proof that theorem with appropriate example and solve line by line if necessary. if the theorem doesn't need any example to prove then just don't use that approach(use examples if necessary as most of the proofs are solved mathematically, and not demonstated by an example).
+3. if any theorem is about the topics that match with talking about their complexities and other sub-topics of that section, then just conclude that theorem as you are going to explain it at a different place.
 
-1. you have to explain the steps of the below concepts with the help of example:
+caution:
+1. never do these kind of thing where you explain some topics with more context and then just write 3-4 lines for other.
+2. these will not be brief, pointers notes. these will be the main study material for university exams.
+you'll explain everything that are in the text while maintaining the scope of notes.
 
-(i) The process that we followed in Section 15.1 to develop a greedy algorithm was
-a bit more involved than is typical. It consisted of the following steps:
-- Determine the optimal substructure of the problem.
-- Develop a recursive solution.
-- Show that if you make the greedy choice, then only one subproblem remains.
-- Prove that it is always safe to make the greedy choice. (Steps 3 and 4 can occur in either order.)
-- Develop a recursive algorithm that implements the greedy strategy.
-- Convert the recursive algorithm to an iterative algorithm.
+MAIN CONTENT:
+0. introduction to graphs
+- theorem (3.1): Every n-node tree has exactly n − 1 edges.
+- theorem (3.2): Let G be an undirected graph on n nodes. Any two of the following statements implies the third.
+(i) G is connected.
+(ii) G does not contain a cycle.
+(iii) G has n − 1 edges.
 
-(ii) design greedy algorithms according to the following sequence of steps:
-- Cast the optimization problem as one in which you make a choice and are left with one subproblem to solve.
-- Prove that there is always an optimal solution to the original problem that makes the greedy choice, so that the greedy choice is always safe.
-- Demonstrate optimal substructure by showing that, having made the greedy choice, what remains is a subproblem with the property that if you combine an optimal solution to the subproblem with the greedy choice you have made, you arrive at an optimal solution to the original problem.
+1. Breadth first search:
+- theorem (3.3): For each j ≥ 1, layer L_j produced by BFS consists of all nodes at distance exactly j from s. There is a path from s to t if and only if t appears in some layer.
+- theorm (3.4): Let T be a breadth-first search tree, let x and y be nodes in T belonging to layers L_i and L_j respectively, and let (x, y) be an edge of G. Then i and j differ by at most 1.
+algo{
+BFS(s):
+    Set Discovered[s] = true and Discovered[v] = false for all other v
+    Initialize L[0] to consist of the single element s
+    Set the layer counter i = 0
+    Set the current BFS tree T = ∅
+    While L[i] is not empty
+        Initialize an empty list L[i + 1]
+        For each node u ∈ L[i]
+            Consider each edge (u, v) incident to u
+            If Discovered[v] = false then
+                Set Discovered[v] = true
+                Add edge (u, v) to the tree T
+            Add v to the list L[i + 1]
+            Endif
+        Endfor
+        Increment the layer counter i by one
+    Endwhile
+}
+- theorem(3.11) The above implementation of the BFS algorithm runs in time O(m + n) (i.e., linear in the input size), if the graph is given by the adjacency list representation.
 
-2. explain these concepts according to the scope of this text document:
-(i) what is a greedy-choice property?
-(ii) what is optimal substructure?
--- a problem exhibits optimal substructure if an optimal solution to the problem contains within it optimal solutions to subproblems. This property is a key ingredient of assessing whether dynamic programming applies, and it’s also essential for greedy algorithms.
-(iii) explain the general approach of greedy and dynamic programming and how they differ from each other?
-(iv) define graph?
---  it consists of a collection V of nodes
-and a collection E of edges, each of which “joins” two of the nodes. We thus represent an edge e ∈ E as a two-element subset of V: e = {u, v} for some u, v ∈ V, where we call u and v the ends of e.
-(v) what is a path?
--- we deﬁne a path in an undirected graph G = (V , E) to be a sequence P of nodes v_1, v_2 , . . . , v_(k−1), v_k with the property that each consecutive pair v_i , v_i+1 is joined by an edge in G. P is often called a path from v_1 to v_k , or a v_1 - v_k path.
-(vi) what is a tree?
--- We say that an undirected graph is a tree if it is connected and does not contain a cycle. For example, the two graphs pictured in Figure 3.1 are trees. In a strong sense, trees are the simplest kind of connected graph: deleting any edge from a tree will disconnect it.
+2. Exploring the connected component:
+algo{
+R will consist of nodes to which s has a path
+Initially R = {s}
+While there is an edge (u, v) where u ∈ R and v ∈ R
+    Add v to R
+Endwhile
+}
+- theorem(3.5): The set R produced at the end of the algorithm is precisely the connected component of G containing s.
+
+
+3. Depth first search
+algo{
+DFS(s):
+    Initialize S to be a stack with one element s
+    While S is not empty
+        Take a node u from S
+        If Explored[u] = false then
+            Set Explored[u] = true
+            For each edge (u, v) incident to u
+                Add v to the stack S
+            Endfor
+        Endif
+    Endwhile
+}
+- theorem(3.6): For a given recursive call DFS(u), all nodes that are marked “Explored” between the invocation and end of this recursive call are descendants of u in T.
+- theorem(3.7): Let T be a depth-first search tree, let x and y be nodes in T, and let (x, y) be an edge of G that is not an edge of T. Then one of x or y is an ancestor of the other.
+- theorem(3.12) The above algorithm implements DFS, in the sense that it visits the nodes in exactly the same order as the recursive DFS procedure in the previous section (except that each adjacency list is processed in reverse order).
+- theorem(3.13) The above implementation of the DFS algorithm runs in time O(m + n) (i.e., linear in the input size), if the graph is given by the adjacency list representation.
+
+4. set of all connected components:
+- theorem(3.8): For any two nodes s and t in a graph, their connected components are either identical or disjoint.
+
+5. representing graphs:
+- theorem(3.9): summation_v∈V (n_v) = 2m
+Proof(3.9). Each edge e = (v, w) contributes exactly twice to this sum: once in the quantity n_v and once in the quantity n_w. Since the sum is the total of the contributions of each edge, it is 2m.
+- theorem(3.10): The adjacency matrix representation of a graph requires O(n^2) space, while the adjacency list representation requires only O(m + n) space
+
+6. testing bipartiteness:
+algo{
+Test-Bipartite(s):
+    Initialize L[0] to be a list with one element s
+    Set Color[s] = red
+    Set Explored[s] = true
+    Set i = 0
+    While L[i] is not empty
+        Initialize a new empty list L[i + 1]
+        For each node u in L[i]
+            For each edge (u, v) incident to u
+                If Explored[v] = false then
+                    Set Explored[v] = true
+                    If (i + 1) is even then
+                        Set Color[v] = red
+                    Else
+                        Set Color[v] = blue
+                    Endif
+                    Add v to the list L[i + 1]
+                Endif
+            Endfor
+        Endfor
+        Set i = i + 1
+    Endwhile
+    For each edge (u, v) in the graph
+        If Color[u] = Color[v] then
+            Return "Not Bipartite"
+        Endif
+    Endfor
+    Return "Bipartite"
+}
+- theorem(3.14): If a graph G is bipartite, then it cannot contain an odd cycle.
+- theorem(3.15) Let G be a connected graph, and let L_1, L_2,... be the layers produced by BFS starting at node s. Then exactly one of the following two things must hold.
+(i) There is no edge of G joining two nodes of the same layer. In this case G is a bipartite graph in which the nodes in even-numbered layers can be colored red, and the nodes in odd-numbered layers can be colored blue.
+(ii) There is an edge of G joining two nodes of the same layer. In this case, G contains an odd-length cycle, and so it cannot be bipartite.
+
+7. directed graph:
+-theorem(3.16): If u and v are mutually reachable, and v and w are mutually reachable, then u and w are mutually reachable.
+-theorem(3.17): For any two nodes s and t in a directed graph, their strong components are either identical or disjoint.
+
+8. topological ordering:
+- theorem(3.18): If G has a topological ordering, then G is a DAG.
+- theorem(3.19): In every DAG G, there is a node v with no incoming edges.
+- theorem(3.20): If G is a DAG, then G has a topological ordering.
+
+algo{
+To compute a topological ordering of G:
+    Find a node v with no incoming edges and order it first
+    Delete v from G
+    Recursively compute a topological ordering of G−{v}
+        and append this order after v
+}
+
+9. dijkstra's algorithm
+algo{
+Dijkstra’s Algorithm (G, l)
+    Let S be the set of explored nodes
+        For each u ∈ S, we store a distance d(u)
+    Initially S = {s} and d(s) = 0
+    While S != V
+        Select a node v!∈ S with at least one edge from S for which
+            d'(v) = min_(e=(u,v):u∈S) (d(u)) + l_e is as small as possible
+        Add v to S and define d(v) = d'(v)
+    EndWhile
+}
+- theorem(4.14): Consider the set S at any point in the algorithm’s execution. For each u ∈ S, the path P_u is a shortest s-u path.
+- theorem(4.15): Using a priority queue, Dijkstra’s Algorithm can be implemented on a graph with n nodes and m edges to run in O(m) time, plus the time for n ExtractMin and m ChangeKey operations.
+
+10. minimum spanning tree problem
+- theorem(4.16): Let T be a minimum-cost solution to the network design problem defined above. Then (V, T) is a tree.
+- theorem(4.17): Assume that all edge costs are distinct. Let S be any subset of nodes that is neither empty nor equal to all of V, and let edge e = (v, w) be the minimumcost edge with one end in S and the other in V − S. Then every minimum spanning tree contains the edge e.
+- theorem(4.19): Prim’s Algorithm produces a minimum spanning tree of G.
+Proof(4.19): For Prim’s Algorithm, it is also very easy to show that it only adds edges belonging to every minimum spanning tree. Indeed, in each iteration of the algorithm, there is a set S ⊆ V on which a partial spanning tree has been constructed, and a node v and edge e are added that minimize the quantity min_(e=(u,v):u∈S) (c_e). By definition, e is the cheapest edge with one end in S and the other end in V − S, and so by the Cut Property (4.17) it is in every minimum spanning tree.
+- theorem(4.21): The Reverse-Delete Algorithm produces a minimum spanning tree of G.
+Proof(4.21): Consider any edge e = (v, w) removed by Reverse-Delete. At the time that e is removed, it lies on a cycle C; and since it is the first edge encountered by the algorithm in decreasing order of edge costs, it must be the most expensive edge on C. Thus by (4.20), e does not belong to any minimum spanning tree.
+
+11. prim's algorithm
+algo{
+Prim(G):
+    Initialize S to be an empty set
+    Initialize Q to be a priority queue
+    For each node v in V
+        Set a[v] = infinity
+        Set edgeTo[v] = null
+        Insert v into Q with key a[v]
+    Endfor
+    Choose an arbitrary starting node s
+    Set a[s] = 0
+    ChangeKey(Q, s, a[s])
+    While Q is not empty
+        Take a node u from Q using ExtractMin(Q)
+        Add u to S
+        For each edge (u, v) incident to u
+            If v is not in S then
+                If cost(u, v) < a[v] then
+                    Set a[v] = cost(u, v)
+                    Set edgeTo[v] = u
+                    ChangeKey(Q, v, a[v])
+                Endif
+            Endif
+        Endfor
+    Endwhile
+    Return edgeTo
+}
+- theorem(4.22): Using a priority queue, Prim’s Algorithm can be implemented on a graph with n nodes and m edges to run in O(m) time, plus the time for n ExtractMin, and m ChangeKey operations.
