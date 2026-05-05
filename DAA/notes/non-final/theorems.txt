@@ -1,0 +1,28 @@
+unit-1
+------
+
+theorem 8.1: Any comparisonsort algorithm requires omega(nlog(n)) comparisons in the worst case.
+proof:
+- The Permutation Fact: An array of n elements has n! (n-factorial) possible orderings. A sorting algorithm must be able to reach every single one of these as a potential output.
+- The Tree Fact: If you map the algorithm's Yes/No comparisons onto a binary "decision tree," the maximum number of leaves (possible outcomes) for a tree of height h is 2^h.
+- The Math (The Crunch): Since the tree must have at least enough leaves to cover all n! permutations, we get the inequality 2^h >= n!. If you take the logarithm of both sides (h >= log(n!)) and apply a mathematical rule called Stirling's approximation, it simplifies to show that the height $h$ (the number of comparisons) is bounded below by Omega(n log(n)).
+
+Corollary 8.2: Heapsort and merge sort are asymptotically optimal comparison sorts.
+proof:
+- The Theoretical Floor: Theorem 8.1 established that the universe's mathematical speed limit for comparison sorting is Omega(nlog(n)). You cannot go faster.
+- The Algorithm Ceiling: We already know from analyzing Heapsort and Merge Sort that their worst-case running time is O(nlog(n)).
+- The Conclusion: Because their maximum running time (O) perfectly matches the lowest possible required time (Omega), they leave no room for improvement. Therefore, they are "asymptotically optimal."
+
+unit-2
+------
+
+(3.1) Every n-node tree has exactly n − 1 edges.
+
+(3.2) Let G be an undirected graph on n nodes. Any two of the following statements implies the third.
+(i) G is connected.
+(ii) G does not contain a cycle.
+(iii) G has n − 1 edges.
+
+(3.3) For each j ≥ 1, layer L_j produced by BFS consists of all nodes at distance exactly j from s. There is a path from s to t if and only if t appears in some layer.
+
+(3.4) Let T be a breadth-ﬁrst search tree, let x and y be nodes in T belonging to layers Li and Lj respectively, and let (x, y) be an edge of G. Then i and j differ by at most 1.
