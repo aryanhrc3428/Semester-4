@@ -1,0 +1,202 @@
+task: make notes only according to the given instructions and if you have a strong sense of adding somthing to it then only you are allowed to add the content. there are some rules you have to follow while making notes according to the "MAIN CONTENT":
+1. for algo, write the algo itself, working of that algo, solve the complexity of that algo, a visual walkthrough of each iteration using an example and proof of correctness.
+2. for theorems, define the theorem and proof that theorem with appropriate example and solve line by line if necessary. if the theorem doesn't need any example to prove then just don't use that approach(use examples if necessary as most of the proofs are solved mathematically, and not demonstated by an example).
+3. if any theorem is about the topics that match with talking about their complexities and other sub-topics of that section, then just conclude that theorem as you are going to explain it at a different place.
+
+caution:
+1. never do these kind of thing where you explain some topics with more context and then just write 3-4 lines for other.
+2. these will not be brief, pointers notes. these will be the main study material for university exams.
+you'll explain everything that are in the text while maintaining the scope of notes.
+
+MAIN CONTENT:
+1. greedy interval scheduling:
+algo{
+Sort the intervals by their start times, breaking ties arbitrarily
+Let I_1, I_2 , . . . , In denote the intervals in this order
+For j = 1, 2, 3, . . . , n
+    For each interval I_i that precedes I_j in sorted order and overlaps it
+        Exclude the label of I_i from consideration for I_j
+    Endfor
+    If there is any label from {1, 2, . . . , d} that has not been excluded then
+        Assign a nonexcluded label to I_j
+    Else
+        Leave I_j unlabeled
+    Endif
+Endfor
+}
+- theorem(4.1): A is a compatible set of requests.
+- theorem(4.2): For all indices r ≤ k we have f (i_r ) ≤ f (j_r ).
+proof(4.2): We will prove this statement by induction. For r = 1 the statement is clearly true: the algorithm starts by selecting the request i1 with minimum ﬁnish time.
+Now let r > 1. We will assume as our induction hypothesis that the statement is true for r − 1, and we will try to prove it for r. As shown in Figure 4.3, the induction hypothesis lets us assume that f (i_r−1) ≤ f (j_r−1). In order for the algorithm’s r th interval not to ﬁnish earlier as well, it would need to “fall behind” as shown. But there’s a simple reason why this could not happen: rather than choose a later-ﬁnishing interval, the greedy algorithm always has the option (at worst) of choosing jr and thus fulﬁlling the induction step.
+We can make this argument precise as follows. We know (since O consists of compatible intervals) that f (j_r−1 ) ≤ s(j_r ). Combining this with the induction hypothesis f (i_r−1) ≤ f (j_r−1), we get f (i_r−1 ) ≤ s(j_r ). Thus the interval jr is in the set R of available intervals at the time when the greedy algorithm selects ir . The greedy algorithm selects the available interval with smallest ﬁnish time; since interval jr is one of these available intervals, we have f (i_r ) ≤ f (j_r ). This completes the induction step.
+
+-theorem(4.3): The greedy algorithm returns an optimal set A.
+Proof(4.3): We will prove the statement by contradiction. If A is not optimal, then an optimal set O must have more requests, that is, we must have m > k. Applying (4.2) with r = k, we get that f (i_k ) ≤ f (j_k). Since m > k, there is a request j_k+1 in O. This request starts after request j_k ends, and hence after ik ends. So after deleting all requests that are not compatible with requests i_1, . . . , i_k, the set of possible requests R still contains j_ k+1 . But the greedy algorithm stops with request i_k , and it is only supposed to stop when R is empty—a contradiction.
+
+2. fractional knapsack
+algo{
+Sort the items by value per pound (v_i / w_i) in decreasing order
+Let a_1, a_2, ..., a_n denote the items in this order
+Let W be the knapsack capacity
+Set total_value = 0
+Set remaining_capacity = W
+For j = 1, 2, 3, ..., n
+    If remaining_capacity = 0 then
+        Break
+    Endif
+    If w_j <= remaining_capacity then
+        Take all of item a_j
+        total_value = total_value + v_j
+        remaining_capacity = remaining_capacity - w_j
+    Else
+        Take a fraction of item a_j
+        fraction = remaining_capacity / w_j
+        total_value = total_value + fraction * v_j
+        remaining_capacity = 0
+    Endif
+Endfor
+}
+
+3. recursive weighted interval scheduling
+algo{
+Sort the intervals by their finish times in nondecreasing order
+Let I_1, I_2, . . . , I_n denote the intervals in this order,
+    with each I_j having start time s_j, finish time f_j, and value v_j
+For j = 1, 2, 3, . . . , n
+    For each interval I_i that precedes I_j in sorted order and overlaps it
+        Exclude I_i from consideration as p(j)
+    Endfor
+    If there is any interval I_i that has not been excluded then
+        Let p(j) be the largest index i < j such that I_i and I_j are disjoint
+    Else
+        Set p(j) = 0
+    Endif
+Endfor
+
+Compute-Opt(j)
+    If j = 0 then
+        Return 0
+    Else
+        Return max(v_j + Compute-Opt(p(j)), Compute-Opt(j - 1))
+    Endif
+End
+Invoke Compute-Opt(n) to obtain OPT(n)
+}
+- theorem(6.1): OPT(j) = max(vj + OPT(p(j)), OPT(j − 1)).
+- theorem(6.2)only if Request j belongs to an optimal solution on the set {1, 2, . . . , j} if and v_j + OPT(p(j)) ≥ OPT(j − 1).
+- theorem(6.3): Compute-Opt(j) correctly computes OPT(j) for each j = 1, 2, . . . , n.
+Proof(6.3): By deﬁnition OPT(0) = 0. Now, take some j > 0, and suppose by way of induction that Compute-Opt(i) correctly computes OPT(i) for all i < j. By the induction hypothesis, we know that Compute-Opt(p(j)) = OPT(p(j)) and Compute-Opt(j − 1) = OPT(j − 1); and hence from (6.1) it follows that OPT(j) = max(v_j + Compute-Opt(p(j)), Compute-Opt(j − 1)) = Compute-Opt(j).
+
+4. memoization weighted scheduling:
+algo{
+Sort the intervals by their finish times in nondecreasing order
+Let I_1, I_2, . . . , I_n denote the intervals in this order,
+    with each I_j having start time s_j, finish time f_j, and value v_j
+Initialize array M[0 . . . n] with all entries set to "empty"
+Set M[0] = 0
+For j = 1, 2, 3, . . . , n
+    For each interval I_i that precedes I_j in sorted order and overlaps it
+        Exclude I_i from consideration as p(j)
+    Endfor
+    If there is any interval I_i that has not been excluded then
+        Let p(j) be the largest index i < j such that I_i and I_j are disjoint
+    Else
+        Set p(j) = 0
+    Endif
+Endfor
+
+M-Compute-Opt(j)
+    If j = 0 then
+        Return 0
+    Else if M[j] is not empty then
+        Return M[j]
+    Else
+        Define M[j] = max(v_j + M-Compute-Opt(p(j)), M-Compute-Opt(j - 1))
+        Return M[j]
+    Endif
+End
+Invoke M-Compute-Opt(n) to obtain OPT(n)
+}
+- theorem(6.4): The running time of M-Compute-Opt(n) is O(n) (assuming the input intervals are sorted by their ﬁnish times).
+Proof(6.4): The time spent in a single call to M-Compute-Opt is O(1), excluding the time spent in recursive calls it generates. So the running time is bounded by a constant times the number of calls ever issued to M-Compute-Opt. Since the implementation itself gives no explicit upper bound on this number of calls, we try to ﬁnd a bound by looking for a good measure of “progress.” The most useful progress measure here is the number of entries in M that are not “empty.” Initially this number is 0; but each time the procedure invokes the recurrence, issuing two recursive calls to M-Compute-Opt, it ﬁlls in a new entry, and hence increases the number of ﬁlled-in entries by 1. Since M has only n + 1 entries, it follows that there can be at most O(n) calls to M-Compute- Opt, and hence the running time of M-Compute-Opt(n) is O(n), as desired.
+
+5. finding the solution to weighted interval scheduling:
+algo{
+Find-Solution(j)
+    If j = 0 then
+        Output nothing
+    Else
+        If v_j + M[p(j)] ≥ M[j - 1] then
+            Output j together with the result of Find-Solution(p(j))
+        Else
+            Output the result of Find-Solution(j - 1)
+        Endif
+    Endif
+End
+Invoke Find-Solution(n) to obtain the optimal set of intervals
+}
+-theorem(6.5) Given the array M of the optimal values of the sub-problems, Find-Solution returns an optimal solution in O(n) time.
+
+6. subset-sum problem:
+algo{
+Subset-Sum(n, W )
+Array M[0 . . . n, 0 . . . W]
+Initialize M[0, w] = 0 for each w = 0, 1, . . . , W
+For i = 1, 2, . . . , n
+    For w = 0, . . . , W
+        Use the recurrence (6.8) to compute M[i, w]
+    Endfor
+Endfor
+Return M[n, W]
+}
+- theorem(6.8): If w < w_i then OPT(i, w) = OPT(i − 1, w). Otherwise OPT(i, w) = max(OPT(i − 1, w), w_i + OPT(i − 1, w − w_i)).
+-theorem(6.9): The Subset-Sum(n, W) Algorithm correctly computes the optimal value of the problem, and runs in O(nW) time.
+- theorem(6.10) Given a table M of the optimal values of the subproblems, the optimal set S can be found in O(n) time.
+
+7. 0-1 knapsack problem:
+algo{
+Sort the items arbitrarily (or by index 1, 2, . . . , n)
+Let I_1, I_2, . . . , I_n denote the items in this order,
+    with each I_j having weight w_j and value v_j
+Initialize a two-dimensional array M[0 . . . n, 0 . . . W]
+For w = 0, 1, 2, . . . , W
+    Set M[0, w] = 0
+Endfor
+For i = 1, 2, 3, . . . , n
+    For w = 0, 1, 2, . . . , W
+        If w < w_i then
+            Exclude the value of including I_i from consideration
+            Set M[i, w] = M[i − 1, w]
+        Else
+            Let include_value = v_i + M[i − 1, w − w_i]
+            Let exclude_value = M[i − 1, w]
+            If include_value has not been excluded by the weight constraint then
+                Assign M[i, w] = max(exclude_value, include_value)
+            Else
+                Leave M[i, w] as M[i − 1, w]
+            Endif
+        Endif
+    Endfor
+Endfor
+Return M[n, W]
+}
+-theorem(6.11): If w < w_i then OPT(i, w) = OPT(i − 1, w). Otherwise OPT(i, w) = max(OPT(i − 1, w), v_i + OPT(i − 1, w − w_i)).
+-theorem(6.12): The Knapsack Problem can be solved in O(nW) time.
+
+8. trace the solution to 0-1 knapsack:
+algo{
+Trace-Solution(i, w)
+    If i = 0 then
+        Output nothing
+    Else
+        If w < w_i then
+            Output the result of Trace-Solution(i − 1, w)
+        Else if v_i + M[i − 1, w − w_i] > M[i − 1, w] then
+            Output i together with the result of Trace-Solution(i − 1, w − w_i)
+        Else
+            Output the result of Trace-Solution(i − 1, w)
+        Endif
+    Endif
+End
+Invoke Trace-Solution(n, W) to obtain the optimal subset of items
+}
