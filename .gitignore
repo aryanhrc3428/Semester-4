@@ -16,3 +16,8 @@ DAA/ref+*.pdf
 *.o
 *.a
 *.so
+
+# extras 
+.agent.md
+.instructions.md
+.rules.txt
