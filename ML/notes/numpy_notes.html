@@ -1,0 +1,1024 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NumPy for Machine Learning — Course Notes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg: #f7f8f6;
+  --panel: #ffffff;
+  --ink: #0b1e2d;
+  --ink-soft: #3d5566;
+  --numpy-blue: #013243;
+  --numpy-blue-2: #4dabcf;
+  --accent: #ff8a3d;
+  --grid-line: #d9e2e6;
+  --code-bg: #0b1e2d;
+  --code-ink: #cfe8f3;
+  --unit-2: #2f7d6b;
+  --unit-3: #ff8a3d;
+  --unit-4: #4dabcf;
+  --unit-5: #8859c9;
+  --radius: 10px;
+}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--ink);
+  font-family:'IBM Plex Sans', sans-serif;
+  line-height:1.6;
+}
+h1,h2,h3,h4{
+  font-family:'Fraunces', serif;
+  color:var(--numpy-blue);
+  margin:0 0 .4em 0;
+}
+code, pre, .mono{font-family:'IBM Plex Mono', monospace;}
+
+/* ---------- HERO ---------- */
+.hero{
+  background:
+    linear-gradient(180deg, rgba(1,50,67,.94), rgba(1,50,67,.88)),
+    repeating-linear-gradient(0deg, transparent 0 39px, rgba(255,255,255,.05) 39px 40px),
+    repeating-linear-gradient(90deg, transparent 0 39px, rgba(255,255,255,.05) 39px 40px);
+  color:#eaf6fb;
+  padding:64px 24px 48px;
+  text-align:left;
+  position:relative;
+  overflow:hidden;
+}
+.hero-inner{max-width:980px;margin:0 auto;}
+.hero .eyebrow{
+  font-family:'IBM Plex Mono', monospace;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  font-size:.72rem;
+  color:var(--numpy-blue-2);
+  margin-bottom:14px;
+  display:inline-block;
+  border:1px solid rgba(77,171,207,.4);
+  padding:5px 10px;
+  border-radius:20px;
+}
+.hero h1{
+  color:#fff;
+  font-size:clamp(2.1rem, 5vw, 3.4rem);
+  font-weight:700;
+  max-width:14ch;
+  line-height:1.05;
+}
+.hero p.lede{
+  max-width:60ch;
+  color:#cfe3ec;
+  font-size:1.05rem;
+  margin-top:18px;
+}
+.hero .array-strip{
+  margin-top:34px;
+  display:flex;
+  gap:6px;
+  flex-wrap:wrap;
+}
+.hero .cell{
+  width:40px;height:40px;
+  display:flex;align-items:center;justify-content:center;
+  border:1px solid rgba(255,255,255,.18);
+  border-radius:6px;
+  font-family:'IBM Plex Mono', monospace;
+  font-size:.8rem;
+  color:var(--numpy-blue-2);
+  background:rgba(255,255,255,.03);
+}
+.hero .cell.hi{
+  background:var(--numpy-blue-2);
+  color:var(--numpy-blue);
+  font-weight:600;
+  border-color:var(--numpy-blue-2);
+}
+.hero .syllabus-tag{
+  margin-top:22px;
+  font-size:.85rem;
+  color:#8fb9c9;
+}
+
+/* ---------- LAYOUT ---------- */
+.layout{
+  max-width:1180px;
+  margin:0 auto;
+  display:grid;
+  grid-template-columns:250px 1fr;
+  gap:36px;
+  padding:36px 24px 100px;
+  align-items:start;
+}
+nav.toc{
+  position:sticky;
+  top:20px;
+  background:var(--panel);
+  border:1px solid var(--grid-line);
+  border-radius:var(--radius);
+  padding:18px 16px;
+  max-height:calc(100vh - 40px);
+  overflow-y:auto;
+}
+nav.toc h4{
+  font-size:.72rem;
+  text-transform:uppercase;
+  letter-spacing:.1em;
+  color:var(--ink-soft);
+  font-family:'IBM Plex Mono',monospace;
+  margin-bottom:10px;
+}
+nav.toc a{
+  display:block;
+  font-size:.86rem;
+  color:var(--ink);
+  text-decoration:none;
+  padding:5px 8px;
+  border-radius:6px;
+  margin-bottom:1px;
+}
+nav.toc a:hover{background:#eef3f4;}
+nav.toc .unit-label{
+  font-size:.68rem;
+  font-weight:600;
+  text-transform:uppercase;
+  letter-spacing:.06em;
+  margin-top:14px;
+  padding:0 8px;
+  display:block;
+}
+nav.toc a.fn::before{content:"ƒ ";color:var(--numpy-blue-2);font-family:'IBM Plex Mono',monospace;}
+
+main{min-width:0;}
+
+/* ---------- UNIT INTRO BANNERS ---------- */
+.unit-intro{
+  border-radius:var(--radius);
+  padding:22px 26px;
+  margin:56px 0 26px;
+  color:#fff;
+  position:relative;
+}
+.unit-intro .tag{font-family:'IBM Plex Mono',monospace;font-size:.72rem;text-transform:uppercase;letter-spacing:.1em;opacity:.85;}
+.unit-intro h2{color:#fff;margin-top:6px;}
+.unit-intro p{color:rgba(255,255,255,.9);max-width:70ch;margin:6px 0 0;}
+.unit-intro.u2{background:linear-gradient(120deg,var(--unit-2),#1e5449);}
+.unit-intro.u3{background:linear-gradient(120deg,var(--unit-3),#c96422);}
+.unit-intro.u4{background:linear-gradient(120deg,var(--unit-4),#2b7392);}
+.unit-intro.u5{background:linear-gradient(120deg,var(--unit-5),#5b3a92);}
+.unit-intro.u0{background:linear-gradient(120deg,var(--numpy-blue),#245e77);}
+
+section.intro-block{margin-bottom:56px;}
+
+/* ---------- FUNCTION CARD ---------- */
+.fn-card{
+  background:var(--panel);
+  border:1px solid var(--grid-line);
+  border-left:5px solid var(--numpy-blue-2);
+  border-radius:var(--radius);
+  padding:22px 26px 24px;
+  margin-bottom:26px;
+  scroll-margin-top:20px;
+}
+.fn-card.u2{border-left-color:var(--unit-2);}
+.fn-card.u3{border-left-color:var(--unit-3);}
+.fn-card.u4{border-left-color:var(--unit-4);}
+.fn-card.u5{border-left-color:var(--unit-5);}
+
+.fn-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;}
+.fn-head .fname{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:1.18rem;
+  font-weight:600;
+  color:var(--numpy-blue);
+}
+.fn-head .fsig{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:.82rem;
+  color:var(--ink-soft);
+  background:#f0f4f5;
+  padding:2px 8px;
+  border-radius:5px;
+}
+h4.sub{
+  font-family:'IBM Plex Sans',sans-serif;
+  font-size:.72rem;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+  color:var(--ink-soft);
+  margin:18px 0 8px;
+  font-weight:600;
+}
+.fn-card p{margin:6px 0;}
+.fn-card ul{margin:6px 0;padding-left:20px;}
+.fn-card li{margin-bottom:4px;}
+
+pre{
+  background:var(--code-bg);
+  color:var(--code-ink);
+  padding:14px 16px;
+  border-radius:8px;
+  overflow-x:auto;
+  font-size:.85rem;
+  margin:8px 0 4px;
+  line-height:1.55;
+}
+pre .c{color:#7fdca4;} /* comment */
+pre .s{color:#ffcf8b;} /* output */
+.out-label{font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);margin-top:8px;}
+
+.example-block{margin-top:6px;}
+.example-title{font-size:.85rem;font-weight:600;color:var(--ink);margin-top:14px;}
+
+/* ---------- ARRAY GRID VISUAL ---------- */
+.array-viz{display:flex;gap:14px;flex-wrap:wrap;align-items:center;margin:14px 0;}
+.arr-row{display:flex;}
+.arr-cell{
+  width:38px;height:38px;
+  display:flex;align-items:center;justify-content:center;
+  border:1px solid var(--grid-line);
+  font-family:'IBM Plex Mono',monospace;
+  font-size:.8rem;
+  background:#fbfcfb;
+}
+.arr-cell.sel{background:var(--numpy-blue-2);color:#fff;font-weight:600;border-color:var(--numpy-blue-2);}
+.arr-idx{
+  display:flex;
+  font-family:'IBM Plex Mono',monospace;
+  font-size:.68rem;
+  color:var(--ink-soft);
+}
+.arr-idx span{width:38px;text-align:center;}
+
+/* ---------- CALLOUTS / EXERCISE ---------- */
+.exercise{
+  background:#fff8ee;
+  border:1px dashed var(--accent);
+  border-radius:var(--radius);
+  padding:18px 22px;
+  margin:22px 0 40px;
+}
+.exercise h4{
+  font-family:'IBM Plex Mono',monospace;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+  font-size:.75rem;
+  color:#a35414;
+  margin-bottom:10px;
+}
+.exercise ol{margin:0;padding-left:20px;}
+.exercise li{margin-bottom:8px;}
+
+.note{
+  background:#eef6fb;
+  border-left:4px solid var(--numpy-blue-2);
+  padding:10px 16px;
+  border-radius:6px;
+  font-size:.9rem;
+  margin:14px 0;
+}
+
+.cheatsheet{
+  background:var(--panel);
+  border:1px solid var(--grid-line);
+  border-radius:var(--radius);
+  padding:10px 22px 20px;
+}
+table.cheat{width:100%;border-collapse:collapse;font-size:.88rem;}
+table.cheat th{
+  text-align:left;
+  font-family:'IBM Plex Mono',monospace;
+  font-size:.72rem;
+  text-transform:uppercase;
+  letter-spacing:.06em;
+  color:var(--ink-soft);
+  border-bottom:2px solid var(--grid-line);
+  padding:10px 8px;
+}
+table.cheat td{
+  padding:9px 8px;
+  border-bottom:1px solid var(--grid-line);
+  vertical-align:top;
+}
+table.cheat td.fn{font-family:'IBM Plex Mono',monospace;color:var(--numpy-blue);white-space:nowrap;}
+table.cheat tr:last-child td{border-bottom:none;}
+
+footer{
+  text-align:center;
+  color:var(--ink-soft);
+  font-size:.82rem;
+  padding:30px 20px 60px;
+}
+
+@media (max-width:860px){
+  .layout{grid-template-columns:1fr;}
+  nav.toc{position:static;max-height:none;}
+}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero-inner">
+    <span class="eyebrow">DSC17 / DSC-A5 / GE7c &nbsp;·&nbsp; Machine Learning &nbsp;·&nbsp; NEP UGCF 2022</span>
+    <h1>NumPy, mapped to your ML syllabus</h1>
+    <p class="lede">Every function here earns its place in one of your five units — Preprocessing, Regression, Classification, or Clustering — with a definition, every practical use case, worked examples, and an exercise. No filler functions you won't touch this semester.</p>
+    <div class="array-strip">
+      <div class="cell">0.12</div><div class="cell">0.98</div><div class="cell hi">1.00</div><div class="cell">0.44</div><div class="cell">0.07</div><div class="cell">0.61</div>
+    </div>
+    <p class="syllabus-tag">array([0.12, 0.98, <b style="color:#eaf6fb">1.00</b>, 0.44, 0.07, 0.61])  — a NumPy array is the data structure every model in this course is built on.</p>
+  </div>
+</header>
+
+<div class="layout">
+
+<nav class="toc">
+  <h4>Contents</h4>
+  <a href="#foundations">0 · Foundations</a>
+  <a href="#foundations" class="fn">array · zeros/ones/eye</a>
+  <a href="#foundations" class="fn">arange · linspace</a>
+  <a href="#foundations" class="fn">shape/reshape</a>
+  <a href="#foundations" class="fn">indexing & slicing</a>
+
+  <span class="unit-label" style="color:var(--unit-2)">Unit 2 · Preprocessing</span>
+  <a href="#mean-std" class="fn">mean · std · var</a>
+  <a href="#minmax" class="fn">min · max · ptp</a>
+  <a href="#cov" class="fn">cov</a>
+  <a href="#eig" class="fn">linalg.eig</a>
+  <a href="#svd" class="fn">linalg.svd</a>
+
+  <span class="unit-label" style="color:var(--unit-3)">Unit 3 · Regression</span>
+  <a href="#dot" class="fn">dot · matmul · @</a>
+  <a href="#transpose" class="fn">transpose · .T</a>
+  <a href="#inv" class="fn">linalg.inv</a>
+  <a href="#sum" class="fn">sum</a>
+  <a href="#random" class="fn">random.randn/rand</a>
+
+  <span class="unit-label" style="color:var(--unit-4)">Unit 4 · Classification</span>
+  <a href="#exp" class="fn">exp</a>
+  <a href="#log" class="fn">log</a>
+  <a href="#where" class="fn">where</a>
+  <a href="#argmaxmin" class="fn">argmax · argmin</a>
+  <a href="#norm" class="fn">linalg.norm</a>
+  <a href="#sortargsort" class="fn">sort · argsort</a>
+  <a href="#unique" class="fn">unique · bincount</a>
+  <a href="#maximum" class="fn">maximum</a>
+
+  <span class="unit-label" style="color:var(--unit-5)">Unit 5 · Clustering</span>
+  <a href="#clustermean" class="fn">mean (centroids)</a>
+  <a href="#clusterargmin" class="fn">argmin (assignment)</a>
+  <a href="#randomchoice" class="fn">random.choice</a>
+
+  <a href="#cheatsheet" style="margin-top:14px;font-weight:600;">📋 Full cheat-sheet</a>
+  <a href="#exercises">📝 Combined exercises</a>
+</nav>
+
+<main>
+
+<!-- ============ FOUNDATIONS ============ -->
+<section class="intro-block" id="foundations">
+  <div class="unit-intro u0">
+    <span class="tag">Before Unit 1</span>
+    <h2>Foundations you need for every unit</h2>
+    <p>These aren't in one specific unit — they're the grammar the rest of the syllabus is written in. Master these four before touching regression or clustering code.</p>
+  </div>
+
+  <div class="fn-card">
+    <div class="fn-head"><span class="fname">np.array()</span><span class="fsig">np.array(object, dtype=None)</span></div>
+    <h4 class="sub">Definition</h4>
+    <p>Creates a NumPy <code>ndarray</code> (n-dimensional array) from a Python list, tuple, or nested sequence. This is the single data structure your feature matrix <code>X</code>, target vector <code>y</code>, and weight vector <code>θ</code> will be stored in throughout the course.</p>
+    <h4 class="sub">Uses in this syllabus</h4>
+    <ul>
+      <li>Wrapping a dataset (rows = samples, columns = features) as a 2-D array for regression/classification.</li>
+      <li>Building small vectors for distance calculations in KNN and clustering.</li>
+      <li>Converting a Pandas column to an array before feeding it into a formula.</li>
+    </ul>
+    <h4 class="sub">Every case</h4>
+    <div class="example-title">1. 1-D array (a single feature or a target vector y)</div>
+    <pre>y = np.array([3.1, 4.2, 5.0, 2.8])
+<span class="c"># y.shape -> (4,)</span></pre>
+    <div class="example-title">2. 2-D array (a feature matrix X — rows=samples, cols=features)</div>
+    <pre>X = np.array([[1500, 3], [1600, 3], [1700, 4]])
+<span class="c"># X.shape -> (3, 2)  → 3 houses, 2 features (area, rooms)</span></pre>
+    <div class="example-title">3. Explicit dtype (important before matrix math — avoid integer division bugs)</div>
+    <pre>theta = np.array([0, 0], dtype=float)</pre>
+    <div class="array-viz">
+      <div>
+        <div class="arr-idx"><span>0</span><span>1</span><span>2</span><span>3</span></div>
+        <div class="arr-row">
+          <div class="arr-cell">3.1</div><div class="arr-cell">4.2</div><div class="arr-cell sel">5.0</div><div class="arr-cell">2.8</div>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:.85rem;color:var(--ink-soft)">A 1-D array <code>y</code> — index 2 (highlighted) holds the value 5.0.</p>
+  </div>
+
+  <div class="fn-card">
+    <div class="fn-head"><span class="fname">np.zeros() · np.ones() · np.eye()</span><span class="fsig">np.zeros(shape) / np.ones(shape) / np.eye(N)</span></div>
+    <h4 class="sub">Definition</h4>
+    <p><code>zeros</code>/<code>ones</code> create arrays filled with 0s or 1s of a given shape; <code>eye(N)</code> creates an N×N identity matrix (1s on the diagonal, 0s elsewhere).</p>
+    <h4 class="sub">Uses in this syllabus</h4>
+    <ul>
+      <li>Initializing regression weights <code>θ</code> to zero before gradient descent.</li>
+      <li>Adding a "bias column" of ones to X for the intercept term in linear/logistic regression.</li>
+      <li>The identity matrix appears in the regularization (ridge regression) formula and in PCA-related linear algebra.</li>
+    </ul>
+    <div class="example-title">1. Zero-initialize weights for gradient descent</div>
+    <pre>theta = np.zeros(3)   <span class="c"># [0. 0. 0.] — one weight per feature + bias</span></pre>
+    <div class="example-title">2. Add an intercept (bias) column of ones to X</div>
+    <pre>ones_col = np.ones((X.shape[0], 1))
+X_bias = np.hstack([ones_col, X])</pre>
+    <div class="example-title">3. Identity matrix for Ridge regression's closed-form solution</div>
+    <pre>lam = 0.5
+I = np.eye(X.shape[1])
+theta = np.linalg.inv(X.T @ X + lam * I) @ X.T @ y</pre>
+  </div>
+
+  <div class="fn-card">
+    <div class="fn-head"><span class="fname">np.arange() · np.linspace()</span><span class="fsig">np.arange(start,stop,step) / np.linspace(start,stop,num)</span></div>
+    <h4 class="sub">Definition</h4>
+    <p><code>arange</code> generates values in a range using a step size (like Python's <code>range</code>, but returns an array). <code>linspace</code> generates a fixed <em>number</em> of evenly spaced values between two endpoints.</p>
+    <h4 class="sub">Uses in this syllabus</h4>
+    <ul>
+      <li>Generating a smooth range of x-values to plot a fitted regression line.</li>
+      <li>Creating a grid of candidate values to try for hyperparameters (e.g. k in KNN, λ in ridge/lasso).</li>
+      <li>Building synthetic toy datasets to test an algorithm before using a real one from data.gov.in / UCI.</li>
+    </ul>
+    <div class="example-title">1. Sweep of k values to test in K-NN</div>
+    <pre>k_values = np.arange(1, 21, 2)   <span class="c"># array([1,3,5,...,19]) — odd k avoids ties</span></pre>
+    <div class="example-title">2. Smooth x-axis to draw a fitted regression curve</div>
+    <pre>x_line = np.linspace(X.min(), X.max(), 100)</pre>
+  </div>
+
+  <div class="fn-card">
+    <div class="fn-head"><span class="fname">.shape / .reshape() / .ndim</span><span class="fsig">array.reshape(new_shape)</span></div>
+    <h4 class="sub">Definition</h4>
+    <p><code>.shape</code> reports an array's dimensions as a tuple; <code>.reshape()</code> returns the same data viewed with a new shape (no data is copied unless necessary); <code>.ndim</code> reports the number of dimensions.</p>
+    <h4 class="sub">Uses in this syllabus</h4>
+    <ul>
+      <li>Turning a flat 1-D feature array into a column vector so it matches the (samples, features) shape scikit-style formulas expect.</li>
+      <li>Reshaping a 1-D distance array before sorting for KNN.</li>
+      <li>Flattening a 2-D image/feature block into a 1-D vector for a perceptron/neural network input layer.</li>
+    </ul>
+    <div class="example-title">1. Turn a single feature column into 2-D shape (n, 1)</div>
+    <pre>area = np.array([1500, 1600, 1700])
+area = area.reshape(-1, 1)
+<span class="c"># shape becomes (3, 1) — "-1" means "figure this dimension out"</span></pre>
+    <div class="example-title">2. Flatten a 2-D array to feed into a perceptron</div>
+    <pre>patch = np.array([[1, 0], [0, 1]])
+flat = patch.reshape(-1)   <span class="c"># array([1, 0, 0, 1])</span></pre>
+  </div>
+
+  <div class="fn-card">
+    <div class="fn-head"><span class="fname">Indexing & Slicing</span><span class="fsig">a[i], a[i:j], a[:, k], a[mask]</span></div>
+    <h4 class="sub">Definition</h4>
+    <p>NumPy supports positional indexing (<code>a[2]</code>), slicing ranges (<code>a[1:4]</code>), column/row selection in 2-D arrays (<code>a[:, 0]</code>), and <strong>boolean masking</strong> — selecting elements that satisfy a condition (<code>a[a &gt; 5]</code>).</p>
+    <h4 class="sub">Uses in this syllabus</h4>
+    <ul>
+      <li>Splitting a dataset into a train/test set by row slicing.</li>
+      <li>Pulling out a single feature column for feature scaling.</li>
+      <li>Boolean masking is exactly how you compute confusion-matrix quantities (TP/FP/TN/FN) for classification evaluation.</li>
+    </ul>
+    <div class="example-title">1. Train/test split by row slicing</div>
+    <pre>split = int(0.8 * len(X))
+X_train, X_test = X[:split], X[split:]
+y_train, y_test = y[:split], y[split:]</pre>
+    <div class="example-title">2. Select one feature column (2-D array)</div>
+    <pre>area_col = X[:, 0]   <span class="c"># every row, column 0</span></pre>
+    <div class="example-title">3. Boolean masking to count classification outcomes</div>
+    <pre>TP = np.sum((y_pred == 1) & (y_true == 1))
+FP = np.sum((y_pred == 1) & (y_true == 0))</pre>
+    <div class="array-viz">
+      <div>
+        <div class="arr-idx"><span>0</span><span>1</span><span>2</span><span>3</span><span>4</span></div>
+        <div class="arr-row">
+          <div class="arr-cell">12</div><div class="arr-cell sel">45</div><div class="arr-cell sel">38</div><div class="arr-cell">9</div><div class="arr-cell sel">51</div>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:.85rem;color:var(--ink-soft)"><code>a[a &gt; 20]</code> → selects the highlighted cells → <code>array([45, 38, 51])</code></p>
+  </div>
+</section>
+
+<!-- ============ UNIT 2 ============ -->
+<section id="unit2">
+  <div class="unit-intro u2">
+    <span class="tag">Unit 2 · 6 hours</span>
+    <h2>Preprocessing — Feature Scaling & PCA</h2>
+    <p>Before any model sees your data, it needs to be scaled and, often, compressed into fewer dimensions. These functions cover feature scaling (Ch.6) and Principal Component Analysis (Ch.12.2).</p>
+  </div>
+
+  <div class="fn-card u2" id="mean-std">
+    <div class="fn-head"><span class="fname">np.mean() · np.std() · np.var()</span><span class="fsig">np.mean(a, axis=None) / np.std(a, axis=None)</span></div>
+    <h4 class="sub">Definition</h4>
+    <p><code>mean</code> computes the average, <code>var</code> the variance (average squared deviation from the mean), and <code>std</code> the standard deviation (square root of variance). The <code>axis</code> parameter controls direction: <code>axis=0</code> collapses rows (one result per column/feature), <code>axis=1</code> collapses columns (one result per row/sample).</p>
+    <h4 class="sub">Uses in this syllabus</h4>
+    <ul>
+      <li><strong>Standardization / Z-score scaling</strong>: <code>(x - mean) / std</code> — the core feature-scaling formula in Ch.6.1.1.</li>
+      <li><strong>PCA</strong>: PCA requires mean-centering the data before computing the covariance matrix.</li>
+      <li>Reporting average error (MSE) in regression evaluation.</li>
+    </ul>
+    <div class="example-title">1. Standardize every feature column (axis=0 → per-column stats)</div>
+    <pre>mu = X.mean(axis=0)
+sigma = X.std(axis=0)
+X_scaled = (X - mu) / sigma
+<span class="c"># each column now has mean≈0, std≈1</span></pre>
+    <div class="example-title">2. Mean-center data before PCA</div>
+    <pre>X_centered = X - X.mean(axis=0)</pre>
+    <div class="example-title">3. Mean Squared Error for regression evaluation</div>
+    <pre>mse = np.mean((y_true - y_pred) ** 2)</pre>
+    <div class="note">Watch <code>axis</code> carefully — <code>axis=0</code> gives per-feature stats (what scaling needs); <code>axis=1</code> gives per-sample stats. Getting this backwards is the #1 preprocessing bug.</div>
+  </div>
+
+  <div class="fn-card u2" id="minmax">
+    <div class="fn-head"><span class="fname">np.min() · np.max() · np.ptp()</span><span class="fsig">a.min(axis=0) / a.max(axis=0) / a.ptp(axis=0)</span></div>
+    <h4 class="sub">Definition</h4>
+    <p><code>min</code>/<code>max</code> return the smallest/largest values along an axis; <code>ptp</code> ("peak to peak") returns <code>max - min</code> in one call.</p>
+    <h4 class="sub">Uses in this syllabus</h4>
+    <ul>
+      <li><strong>Min-Max scaling</strong> (normalization): rescale every feature into <code>[0, 1]</code>, an alternative to standardization mentioned in Ch.6.1.2.</li>
+      <li>Setting axis limits when plotting decision boundaries or regression lines.</li>
+    </ul>
+    <div class="example-title">1. Min-Max normalize each feature to [0, 1]</div>
+    <pre>X_norm = (X - X.min(axis=0)) / (X.max(axis=0) - X.min(axis=0))</pre>
+    <div class="example-title">2. Same idea using ptp()</div>
+    <pre>X_norm = (X - X.min(axis=0)) / X.ptp(axis=0)</pre>
+  </div>
+
+  <div class="fn-card u2" id="cov">
+    <div class="fn-head"><span class="fname">np.cov()</span><span class="fsig">np.cov(m, rowvar=True)</span></div>
+    <h4 class="sub">Definition</h4>
+    <p>Computes the covariance matrix: entry <code>(i, j)</code> measures how features <code>i</code> and <code>j</code> vary together. By default NumPy treats each <em>row</em> as a variable — for a standard (samples × features) matrix, set <code>rowvar=False</code>.</p>
+    <h4 class="sub">Uses in this syllabus</h4>
+    <ul>
+      <li>The covariance matrix is the direct input to PCA (Ch.12.2) — its eigenvectors are the principal components.</li>
+    </ul>
+    <div class="example-title">1. Covariance matrix of a (samples × features) dataset</div>
+    <pre>cov_matrix = np.cov(X_centered, rowvar=False)
+<span class="c"># shape: (n_features, n_features)</span></pre>
+  </div>
+
+  <div class="fn-card u2" id="eig">
+    <div class="fn-head"><span class="fname">np.linalg.eig()</span><span class="fsig">eigvals, eigvecs = np.linalg.eig(A)</span></div>
+    <h4 class="sub">Definition</h4>
+    <p>Computes the eigenvalues and eigenvectors of a square matrix <code>A</code>. Each eigenvector points in a direction the matrix only stretches (doesn't rotate); the matching eigenvalue is the stretch factor.</p>
+    <h4 class="sub">Uses in this syllabus</h4>
+    <ul>
+      <li><strong>This is the heart of PCA</strong>: the eigenvectors of the covariance matrix are the principal components (new axes); the eigenvalues tell you how much variance each component explains.</li>
+    </ul>
+    <div class="example-title">1. Full PCA pipeline using mean, cov, and eig</div>
+    <pre>X_centered = X - X.mean(axis=0)
+cov_matrix = np.cov(X_centered, rowvar=False)
+eigvals, eigvecs = np.linalg.eig(cov_matrix)
+
+<span class="c"># sort components by explained variance, descending</span>
+order = np.argsort(eigvals)[::-1]
+eigvals, eigvecs = eigvals[order], eigvecs[:, order]
+
+<span class="c"># keep top 2 principal components</span>
+top2 = eigvecs[:, :2]
+X_pca = X_centered @ top2</pre>
+    <div class="example-title">2. Percentage of variance explained by each component</div>
+    <pre>explained_ratio = eigvals / eigvals.sum()</pre>
+  </div>
+
+  <div class="fn-card u2" id="svd">
+    <div class="fn-head"><span class="fname">np.linalg.svd()</span><span class="fsig">U, S, Vt = np.linalg.svd(A)</span></div>
+    <h4 class="sub">Definition</h4>
+    <p>Singular Value Decomposition factors any matrix into <code>U · S · Vᵀ</code>. It's a numerically more stable alternative route to the same principal directions PCA needs, without ever explicitly forming the covariance matrix.</p>
+    <h4 class="sub">Uses in this syllabus</h4>
+    <ul>
+      <li>Alternative implementation of PCA for dimensionality reduction (Ch.12.2) — useful to know both routes exist.</li>
+    </ul>
+    <div class="example-title">1. PCA via SVD instead of eig</div>
+    <pre>X_centered = X - X.mean(axis=0)
+U, S, Vt = np.linalg.svd(X_centered, full_matrices=False)
+X_pca = X_centered @ Vt[:2].T   <span class="c"># project onto top 2 components</span></pre>
+  </div>
+
+  <div class="exercise">
+    <h4>Unit 2 Exercise — Preprocessing</h4>
+    <ol>
+      <li>Load any numeric dataset (e.g. from <code>archive.ics.uci.edu/ml/datasets.php</code>) into an array <code>X</code> of shape (samples, features).</li>
+      <li>Standardize <code>X</code> using <code>mean</code>/<code>std</code>, then separately Min-Max scale it. Print both and compare their ranges.</li>
+      <li>Mean-center <code>X</code>, compute its covariance matrix with <code>np.cov</code>, then find its eigenvalues/eigenvectors with <code>np.linalg.eig</code>.</li>
+      <li>Project the data onto the top 2 principal components and report what percentage of total variance they explain.</li>
+    </ol>
+  </div>
+</section>
+
+<!-- ============ UNIT 3 ============ -->
+<section id="unit3">
+  <div class="unit-intro u3">
+    <span class="tag">Unit 3 · 12 hours</span>
+    <h2>Regression — Linear Regression & Gradient Descent</h2>
+    <p>Simple and multiple linear regression, gradient descent, over-fitting/regularization, and evaluation metrics (Ch.3.1–3.2, Ch.6.2.1) all reduce to matrix arithmetic. These five functions cover essentially all of it.</p>
+  </div>
+
+  <div class="fn-card u3" id="dot">
+    <div class="fn-head"><span class="fname">np.dot() · np.matmul() · @</span><span class="fsig">np.dot(a, b)  ≡  a @ b</span></div>
+    <h4 class="sub">Definition</h4>
+    <p>Computes the matrix/vector dot product. For two 1-D vectors it's the scalar dot product; for 2-D arrays it's standard matrix multiplication. The <code>@</code> operator is shorthand for the same operation and is the version you'll use most.</p>
+    <h4 class="sub">Uses in this syllabus</h4>
+    <ul>
+      <li><strong>Hypothesis function</strong> of linear regression: <code>ŷ = X @ theta</code> computes predictions for every sample at once — no Python loop needed.</li>
+      <li>Computing the normal equation solution for regression weights.</li>
+      <li>Projecting data onto principal components (Unit 2) and computing similarity/distance scores.</li>
+    </ul>
+    <div class="example-title">1. Multiple linear regression prediction (vectorized — no for-loop)</div>
+    <pre>theta = np.array([2.0, 0.05, 1.2])   <span class="c"># bias, weight1, weight2</span>
+X_bias = np.hstack([np.ones((X.shape[0],1)), X])
+y_pred = X_bias @ theta</pre>
+    <div class="example-title">2. Cost function (MSE) using dot product for the sum of squares</div>
+    <pre>errors = y_pred - y_true
+cost = (errors @ errors) / (2 * len(y_true))</pre>
+  </div>
+
+  <div class="fn-card u3" id="transpose">
+    <div class="fn-head"><span class="fname">np.transpose() · .T</span><span class="fsig">a.T  ≡  np.transpose(a)</span></div>
+    <h4 class="sub">Definition</h4>
+    <p>Flips an array's axes — rows become columns and vice versa. For a 2-D matrix, <code>(m, n)</code> becomes <code>(n, m)</code>.</p>
+    <h4 class="sub">Uses in this syllabus</h4>
+    <ul>
+      <li>Required in the <strong>Normal Equation</strong>: <code>θ = (XᵀX)⁻¹Xᵀy</code>.</li>
+      <li>Computing gradients in gradient descent, where you need <code>Xᵀ · error</code>.</li>
+    </ul>
+    <div class="example-title">1. Normal equation for linear regression (closed-form solution)</div>
+    <pre>theta = np.linalg.inv(X_bias.T @ X_bias) @ X_bias.T @ y</pre>
+    <div class="example-title">2. Gradient of the MSE cost function</div>
+    <pre>m = len(y)
+gradient = (1/m) * (X_bias.T @ (X_bias @ theta - y))</pre>
+  </div>
+
+  <div class="fn-card u3" id="inv">
+    <div class="fn-head"><span class="fname">np.linalg.inv()</span><span class="fsig">np.linalg.inv(A)</span></div>
+    <h4 class="sub">Definition</h4>
+    <p>Computes the matrix inverse <code>A⁻¹</code> such that <code>A @ A⁻¹ = I</code>. Only works on square, non-singular matrices.</p>
+    <h4 class="sub">Uses in this syllabus</h4>
+    <ul>
+      <li>Solving linear regression directly via the Normal Equation, without gradient descent.</li>
+      <li>The closed-form solution for Ridge Regression (L2 regularization), where the identity matrix (<code>np.eye</code>) is added before inverting to fix over-fitting.</li>
+    </ul>
+    <div class="example-title">1. Plain normal equation</div>
+    <pre>theta = np.linalg.inv(X_bias.T @ X_bias) @ X_bias.T @ y</pre>
+    <div class="example-title">2. Ridge regression (regularized) closed-form solution</div>
+    <pre>lam = 1.0
+I = np.eye(X_bias.shape[1])
+theta_ridge = np.linalg.inv(X_bias.T @ X_bias + lam * I) @ X_bias.T @ y</pre>
+    <div class="note">If <code>np.linalg.inv</code> raises <code>LinAlgError: Singular matrix</code>, your features are likely perfectly correlated (multicollinearity) — a real symptom of over-fitting risk covered in Ch.6.2.1.</div>
+  </div>
+
+  <div class="fn-card u3" id="sum">
+    <div class="fn-head"><span class="fname">np.sum()</span><span class="fsig">np.sum(a, axis=None)</span></div>
+    <h4 class="sub">Definition</h4>
+    <p>Adds up array elements, optionally along a given axis.</p>
+    <h4 class="sub">Uses in this syllabus</h4>
+    <ul>
+      <li>Computing the cost function (sum of squared errors) in linear regression.</li>
+      <li>Computing regression evaluation metrics: MSE and R².</li>
+      <li>Summing gradients across all training samples in gradient descent.</li>
+    </ul>
+    <div class="example-title">1. R² score (coefficient of determination) — regression evaluation metric</div>
+    <pre>ss_res = np.sum((y_true - y_pred) ** 2)
+ss_tot = np.sum((y_true - y_true.mean()) ** 2)
+r2 = 1 - (ss_res / ss_tot)</pre>
+    <div class="example-title">2. Batch gradient descent loop</div>
+    <pre>m, lr, epochs = len(y), 0.01, 1000
+theta = np.zeros(X_bias.shape[1])
+for _ in range(epochs):
+    error = X_bias @ theta - y
+    grad = (1/m) * (X_bias.T @ error)
+    theta -= lr * grad</pre>
+  </div>
+
+  <div class="fn-card u3" id="random">
+    <div class="fn-head"><span class="fname">np.random.randn() · np.random.rand()</span><span class="fsig">np.random.randn(*shape) / np.random.rand(*shape)</span></div>
+    <h4 class="sub">Definition</h4>
+    <p><code>randn</code> draws samples from the standard normal distribution (mean 0, std 1); <code>rand</code> draws uniformly from <code>[0, 1)</code>.</p>
+    <h4 class="sub">Uses in this syllabus</h4>
+    <ul>
+      <li>Randomly initializing weights for gradient descent, perceptrons, and neural networks (small random values avoid symmetry problems that zero-init causes in multi-layer networks).</li>
+      <li>Shuffling / generating synthetic datasets for testing before touching real data.</li>
+      <li>Random initial centroids for K-means (Unit 5).</li>
+    </ul>
+    <div class="example-title">1. Random weight initialization for a neural network layer</div>
+    <pre>np.random.seed(42)   <span class="c"># reproducibility</span>
+weights = np.random.randn(4, 3) * 0.01   <span class="c"># small random values</span></pre>
+    <div class="example-title">2. Shuffle a dataset before splitting into train/test</div>
+    <pre>indices = np.random.permutation(len(X))
+X_shuffled, y_shuffled = X[indices], y[indices]</pre>
+  </div>
+
+  <div class="exercise">
+    <h4>Unit 3 Exercise — Regression</h4>
+    <ol>
+      <li>Implement simple linear regression (1 feature) using the Normal Equation with <code>np.linalg.inv</code>, <code>.T</code>, and <code>@</code>.</li>
+      <li>Implement the same problem with batch gradient descent (a Python loop + <code>np.sum</code>/<code>@</code>) and confirm both give nearly the same <code>theta</code>.</li>
+      <li>Extend to multiple linear regression with 3+ features from a UCI/data.gov.in dataset.</li>
+      <li>Add L2 regularization (Ridge) using <code>np.eye</code>, and compare the R² and MSE (using <code>np.sum</code>/<code>np.mean</code>) against the unregularized model on a held-out test split.</li>
+    </ol>
+  </div>
+</section>
+
+<!-- ============ UNIT 4 ============ -->
+<section id="unit4">
+  <div class="unit-intro u4">
+    <span class="tag">Unit 4 · 15 hours</span>
+    <h2>Classification — From Logistic Regression to SVM</h2>
+    <p>Decision trees, Naive Bayes, logistic regression, KNN, perceptron/MLP/neural networks, and SVM (Ch.3, 4.3, 5.1, 8, 9, 10, 19.7) share a small toolkit: exponentials, logs, distances, and argmax/argmin.</p>
+  </div>
+
+  <div class="fn-card u4" id="exp">
+    <div class="fn-head"><span class="fname">np.exp()</span><span class="fsig">np.exp(x)</span></div>
+    <h4 class="sub">Definition</h4>
+    <p>Computes <code>e</code> raised to the power of each element — the exponential function, applied element-wise.</p>
+    <h4 class="sub">Uses in this syllabus</h4>
+    <ul>
+      <li><strong>Sigmoid activation</strong> in logistic regression (Ch.4.3) and the perceptron/neural network activation functions (Ch.9).</li>
+      <li>The Softmax function for multi-class outputs in neural networks.</li>
+      <li>The Gaussian probability density used inside Naive Bayes for continuous features (Ch.8).</li>
+    </ul>
+    <div class="example-title">1. Sigmoid function for logistic regression</div>
+    <pre>def sigmoid(z):
+    return 1 / (1 + np.exp(-z))
+
+z = X_bias @ theta
+probabilities = sigmoid(z)</pre>
+    <div class="example-title">2. Gaussian likelihood for Naive Bayes with continuous features</div>
+    <pre>def gaussian_prob(x, mean, var):
+    coeff = 1 / np.sqrt(2 * np.pi * var)
+    exponent = np.exp(-((x - mean) ** 2) / (2 * var))
+    return coeff * exponent</pre>
+    <div class="example-title">3. Softmax for multi-class neural network output layer</div>
+    <pre>def softmax(z):
+    exp_z = np.exp(z - np.max(z))   <span class="c"># subtract max for numerical stability</span>
+    return exp_z / np.sum(exp_z)</pre>
+  </div>
+
+  <div class="fn-card u4" id="log">
+    <div class="fn-head"><span class="fname">np.log()</span><span class="fsig">np.log(x)</span></div>
+    <h4 class="sub">Definition</h4>
+    <p>Computes the natural logarithm element-wise.</p>
+    <h4 class="sub">Uses in this syllabus</h4>
+    <ul>
+      <li><strong>Log-loss / cross-entropy</strong> — the cost function that trains logistic regression and neural network classifiers.</li>
+      <li>Log-probabilities in Naive Bayes, which avoid numerical underflow when multiplying many small probabilities together.</li>
+    </ul>
+    <div class="example-title">1. Binary cross-entropy (log-loss) cost function for logistic regression</div>
+    <pre>m = len(y)
+cost = -(1/m) * np.sum(
+    y * np.log(probabilities) + (1 - y) * np.log(1 - probabilities)
+)</pre>
+    <div class="example-title">2. Naive Bayes using log-probabilities (avoids underflow)</div>
+    <pre>log_posterior = np.log(prior) + np.sum(np.log(likelihoods))</pre>
+  </div>
+
+  <div class="fn-card u4" id="where">
+    <div class="fn-head"><span class="fname">np.where()</span><span class="fsig">np.where(condition, value_if_true, value_if_false)</span></div>
+    <h4 class="sub">Definition</h4>
+    <p>Element-wise conditional selection — returns one value where a condition holds and another where it doesn't.</p>
+    <h4 class="sub">Uses in this syllabus</h4>
+    <ul>
+      <li>Converting logistic regression / SVM probability or score outputs into hard class labels (0/1) using a decision threshold.</li>
+      <li>Implementing the perceptron's step activation function.</li>
+    </ul>
+    <div class="example-title">1. Threshold probabilities into class labels</div>
+    <pre>y_pred_labels = np.where(probabilities >= 0.5, 1, 0)</pre>
+    <div class="example-title">2. Perceptron step activation</div>
+    <pre>def step_activation(z):
+    return np.where(z >= 0, 1, 0)</pre>
+    <div class="example-title">3. SVM sign decision function</div>
+    <pre>y_pred = np.where(X_bias @ theta >= 0, 1, -1)</pre>
+  </div>
+
+  <div class="fn-card u4" id="argmaxmin">
+    <div class="fn-head"><span class="fname">np.argmax() · np.argmin()</span><span class="fsig">np.argmax(a, axis=None) / np.argmin(a, axis=None)</span></div>
+    <h4 class="sub">Definition</h4>
+    <p>Return the <em>index</em> of the maximum (or minimum) value along an axis — not the value itself.</p>
+    <h4 class="sub">Uses in this syllabus</h4>
+    <ul>
+      <li>Choosing the winning class in multi-class classification (which class has the highest predicted probability).</li>
+      <li>Finding the split feature with the best information gain / lowest Gini impurity in a Decision Tree (Ch.10).</li>
+      <li>Finding the nearest neighbor's index in KNN.</li>
+    </ul>
+    <div class="example-title">1. Multi-class prediction from a softmax output</div>
+    <pre>probs = np.array([0.1, 0.7, 0.2])
+predicted_class = np.argmax(probs)   <span class="c"># 1</span></pre>
+    <div class="example-title">2. Decision tree split selection — pick the feature with lowest impurity</div>
+    <pre>best_feature = np.argmin(gini_scores)</pre>
+  </div>
+
+  <div class="fn-card u4" id="norm">
+    <div class="fn-head"><span class="fname">np.linalg.norm()</span><span class="fsig">np.linalg.norm(x, ord=None, axis=None)</span></div>
+    <h4 class="sub">Definition</h4>
+    <p>Computes vector/matrix norms. With default settings on a vector, it computes the Euclidean (L2) distance/length. Set <code>ord=1</code> for Manhattan distance.</p>
+    <h4 class="sub">Uses in this syllabus</h4>
+    <ul>
+      <li><strong>K-Nearest Neighbor classifier</strong> (Ch.9): computing the distance from a query point to every training point is the entire algorithm.</li>
+      <li>Also reused identically in Unit 5 for K-means / hierarchical clustering distance metrics.</li>
+    </ul>
+    <div class="example-title">1. Euclidean distance from one query point to all training points (vectorized)</div>
+    <pre>query = np.array([5.1, 3.5])
+distances = np.linalg.norm(X_train - query, axis=1)</pre>
+    <div class="example-title">2. Manhattan distance (ord=1) — an alternative KNN distance metric</div>
+    <pre>distances_manhattan = np.linalg.norm(X_train - query, ord=1, axis=1)</pre>
+  </div>
+
+  <div class="fn-card u4" id="sortargsort">
+    <div class="fn-head"><span class="fname">np.sort() · np.argsort()</span><span class="fsig">np.sort(a) / np.argsort(a)</span></div>
+    <h4 class="sub">Definition</h4>
+    <p><code>sort</code> returns the array's values in ascending order; <code>argsort</code> returns the <em>indices</em> that would sort it — far more useful when you need to know which original row was closest.</p>
+    <h4 class="sub">Uses in this syllabus</h4>
+    <ul>
+      <li>K-Nearest Neighbor: after computing all distances, sort them to find the <code>k</code> closest training points.</li>
+      <li>Ranking principal components by explained variance in PCA (Unit 2).</li>
+    </ul>
+    <div class="example-title">1. Full KNN prediction using linalg.norm + argsort + majority vote</div>
+    <pre>k = 5
+distances = np.linalg.norm(X_train - query, axis=1)
+nearest_idx = np.argsort(distances)[:k]
+nearest_labels = y_train[nearest_idx]</pre>
+  </div>
+
+  <div class="fn-card u4" id="unique">
+    <div class="fn-head"><span class="fname">np.unique() · np.bincount()</span><span class="fsig">np.unique(a, return_counts=True) / np.bincount(a)</span></div>
+    <h4 class="sub">Definition</h4>
+    <p><code>unique</code> returns the sorted distinct values in an array (optionally with their counts); <code>bincount</code> counts occurrences of each non-negative integer, which is the fastest way to do majority voting.</p>
+    <h4 class="sub">Uses in this syllabus</h4>
+    <ul>
+      <li>Finding class labels and their prior probabilities for Naive Bayes.</li>
+      <li>Majority-vote step of the K-Nearest Neighbor classifier.</li>
+    </ul>
+    <div class="example-title">1. Class priors for Naive Bayes</div>
+    <pre>classes, counts = np.unique(y_train, return_counts=True)
+priors = counts / counts.sum()</pre>
+    <div class="example-title">2. Majority vote to finish the KNN prediction from the previous card</div>
+    <pre>predicted_class = np.argmax(np.bincount(nearest_labels))</pre>
+  </div>
+
+  <div class="fn-card u4" id="maximum">
+    <div class="fn-head"><span class="fname">np.maximum()</span><span class="fsig">np.maximum(x1, x2)</span></div>
+    <h4 class="sub">Definition</h4>
+    <p>Element-wise maximum of two arrays (or an array and a scalar) — different from <code>np.max</code>, which reduces one array to a single value.</p>
+    <h4 class="sub">Uses in this syllabus</h4>
+    <ul>
+      <li><strong>ReLU activation</strong>, the standard hidden-layer activation for multilayer perceptrons / neural networks (Ch.9).</li>
+      <li>Hinge loss computation for SVM (Ch.19.7).</li>
+    </ul>
+    <div class="example-title">1. ReLU activation for a neural network hidden layer</div>
+    <pre>def relu(z):
+    return np.maximum(0, z)</pre>
+    <div class="example-title">2. Hinge loss for SVM</div>
+    <pre>margins = np.maximum(0, 1 - y_true * y_pred_raw)
+hinge_loss = np.mean(margins)</pre>
+  </div>
+
+  <div class="exercise">
+    <h4>Unit 4 Exercise — Classification</h4>
+    <ol>
+      <li>Implement logistic regression from scratch: sigmoid (<code>np.exp</code>), log-loss (<code>np.log</code>, <code>np.sum</code>), gradient descent, and threshold predictions with <code>np.where</code>.</li>
+      <li>Implement a K-Nearest Neighbor classifier using only <code>np.linalg.norm</code>, <code>np.argsort</code>, and <code>np.bincount</code> — no library KNN allowed.</li>
+      <li>Implement a single perceptron with a step activation (<code>np.where</code>) that learns the AND/OR logic gate.</li>
+      <li>Compute Accuracy, Precision, Recall, Specificity, F1-score for one of your classifiers using boolean-mask counting (see Foundations section).</li>
+    </ol>
+  </div>
+</section>
+
+<!-- ============ UNIT 5 ============ -->
+<section id="unit5">
+  <div class="unit-intro u5">
+    <span class="tag">Unit 5 · 7 hours</span>
+    <h2>Clustering — K-Means & Hierarchical Clustering</h2>
+    <p>Unsupervised learning drops the labels but keeps the same distance math from Unit 4. K-means adds one new idea: iteratively recomputing centroids (Ch.12.4.1, 12.4.2).</p>
+  </div>
+
+  <div class="fn-card u5" id="clustermean">
+    <div class="fn-head"><span class="fname">np.mean() — for centroid updates</span><span class="fsig">cluster_points.mean(axis=0)</span></div>
+    <h4 class="sub">Definition</h4>
+    <p>Same function as in Unit 2 — the average, here applied per-cluster to relocate each centroid to the middle of its assigned points.</p>
+    <h4 class="sub">Uses in this syllabus</h4>
+    <ul>
+      <li><strong>K-means "update" step</strong>: after assigning every point to its nearest centroid, the new centroid is the mean of all points in that cluster.</li>
+    </ul>
+    <div class="example-title">1. Recompute each of k centroids</div>
+    <pre>new_centroids = np.array([
+    X[labels == c].mean(axis=0) for c in range(k)
+])</pre>
+  </div>
+
+  <div class="fn-card u5" id="clusterargmin">
+    <div class="fn-head"><span class="fname">np.linalg.norm() + np.argmin() — for cluster assignment</span><span class="fsig">np.argmin(distances, axis=1)</span></div>
+    <h4 class="sub">Definition</h4>
+    <p>The same distance (<code>linalg.norm</code>) and index-of-minimum (<code>argmin</code>) functions from Unit 4, now used to assign each point to its <em>closest centroid</em> rather than its closest neighbor.</p>
+    <h4 class="sub">Uses in this syllabus</h4>
+    <ul>
+      <li><strong>K-means "assignment" step</strong> and computing the distance metrics that hierarchical clustering's linkage criteria are built on (Ch.12.4).</li>
+    </ul>
+    <div class="example-title">1. Assign every point to its nearest of k centroids (fully vectorized)</div>
+    <pre><span class="c"># distances shape: (n_samples, k)</span>
+distances = np.linalg.norm(X[:, None, :] - centroids[None, :, :], axis=2)
+labels = np.argmin(distances, axis=1)</pre>
+    <div class="example-title">2. Complete K-means loop (assignment + update, from scratch)</div>
+    <pre>for iteration in range(max_iters):
+    distances = np.linalg.norm(X[:, None, :] - centroids[None, :, :], axis=2)
+    labels = np.argmin(distances, axis=1)
+    new_centroids = np.array([X[labels == c].mean(axis=0) for c in range(k)])
+    if np.allclose(new_centroids, centroids):
+        break
+    centroids = new_centroids</pre>
+  </div>
+
+  <div class="fn-card u5" id="randomchoice">
+    <div class="fn-head"><span class="fname">np.random.choice()</span><span class="fsig">np.random.choice(a, size, replace=False)</span></div>
+    <h4 class="sub">Definition</h4>
+    <p>Randomly samples elements (or indices) from an array, with or without replacement.</p>
+    <h4 class="sub">Uses in this syllabus</h4>
+    <ul>
+      <li>Randomly picking <code>k</code> initial centroids from the dataset to start K-means (Ch.12.4.1) — the standard initialization approach.</li>
+    </ul>
+    <div class="example-title">1. Random centroid initialization for K-means</div>
+    <pre>k = 3
+initial_idx = np.random.choice(len(X), size=k, replace=False)
+centroids = X[initial_idx]</pre>
+  </div>
+
+  <div class="exercise">
+    <h4>Unit 5 Exercise — Clustering</h4>
+    <ol>
+      <li>Implement K-means fully from scratch using only <code>np.random.choice</code>, <code>np.linalg.norm</code>, <code>np.argmin</code>, and <code>np.mean</code>.</li>
+      <li>Run it with <code>k</code> = 2, 3, and 4 on the same dataset. Plot (or print) how the cluster assignments change.</li>
+      <li>Compute the within-cluster sum of squared distances for each <code>k</code> to informally observe the "elbow" that motivates choosing a good <code>k</code>.</li>
+      <li>Compare the pairwise distance matrix produced by Euclidean (<code>ord=2</code>, default) vs. Manhattan (<code>ord=1</code>) norms — this pairwise matrix is exactly what agglomerative hierarchical clustering builds its linkages from.</li>
+    </ol>
+  </div>
+</section>
+
+<!-- ============ CHEATSHEET ============ -->
+<section id="cheatsheet" style="margin-top:60px;">
+  <h2>Full Cheat-Sheet</h2>
+  <p style="margin-bottom:18px;color:var(--ink-soft)">Every function in these notes, at a glance — grouped by unit for quick pre-exam review.</p>
+  <div class="cheatsheet">
+  <table class="cheat">
+    <tr><th>Function</th><th>Unit</th><th>One-line purpose</th></tr>
+    <tr><td class="fn">np.array</td><td>Foundations</td><td>Create an ndarray from a list/nested list</td></tr>
+    <tr><td class="fn">np.zeros/ones/eye</td><td>Foundations</td><td>Init weights, bias column, identity matrix</td></tr>
+    <tr><td class="fn">np.arange/linspace</td><td>Foundations</td><td>Ranges of values (hyperparameter sweeps, plotting)</td></tr>
+    <tr><td class="fn">.reshape/.shape</td><td>Foundations</td><td>Change/inspect array dimensions</td></tr>
+    <tr><td class="fn">Indexing/slicing/masking</td><td>Foundations</td><td>Train/test split, feature selection, confusion counts</td></tr>
+    <tr><td class="fn">np.mean/std/var</td><td>Unit 2</td><td>Standardization, PCA mean-centering, MSE</td></tr>
+    <tr><td class="fn">np.min/max/ptp</td><td>Unit 2</td><td>Min-max normalization</td></tr>
+    <tr><td class="fn">np.cov</td><td>Unit 2</td><td>Covariance matrix for PCA</td></tr>
+    <tr><td class="fn">np.linalg.eig</td><td>Unit 2</td><td>Principal components (eigenvectors) + variance (eigenvalues)</td></tr>
+    <tr><td class="fn">np.linalg.svd</td><td>Unit 2</td><td>Stable alternative route to PCA</td></tr>
+    <tr><td class="fn">np.dot / @</td><td>Unit 3</td><td>Vectorized regression hypothesis, cost function</td></tr>
+    <tr><td class="fn">.T / transpose</td><td>Unit 3</td><td>Normal equation, gradient computation</td></tr>
+    <tr><td class="fn">np.linalg.inv</td><td>Unit 3</td><td>Closed-form (Ridge) regression solution</td></tr>
+    <tr><td class="fn">np.sum</td><td>Unit 3</td><td>Cost function, R², gradient sums</td></tr>
+    <tr><td class="fn">np.random.randn/rand</td><td>Unit 3</td><td>Weight init, shuffling data</td></tr>
+    <tr><td class="fn">np.exp</td><td>Unit 4</td><td>Sigmoid, softmax, Gaussian likelihood</td></tr>
+    <tr><td class="fn">np.log</td><td>Unit 4</td><td>Log-loss, Naive Bayes log-probabilities</td></tr>
+    <tr><td class="fn">np.where</td><td>Unit 4</td><td>Thresholding, perceptron/SVM decision rule</td></tr>
+    <tr><td class="fn">np.argmax/argmin</td><td>Unit 4</td><td>Class choice, decision tree split, nearest label</td></tr>
+    <tr><td class="fn">np.linalg.norm</td><td>Unit 4 &amp; 5</td><td>Distance metric for KNN and clustering</td></tr>
+    <tr><td class="fn">np.sort/argsort</td><td>Unit 4</td><td>Rank neighbors by distance for KNN</td></tr>
+    <tr><td class="fn">np.unique/bincount</td><td>Unit 4</td><td>Class priors, KNN majority vote</td></tr>
+    <tr><td class="fn">np.maximum</td><td>Unit 4</td><td>ReLU activation, SVM hinge loss</td></tr>
+    <tr><td class="fn">np.mean (per cluster)</td><td>Unit 5</td><td>K-means centroid update step</td></tr>
+    <tr><td class="fn">np.argmin (per point)</td><td>Unit 5</td><td>K-means cluster assignment step</td></tr>
+    <tr><td class="fn">np.random.choice</td><td>Unit 5</td><td>Random initial centroids</td></tr>
+  </table>
+  </div>
+</section>
+
+<!-- ============ COMBINED EXERCISES ============ -->
+<section id="exercises" style="margin-top:60px;">
+  <h2>Combined Capstone Exercise</h2>
+  <p style="color:var(--ink-soft);max-width:75ch;">Ties every unit together in one pipeline, mirroring exactly what the practicals section of your syllabus asks for.</p>
+  <div class="exercise" style="margin-top:18px;">
+    <h4>End-to-end mini project</h4>
+    <ol>
+      <li>Pick one dataset from <code>data.gov.in</code> or the UCI repository with at least 4 numeric features and a target column suited to either regression or classification.</li>
+      <li>Preprocess it: standardize with <code>mean</code>/<code>std</code>, then reduce to 2 dimensions with PCA (<code>cov</code> + <code>linalg.eig</code>).</li>
+      <li>Split into train/test sets using array slicing after shuffling with <code>np.random.permutation</code>.</li>
+      <li>Train <em>either</em> a linear regression model (Normal Equation with <code>linalg.inv</code>/<code>.T</code>/<code>@</code>) <em>or</em> a logistic regression / KNN classifier (<code>exp</code>, <code>log</code>, <code>linalg.norm</code>, <code>argsort</code>).</li>
+      <li>Evaluate it: MSE + R² for regression, or Accuracy/Precision/Recall/F1 for classification, all computed with boolean masks and <code>np.sum</code>/<code>np.mean</code> — no external metrics library.</li>
+      <li>Finally, ignore the labels and run your from-scratch K-means (<code>random.choice</code>, <code>linalg.norm</code>, <code>argmin</code>, <code>mean</code>) on the same standardized features. Do the clusters roughly line up with your original target classes?</li>
+    </ol>
+  </div>
+</section>
+
+</main>
+</div>
+
+<footer>
+  Course notes for DSC17 / DSC-A5 / GE7c — Machine Learning, NEP UGCF 2022 &nbsp;·&nbsp; Built around NumPy, the array library every function above depends on.
+</footer>
+
+</body>
+</html>

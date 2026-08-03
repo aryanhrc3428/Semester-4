@@ -1,0 +1,1326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pandas for Machine Learning — Course Notes (DSC17 / DSC-A5 / GE7c)</title>
+<style>
+  :root{
+    --paper:#faf9f6;
+    --ink:#1e2530;
+    --ink-soft:#4a5568;
+    --navy:#243b53;
+    --navy-deep:#16283f;
+    --amber:#b8860b;
+    --amber-soft:#f4ecd8;
+    --line:#dcd6c9;
+    --code-bg:#1e2530;
+    --code-text:#e8e6df;
+    --unit-tag:#6b7c93;
+    --green:#3a6b52;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+    background:var(--paper);
+    color:var(--ink);
+    line-height:1.6;
+  }
+  .layout{display:flex; max-width:1400px; margin:0 auto;}
+  nav.toc{
+    width:260px;
+    flex-shrink:0;
+    position:sticky;
+    top:0;
+    height:100vh;
+    overflow-y:auto;
+    padding:28px 18px;
+    border-right:1px solid var(--line);
+    background:#f2efe7;
+  }
+  nav.toc h3{
+    font-family:"Courier New",monospace;
+    font-size:11px;
+    letter-spacing:2px;
+    text-transform:uppercase;
+    color:var(--unit-tag);
+    margin:0 0 14px 2px;
+  }
+  nav.toc a{
+    display:block;
+    font-family:"Helvetica Neue",Arial,sans-serif;
+    font-size:13.5px;
+    color:var(--navy-deep);
+    text-decoration:none;
+    padding:6px 8px;
+    border-radius:3px;
+    margin-bottom:1px;
+  }
+  nav.toc a.unit-link{font-weight:700; margin-top:12px;}
+  nav.toc a:hover{background:var(--amber-soft);}
+  main{flex:1; min-width:0; padding:48px 56px 100px;}
+  header.hero{
+    border-bottom:3px solid var(--navy-deep);
+    padding-bottom:24px;
+    margin-bottom:40px;
+  }
+  header.hero .eyebrow{
+    font-family:"Helvetica Neue",Arial,sans-serif;
+    font-size:12px;
+    letter-spacing:3px;
+    text-transform:uppercase;
+    color:var(--amber);
+    font-weight:700;
+  }
+  header.hero h1{
+    font-size:40px;
+    margin:8px 0 6px;
+    color:var(--navy-deep);
+    line-height:1.15;
+  }
+  header.hero p.sub{
+    font-family:"Helvetica Neue",Arial,sans-serif;
+    color:var(--ink-soft);
+    font-size:15px;
+    max-width:760px;
+    margin:0;
+  }
+  .map-box{
+    margin-top:22px;
+    background:var(--navy-deep);
+    color:#e8e6df;
+    padding:16px 20px;
+    border-radius:4px;
+    font-family:"Helvetica Neue",Arial,sans-serif;
+    font-size:13px;
+  }
+  .map-box strong{color:var(--amber);}
+  section.unit{
+    margin-bottom:64px;
+    scroll-margin-top:20px;
+  }
+  .unit-header{
+    display:flex;
+    align-items:baseline;
+    gap:14px;
+    border-bottom:1px solid var(--line);
+    padding-bottom:10px;
+    margin-bottom:6px;
+  }
+  .unit-tag{
+    font-family:"Courier New",monospace;
+    font-size:13px;
+    color:#fff;
+    background:var(--navy);
+    padding:3px 10px;
+    border-radius:3px;
+    white-space:nowrap;
+  }
+  .unit-header h2{
+    font-size:26px;
+    margin:0;
+    color:var(--navy-deep);
+  }
+  .unit-syllabus-note{
+    font-family:"Helvetica Neue",Arial,sans-serif;
+    font-size:13.5px;
+    color:var(--ink-soft);
+    margin:8px 0 28px;
+    font-style:italic;
+  }
+  .func-card{
+    border:1px solid var(--line);
+    border-left:4px solid var(--navy);
+    background:#fff;
+    padding:22px 26px;
+    margin-bottom:26px;
+    border-radius:2px;
+  }
+  .func-card h3{
+    font-family:"Courier New",monospace;
+    font-size:19px;
+    margin:0 0 4px;
+    color:var(--navy-deep);
+    word-break:break-word;
+  }
+  .func-card .tagline{
+    font-family:"Helvetica Neue",Arial,sans-serif;
+    font-size:13px;
+    color:var(--unit-tag);
+    margin-bottom:14px;
+  }
+  .label{
+    font-family:"Helvetica Neue",Arial,sans-serif;
+    font-size:11px;
+    letter-spacing:1.5px;
+    text-transform:uppercase;
+    color:var(--amber);
+    font-weight:700;
+    margin:16px 0 6px;
+  }
+  .func-card p{margin:4px 0 10px; font-size:15px;}
+  .func-card ul{margin:4px 0 10px 20px; font-size:14.5px;}
+  .func-card ul li{margin-bottom:4px;}
+  pre{
+    background:var(--code-bg);
+    color:var(--code-text);
+    padding:14px 16px;
+    border-radius:4px;
+    overflow-x:auto;
+    font-family:"Fira Code","Courier New",monospace;
+    font-size:13px;
+    line-height:1.5;
+    margin:6px 0 12px;
+  }
+  code.inline{
+    font-family:"Fira Code","Courier New",monospace;
+    background:var(--amber-soft);
+    padding:1px 6px;
+    border-radius:3px;
+    font-size:14px;
+    color:#5a4a1a;
+  }
+  .out-label{
+    font-family:"Helvetica Neue",Arial,sans-serif;
+    font-size:11px;
+    color:#8a8478;
+    letter-spacing:1px;
+    text-transform:uppercase;
+    margin:-6px 0 4px;
+  }
+  details.exercise{
+    background:var(--amber-soft);
+    border:1px solid #e0d3a8;
+    border-radius:4px;
+    padding:12px 18px;
+    margin-top:10px;
+  }
+  details.exercise summary{
+    font-family:"Helvetica Neue",Arial,sans-serif;
+    font-weight:700;
+    font-size:13.5px;
+    cursor:pointer;
+    color:var(--navy-deep);
+  }
+  details.exercise[open] summary{margin-bottom:10px;}
+  details.exercise pre{margin-top:8px;}
+  .unit-exercise-block{
+    background:#fff;
+    border:1.5px dashed var(--navy);
+    border-radius:4px;
+    padding:22px 26px;
+    margin-top:10px;
+  }
+  .unit-exercise-block h4{
+    margin-top:0;
+    color:var(--navy-deep);
+    font-family:"Helvetica Neue",Arial,sans-serif;
+    font-size:15px;
+    letter-spacing:0.5px;
+    text-transform:uppercase;
+  }
+  .unit-exercise-block ol{margin:8px 0 0 20px; font-size:14.5px;}
+  .unit-exercise-block ol li{margin-bottom:8px;}
+  table.params{
+    width:100%;
+    border-collapse:collapse;
+    font-size:13.5px;
+    font-family:"Helvetica Neue",Arial,sans-serif;
+    margin:6px 0 14px;
+  }
+  table.params th, table.params td{
+    border:1px solid var(--line);
+    padding:6px 10px;
+    text-align:left;
+    vertical-align:top;
+  }
+  table.params th{background:#f2efe7; color:var(--navy-deep);}
+  .note{
+    background:#eef3f0;
+    border-left:4px solid var(--green);
+    padding:10px 16px;
+    font-size:14px;
+    margin:10px 0;
+  }
+  .capstone{
+    background:var(--navy-deep);
+    color:#e8e6df;
+    padding:36px 40px;
+    border-radius:6px;
+  }
+  .capstone h2{color:#fff; margin-top:0;}
+  .capstone .label{color:#f4d78a;}
+  .capstone pre{background:#0d1826;}
+  .capstone code.inline{background:#2c3f57; color:#f4d78a;}
+  .capstone ol{margin-left:20px; font-size:14.5px;}
+  .capstone ol li{margin-bottom:10px;}
+  a.back-top{
+    font-family:"Helvetica Neue",Arial,sans-serif;
+    font-size:11px;
+    color:var(--unit-tag);
+    text-decoration:none;
+  }
+  @media (max-width: 900px){
+    nav.toc{display:none;}
+    main{padding:28px 22px 80px;}
+    header.hero h1{font-size:30px;}
+  }
+</style>
+</head>
+<body>
+<div class="layout">
+
+<nav class="toc">
+<h3>Contents</h3>
+<a href="#top">Overview</a>
+<a href="#basics" class="unit-link">0 · Pandas Basics</a>
+<a href="#s-series">Series</a>
+<a href="#s-dataframe">DataFrame</a>
+
+<a href="#unit1" class="unit-link">Unit 1 · Loading & Inspecting</a>
+<a href="#s-readcsv">read_csv()</a>
+<a href="#s-head">head() / tail()</a>
+<a href="#s-info">info()</a>
+<a href="#s-describe">describe()</a>
+
+<a href="#unit2a" class="unit-link">Unit 2 · Missing & Duplicate Data</a>
+<a href="#s-isnull">isnull() / notnull()</a>
+<a href="#s-dropna">dropna()</a>
+<a href="#s-fillna">fillna()</a>
+<a href="#s-duplicated">duplicated() / drop_duplicates()</a>
+
+<a href="#unit2b" class="unit-link">Unit 2 · Selection & Feature Selection</a>
+<a href="#s-loc">loc[]</a>
+<a href="#s-iloc">iloc[]</a>
+<a href="#s-bool">Boolean indexing</a>
+<a href="#s-drop">drop()</a>
+<a href="#s-selectdtypes">select_dtypes()</a>
+
+<a href="#unit2c" class="unit-link">Unit 2 · Scaling & Encoding</a>
+<a href="#s-apply">apply()</a>
+<a href="#s-map">map()</a>
+<a href="#s-scaling">Manual scaling formulas</a>
+<a href="#s-dummies">get_dummies()</a>
+<a href="#s-replace">replace()</a>
+<a href="#s-astype">astype()</a>
+
+<a href="#unit34" class="unit-link">Unit 3/4 · Splitting & Combining</a>
+<a href="#s-sample">sample()</a>
+<a href="#s-concat">concat()</a>
+<a href="#s-merge">merge()</a>
+
+<a href="#unit35" class="unit-link">Unit 3/5 · Relationships</a>
+<a href="#s-sortvalues">sort_values()</a>
+<a href="#s-groupby">groupby()</a>
+<a href="#s-corr">corr()</a>
+<a href="#s-valuecounts">value_counts()</a>
+
+<a href="#capstone" class="unit-link">Capstone Exercise</a>
+</nav>
+
+<main>
+
+<header class="hero" id="top">
+  <div class="eyebrow">DSC17 / DSC-A5 / GE7c &middot; Machine Learning &middot; NEP UGCF 2022</div>
+  <h1>Pandas for Machine Learning</h1>
+  <p class="sub">These notes cover every pandas function you need for the practical component of your Machine Learning course — building the Naive Bayes, regression, decision tree, k-NN, SVM, ANN, and k-means/hierarchical clustering models listed in your syllabus. Each function includes its definition, syntax, common cases, a worked example, and a try-it-yourself exercise.</p>
+  <div class="map-box">
+    <strong>Why pandas, and not sklearn, in this document?</strong> Your syllabus practicals ask you to pull datasets from data.gov.in and the UCI ML repository, then split, clean, and evaluate models. Before any model (Naive Bayes, linear regression, k-NN, SVM, k-means...) ever sees your data, <em>pandas</em> is the tool that loads it, cleans it, selects features, scales it, and splits it. That is exactly the ground these notes cover — nothing here is generic pandas trivia; every function is tied to a specific unit in your syllabus.
+  </div>
+</header>
+
+<!-- ============================================================ -->
+<!-- UNIT 0: BASICS -->
+<!-- ============================================================ -->
+<section class="unit" id="basics">
+  <div class="unit-header"><span class="unit-tag">Foundation</span><h2>Pandas Basics — Series &amp; DataFrame</h2></div>
+  <p class="unit-syllabus-note">Ties to: Unit 1 — "key elements" of a learning problem are almost always stored as a table of features and a target column. Every dataset you touch this semester (regression, classification, clustering) is loaded as a DataFrame first.</p>
+
+  <div class="func-card" id="s-series">
+    <h3>pandas.Series(data, index=None, dtype=None, name=None)</h3>
+    <div class="tagline">The 1-dimensional building block — think of it as a single labeled column</div>
+    <p class="label">Definition</p>
+    <p>A <code class="inline">Series</code> is a one-dimensional, labeled array that can hold any data type (numbers, strings, booleans). Every value has an index label attached to it, so it behaves like a cross between a Python list and a dictionary.</p>
+    <p class="label">Syntax</p>
+    <pre><code>pd.Series(data, index=None, dtype=None, name=None)</code></pre>
+    <table class="params">
+      <tr><th>Parameter</th><th>Meaning</th></tr>
+      <tr><td>data</td><td>list, dict, ndarray, or scalar</td></tr>
+      <tr><td>index</td><td>labels for each value (defaults to 0,1,2,...)</td></tr>
+      <tr><td>dtype</td><td>force a data type, e.g. <code class="inline">float64</code></td></tr>
+      <tr><td>name</td><td>name of the Series (becomes the column name if added to a DataFrame)</td></tr>
+    </table>
+    <p class="label">Where it's used</p>
+    <p>Every single column you pull out of a DataFrame — <code class="inline">df['age']</code>, your target/label column <code class="inline">y</code> in regression or classification — is a Series.</p>
+    <p class="label">Example</p>
+    <pre><code>import pandas as pd
+
+marks = pd.Series([78, 65, 92, 55], index=['Amit','Bina','Chetan','Deepa'], name='Marks')
+print(marks)
+print(marks['Chetan'])</code></pre>
+    <p class="out-label">Output</p>
+    <pre><code>Amit      78
+Bina      65
+Chetan    92
+Deepa     55
+Name: Marks, dtype: int64
+92</code></pre>
+    <p class="label">Common cases</p>
+    <ul>
+      <li>Creating a target vector: <code class="inline">y = df['species']</code></li>
+      <li>Creating from a dict — keys become the index automatically</li>
+      <li>Arithmetic works element-wise: <code class="inline">marks * 1.1</code> curves every mark</li>
+    </ul>
+    <details class="exercise">
+      <summary>Try it — Exercise</summary>
+      <p>Create a Series named <code class="inline">temp_c</code> holding 5 temperature readings in Celsius with index labels <code class="inline">day1..day5</code>. Then create a second Series <code class="inline">temp_f</code> that converts every value to Fahrenheit using the formula F = C*9/5 + 32, in a single line.</p>
+    </details>
+  </div>
+
+  <div class="func-card" id="s-dataframe">
+    <h3>pandas.DataFrame(data, index=None, columns=None, dtype=None)</h3>
+    <div class="tagline">The 2-dimensional table — your entire dataset</div>
+    <p class="label">Definition</p>
+    <p>A <code class="inline">DataFrame</code> is a 2-dimensional labeled table of rows and columns, like a spreadsheet or a SQL table. Columns can hold different data types (numeric, categorical, boolean).</p>
+    <p class="label">Syntax</p>
+    <pre><code>pd.DataFrame(data, index=None, columns=None, dtype=None)</code></pre>
+    <p class="label">Where it's used</p>
+    <p>This is the object every algorithm in your syllabus consumes: rows = samples/observations, columns = features + a label column. Feature scaling, PCA, train/test splitting, decision trees, k-NN — all operate on a DataFrame (or the NumPy array beneath it).</p>
+    <p class="label">Example</p>
+    <pre><code>import pandas as pd
+
+data = {
+    'age': [25, 32, 47, 51],
+    'salary': [40000, 55000, 82000, 90000],
+    'bought_insurance': [0, 0, 1, 1]
+}
+df = pd.DataFrame(data)
+print(df)
+print(df.shape)      # (rows, columns)
+print(df.columns)    # column names
+print(df.dtypes)      # data type per column</code></pre>
+    <p class="out-label">Output</p>
+    <pre><code>   age  salary  bought_insurance
+0   25   40000                 0
+1   32   55000                 0
+2   47   82000                 1
+3   51   90000                 1
+(4, 3)
+Index(['age', 'salary', 'bought_insurance'], dtype='object')
+age                 int64
+salary              int64
+bought_insurance    int64
+dtype: object</code></pre>
+    <p class="label">Common cases</p>
+    <ul>
+      <li>From a dict of lists (columns), from a list of dicts (rows), or from a NumPy 2D array</li>
+      <li><code class="inline">df.shape</code>, <code class="inline">df.columns</code>, <code class="inline">df.index</code>, <code class="inline">df.dtypes</code> are attributes, not methods — no parentheses</li>
+      <li>Splitting into features and target: <code class="inline">X = df.drop('bought_insurance', axis=1)</code>, <code class="inline">y = df['bought_insurance']</code> — this is literally the first line of every classification practical</li>
+    </ul>
+    <details class="exercise">
+      <summary>Try it — Exercise</summary>
+      <p>Build a small DataFrame of 6 students with columns <code class="inline">hours_studied</code>, <code class="inline">attendance_pct</code>, and <code class="inline">passed</code> (0/1). Print its shape and dtypes, then separate it into <code class="inline">X</code> (features) and <code class="inline">y</code> (target) the way you would before training a Naive Bayes classifier.</p>
+    </details>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- UNIT 1: LOADING & INSPECTING -->
+<!-- ============================================================ -->
+<section class="unit" id="unit1">
+  <div class="unit-header"><span class="unit-tag">Unit 1</span><h2>Loading &amp; Inspecting Data</h2></div>
+  <p class="unit-syllabus-note">Ties to: Unit 1 — "applications of ML" and the practicals instruction to use public datasets from data.gov.in and archive.ics.uci.edu/ml/datasets.php. This is always your first step, for every single practical this semester.</p>
+
+  <div class="func-card" id="s-readcsv">
+    <h3>pandas.read_csv(filepath, sep=',', header='infer', index_col=None, na_values=None)</h3>
+    <div class="tagline">Load a dataset from a CSV file into a DataFrame</div>
+    <p class="label">Definition</p>
+    <p>Reads a comma-separated (or other delimiter) text file and returns it as a DataFrame. This is how you will load nearly every UCI dataset (Iris, Wine, Breast Cancer, Boston Housing-style regression sets, etc.).</p>
+    <p class="label">Syntax</p>
+    <pre><code>pd.read_csv(filepath_or_buffer, sep=',', header='infer',
+            names=None, index_col=None, na_values=None, usecols=None)</code></pre>
+    <table class="params">
+      <tr><th>Parameter</th><th>Meaning</th></tr>
+      <tr><td>filepath_or_buffer</td><td>path or URL to the file</td></tr>
+      <tr><td>sep</td><td>delimiter — use <code class="inline">'\t'</code> for tab-separated UCI files, <code class="inline">';'</code> for some European datasets</td></tr>
+      <tr><td>header</td><td>row number to use as column names; <code class="inline">None</code> if the file has no header row (common in raw UCI <code class="inline">.data</code> files)</td></tr>
+      <tr><td>names</td><td>supply column names yourself when <code class="inline">header=None</code></td></tr>
+      <tr><td>na_values</td><td>strings to treat as missing, e.g. <code class="inline">'?'</code> (UCI datasets often use <code class="inline">?</code> for missing values)</td></tr>
+      <tr><td>index_col</td><td>column to use as the row index</td></tr>
+    </table>
+    <p class="label">Common cases</p>
+    <ul>
+      <li><strong>Standard CSV with header:</strong> <code class="inline">pd.read_csv('iris.csv')</code></li>
+      <li><strong>Raw UCI <code class="inline">.data</code> file, no header, missing values marked '?':</strong>
+        <code class="inline">pd.read_csv('breast-cancer-wisconsin.data', header=None, na_values='?')</code></li>
+      <li><strong>Reading directly from a UCI URL:</strong> pass the raw URL string instead of a local path</li>
+      <li><strong>Tab-separated:</strong> <code class="inline">pd.read_csv('data.tsv', sep='\t')</code></li>
+    </ul>
+    <p class="label">Example</p>
+    <pre><code>import pandas as pd
+
+# A typical UCI-style load: no header row, '?' marks missing values
+cols = ['id','clump_thickness','cell_size','cell_shape','marginal_adhesion',
+        'epithelial_size','bare_nuclei','bland_chromatin','normal_nucleoli',
+        'mitoses','class']
+df = pd.read_csv(
+    'https://archive.ics.uci.edu/ml/machine-learning-databases/'
+    'breast-cancer-wisconsin/breast-cancer-wisconsin.data',
+    header=None, names=cols, na_values='?'
+)
+print(df.head(3))</code></pre>
+    <p class="out-label">Output</p>
+    <pre><code>        id  clump_thickness  cell_size  ...  mitoses  class
+0  1000025                5          1  ...        1      2
+1  1002945                5          4  ...        1      2
+2  1015425                3          1  ...        1      2</code></pre>
+    <details class="exercise">
+      <summary>Try it — Exercise</summary>
+      <p>Download the Iris dataset from the UCI repository (<code class="inline">iris.data</code>, no header). Load it with pandas, supplying column names <code class="inline">['sepal_length','sepal_width','petal_length','petal_width','species']</code>. Confirm it loaded correctly by printing its shape (expected: 150 rows, 5 columns).</p>
+    </details>
+  </div>
+
+  <div class="func-card" id="s-head">
+    <h3>df.head(n=5)  &nbsp;/&nbsp;  df.tail(n=5)</h3>
+    <div class="tagline">Peek at the first / last rows</div>
+    <p class="label">Definition</p>
+    <p><code class="inline">head(n)</code> returns the first <em>n</em> rows; <code class="inline">tail(n)</code> returns the last <em>n</em>. Default <em>n</em> is 5. The very first thing you should run after loading any dataset.</p>
+    <p class="label">Where it's used</p>
+    <p>Sanity-checking that a dataset loaded with correct columns, correct types, and no obvious misalignment before you do any preprocessing or feed it to a model.</p>
+    <p class="label">Example</p>
+    <pre><code>print(df.head())      # first 5 rows
+print(df.tail(3))     # last 3 rows</code></pre>
+    <p class="label">Common cases</p>
+    <ul>
+      <li><code class="inline">df.head()</code> with no argument → 5 rows</li>
+      <li><code class="inline">df.head(10)</code> → first 10 rows</li>
+      <li><code class="inline">df.sample(5)</code> is a good companion — a <em>random</em> 5 rows, useful when a dataset is sorted and <code class="inline">head()</code> alone would hide diversity</li>
+    </ul>
+    <details class="exercise">
+      <summary>Try it — Exercise</summary>
+      <p>Load any dataset and print the first 7 rows and the last 4 rows in the same script.</p>
+    </details>
+  </div>
+
+  <div class="func-card" id="s-info">
+    <h3>df.info(verbose=True)</h3>
+    <div class="tagline">A structural summary: columns, non-null counts, dtypes, memory</div>
+    <p class="label">Definition</p>
+    <p>Prints a concise summary of the DataFrame: number of rows, each column's name, count of non-null values, and dtype. This is the fastest way to spot missing values before you use <code class="inline">isnull()</code>.</p>
+    <p class="label">Syntax</p>
+    <pre><code>df.info()</code></pre>
+    <p class="label">Example</p>
+    <pre><code>df.info()</code></pre>
+    <p class="out-label">Output</p>
+    <pre><code>&lt;class 'pandas.core.frame.DataFrame'&gt;
+RangeIndex: 699 entries, 0 to 698
+Data columns (total 11 columns):
+ #   Column           Non-Null Count  Dtype
+---  ------           --------------  -----
+ 0   id               699 non-null    int64
+ 1   clump_thickness  699 non-null    int64
+ ...
+ 6   bare_nuclei      683 non-null    float64
+ 10  class            699 non-null    int64
+dtypes: float64(1), int64(10)
+memory usage: 60.2 KB</code></pre>
+    <p class="label">Common cases</p>
+    <ul>
+      <li>Column <code class="inline">bare_nuclei</code> shows 683 non-null out of 699 rows → 16 missing values → next step is <code class="inline">dropna()</code> or <code class="inline">fillna()</code> (Unit 2)</li>
+      <li>A column you expected to be numeric shows dtype <code class="inline">object</code> → likely contains stray text or was read with a non-numeric placeholder</li>
+    </ul>
+    <details class="exercise">
+      <summary>Try it — Exercise</summary>
+      <p>Run <code class="inline">df.info()</code> on a dataset with at least one missing value. Identify which column(s) have missing data purely from the non-null counts, before touching <code class="inline">isnull()</code>.</p>
+    </details>
+  </div>
+
+  <div class="func-card" id="s-describe">
+    <h3>df.describe(include=None)</h3>
+    <div class="tagline">Summary statistics for every numeric column</div>
+    <p class="label">Definition</p>
+    <p>Computes count, mean, std, min, 25/50/75th percentiles, and max for every numeric column. With <code class="inline">include='all'</code> or <code class="inline">include='object'</code>, it also summarizes categorical columns (count, unique, top, freq).</p>
+    <p class="label">Where it's used</p>
+    <p>Directly relevant to Unit 2's feature scaling: <code class="inline">describe()</code> tells you the scale/range of each feature, which is exactly why algorithms like k-NN, k-means, and gradient descent-based regression need scaling — a feature ranging 0–90000 (salary) will dominate one ranging 0–1 (a ratio) unless scaled.</p>
+    <p class="label">Example</p>
+    <pre><code>print(df.describe())</code></pre>
+    <p class="out-label">Output</p>
+    <pre><code>              age        salary  bought_insurance
+count    4.000000      4.000000          4.000000
+mean    38.750000  66750.000000          0.500000
+std     12.529970  23643.652974          0.577350
+min     25.000000  40000.000000          0.000000
+25%     30.250000  51250.000000          0.000000
+50%     39.500000  68500.000000          0.500000
+75%     48.000000  84000.000000          1.000000
+max     51.000000  90000.000000          1.000000</code></pre>
+    <p class="label">Common cases</p>
+    <ul>
+      <li><code class="inline">df.describe()</code> — numeric columns only (default)</li>
+      <li><code class="inline">df.describe(include='object')</code> — categorical columns only</li>
+      <li><code class="inline">df.describe(include='all')</code> — everything, with NaN in cells that don't apply</li>
+      <li>Comparing <code class="inline">min</code>/<code class="inline">max</code> across columns tells you immediately which features need scaling before k-NN, SVM, or k-means</li>
+    </ul>
+    <details class="exercise">
+      <summary>Try it — Exercise</summary>
+      <p>Run <code class="inline">describe()</code> on a dataset with at least 3 numeric features of very different ranges (e.g. age, income, a 0–1 ratio). Based only on the min/max rows, write one sentence on which features would need scaling before running k-NN.</p>
+    </details>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- UNIT 2a: MISSING / DUPLICATE DATA -->
+<!-- ============================================================ -->
+<section class="unit" id="unit2a">
+  <div class="unit-header"><span class="unit-tag">Unit 2</span><h2>Handling Missing &amp; Duplicate Data</h2></div>
+  <p class="unit-syllabus-note">Ties to: Unit 2 — Preprocessing. Real UCI datasets (e.g. Breast Cancer Wisconsin) ship with missing values; models like linear/logistic regression, SVM, and k-NN cannot handle NaN directly.</p>
+
+  <div class="func-card" id="s-isnull">
+    <h3>df.isnull()  &nbsp;/&nbsp;  df.notnull()</h3>
+    <div class="tagline">Detect missing values, cell by cell</div>
+    <p class="label">Definition</p>
+    <p><code class="inline">isnull()</code> returns a same-shaped DataFrame of booleans: <code class="inline">True</code> where a value is missing (NaN). <code class="inline">notnull()</code> is the exact opposite.</p>
+    <p class="label">Syntax</p>
+    <pre><code>df.isnull()                # full boolean grid
+df.isnull().sum()           # missing count per column  (most-used form)
+df.isnull().sum().sum()     # total missing values in the whole DataFrame
+df['col'].isnull()          # boolean mask for one column</code></pre>
+    <p class="label">Example</p>
+    <pre><code>print(df.isnull().sum())</code></pre>
+    <p class="out-label">Output</p>
+    <pre><code>id                  0
+clump_thickness     0
+bare_nuclei        16
+class               0
+dtype: int64</code></pre>
+    <p class="label">Common cases</p>
+    <ul>
+      <li><code class="inline">df.isnull().sum()</code> — the standard first check, column-wise missing counts</li>
+      <li><code class="inline">df[df['bare_nuclei'].isnull()]</code> — view the actual rows that are missing that feature</li>
+      <li><code class="inline">df.isnull().any()</code> — which columns have <em>at least one</em> missing value (True/False per column)</li>
+    </ul>
+    <details class="exercise">
+      <summary>Try it — Exercise</summary>
+      <p>Given a DataFrame with missing values in two columns, print (a) the total missing count per column, and (b) the rows where <em>both</em> of those columns are missing at once (hint: combine two boolean masks with <code class="inline">&amp;</code>).</p>
+    </details>
+  </div>
+
+  <div class="func-card" id="s-dropna">
+    <h3>df.dropna(axis=0, how='any', subset=None, inplace=False)</h3>
+    <div class="tagline">Remove rows (or columns) containing missing values</div>
+    <p class="label">Definition</p>
+    <p>Drops any row (default) or column that contains missing values, according to the <code class="inline">how</code> rule.</p>
+    <p class="label">Syntax</p>
+    <pre><code>df.dropna(axis=0, how='any', subset=None, inplace=False)</code></pre>
+    <table class="params">
+      <tr><th>Parameter</th><th>Meaning</th></tr>
+      <tr><td>axis</td><td>0 = drop rows (default), 1 = drop columns</td></tr>
+      <tr><td>how</td><td>'any' = drop if any value missing; 'all' = drop only if every value in the row/col is missing</td></tr>
+      <tr><td>subset</td><td>only consider these columns when deciding to drop a row</td></tr>
+      <tr><td>inplace</td><td>if True, modifies df directly instead of returning a new one</td></tr>
+    </table>
+    <p class="label">Example</p>
+    <pre><code>print(df.shape)                 # (699, 11)
+df_clean = df.dropna()
+print(df_clean.shape)            # (683, 11) -- 16 rows removed</code></pre>
+    <p class="label">Common cases</p>
+    <ul>
+      <li><strong>Drop rows with any missing value:</strong> <code class="inline">df.dropna()</code> — safe default for small amounts of missingness</li>
+      <li><strong>Drop only if a specific column is missing:</strong> <code class="inline">df.dropna(subset=['bare_nuclei'])</code></li>
+      <li><strong>Drop a column that is mostly empty:</strong> <code class="inline">df.dropna(axis=1, thresh=len(df)*0.5)</code> — keeps only columns with at least 50% non-null data</li>
+    </ul>
+    <div class="note">When to prefer <code class="inline">dropna()</code> over <code class="inline">fillna()</code>: use it when missing values are rare (a small % of rows) so you don't lose much signal. If a large fraction of a column is missing, imputing with <code class="inline">fillna()</code> usually preserves more data for training your regression/classification model.</div>
+    <details class="exercise">
+      <summary>Try it — Exercise</summary>
+      <p>Load the Breast Cancer Wisconsin dataset (it has 16 missing values in <code class="inline">bare_nuclei</code> marked as <code class="inline">'?'</code>). Drop the affected rows and confirm the new shape has exactly 683 rows.</p>
+    </details>
+  </div>
+
+  <div class="func-card" id="s-fillna">
+    <h3>df.fillna(value=None, method=None, inplace=False)</h3>
+    <div class="tagline">Impute missing values instead of deleting rows</div>
+    <p class="label">Definition</p>
+    <p>Replaces NaN values with a specified value, a computed statistic, or by forward/backward filling from neighboring rows.</p>
+    <p class="label">Syntax</p>
+    <pre><code>df['col'].fillna(value, inplace=False)
+df['col'].fillna(df['col'].mean())     # impute with the mean (regression-friendly)
+df['col'].fillna(df['col'].median())   # impute with the median (robust to outliers)
+df['col'].fillna(df['col'].mode()[0])  # impute with the mode (categorical columns)
+df.fillna(method='ffill')               # forward-fill from the previous row
+df.fillna(method='bfill')               # backward-fill from the next row</code></pre>
+    <p class="label">Example</p>
+    <pre><code>df['bare_nuclei'] = df['bare_nuclei'].fillna(df['bare_nuclei'].median())
+print(df['bare_nuclei'].isnull().sum())   # 0</code></pre>
+    <p class="label">Common cases</p>
+    <ul>
+      <li><strong>Numeric feature, no strong outliers</strong> → fill with <code class="inline">mean()</code></li>
+      <li><strong>Numeric feature with outliers</strong> (e.g. income) → fill with <code class="inline">median()</code>, which is not skewed by extreme values</li>
+      <li><strong>Categorical feature</strong> (e.g. a "yes/no" column) → fill with <code class="inline">mode()[0]</code>, the most frequent category</li>
+      <li><strong>Time-ordered data</strong> → <code class="inline">ffill</code>/<code class="inline">bfill</code> carries the last known value forward/backward</li>
+    </ul>
+    <details class="exercise">
+      <summary>Try it — Exercise</summary>
+      <p>On the same Breast Cancer dataset, instead of dropping rows, impute the missing <code class="inline">bare_nuclei</code> values with the column median. Compare <code class="inline">df.describe()</code> before and after — has the mean shifted much?</p>
+    </details>
+  </div>
+
+  <div class="func-card" id="s-duplicated">
+    <h3>df.duplicated(subset=None)  &nbsp;/&nbsp;  df.drop_duplicates(subset=None)</h3>
+    <div class="tagline">Find and remove repeated rows</div>
+    <p class="label">Definition</p>
+    <p><code class="inline">duplicated()</code> returns a boolean Series flagging rows that are exact repeats of an earlier row. <code class="inline">drop_duplicates()</code> removes them, keeping the first occurrence by default.</p>
+    <p class="label">Syntax</p>
+    <pre><code>df.duplicated()                 # boolean flag per row
+df.duplicated(subset=['id'])    # duplicate check on specific column(s) only
+df.drop_duplicates(keep='first')</code></pre>
+    <p class="label">Where it's used</p>
+    <p>Duplicate samples silently bias model training — a repeated row gets "double weight" during fitting and can leak between your train and test split if not removed first. Always check before splitting for Unit 3/4 practicals.</p>
+    <p class="label">Example</p>
+    <pre><code>print(df.duplicated().sum())     # how many duplicate rows exist
+df = df.drop_duplicates()</code></pre>
+    <p class="label">Common cases</p>
+    <ul>
+      <li>Duplicate on all columns (default) — an exact repeated record</li>
+      <li>Duplicate on a subset, e.g. <code class="inline">subset=['patient_id']</code>, to catch the same patient entered twice even if one field differs</li>
+    </ul>
+    <details class="exercise">
+      <summary>Try it — Exercise</summary>
+      <p>Append 3 duplicate rows to any small DataFrame you build. Confirm <code class="inline">duplicated().sum()</code> reports 3, then remove them and confirm the row count drops back to the original.</p>
+    </details>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- UNIT 2b: SELECTION & FEATURE SELECTION -->
+<!-- ============================================================ -->
+<section class="unit" id="unit2b">
+  <div class="unit-header"><span class="unit-tag">Unit 2</span><h2>Selection, Filtering &amp; Feature Selection</h2></div>
+  <p class="unit-syllabus-note">Ties to: Unit 2 — "feature selection methods." Before PCA or any model, you need to pick out relevant columns/rows, drop irrelevant ones, and isolate features from the label.</p>
+
+  <div class="func-card" id="s-loc">
+    <h3>df.loc[row_labels, column_labels]</h3>
+    <div class="tagline">Label-based selection</div>
+    <p class="label">Definition</p>
+    <p>Selects rows and columns by their <em>label</em> (index name / column name), not position. Supports slicing, boolean masks, and lists of labels. Note: with <code class="inline">loc</code>, slice endpoints are <em>inclusive</em>.</p>
+    <p class="label">Syntax</p>
+    <pre><code>df.loc[row_selector, column_selector]
+df.loc[0:3, 'age']                 # rows 0-3 inclusive, one column
+df.loc[:, ['age','salary']]        # all rows, specific columns
+df.loc[df['age'] > 40, 'salary']   # conditional selection</code></pre>
+    <p class="label">Example</p>
+    <pre><code>print(df.loc[0:2, ['age','salary']])
+print(df.loc[df['age'] > 40, 'salary'])</code></pre>
+    <p class="out-label">Output</p>
+    <pre><code>   age  salary
+0   25   40000
+1   32   55000
+2   47   82000
+2    82000
+3    90000
+Name: salary, dtype: int64</code></pre>
+    <p class="label">Common cases</p>
+    <ul>
+      <li>Select all rows, a list of feature columns: <code class="inline">df.loc[:, ['sepal_length','sepal_width']]</code></li>
+      <li>Filter + select in one step: <code class="inline">df.loc[df['class']==1, 'age']</code></li>
+      <li>Set values conditionally: <code class="inline">df.loc[df['age']<0, 'age'] = 0</code> (clip invalid data)</li>
+    </ul>
+    <details class="exercise">
+      <summary>Try it — Exercise</summary>
+      <p>From the Iris dataset, use <code class="inline">.loc</code> to select just the <code class="inline">petal_length</code> and <code class="inline">petal_width</code> columns for rows where <code class="inline">species == 'Iris-setosa'</code>.</p>
+    </details>
+  </div>
+
+  <div class="func-card" id="s-iloc">
+    <h3>df.iloc[row_positions, column_positions]</h3>
+    <div class="tagline">Position-based (integer index) selection</div>
+    <p class="label">Definition</p>
+    <p>Selects rows and columns by integer position, exactly like NumPy/Python list slicing. Slice endpoints are <em>exclusive</em> (unlike <code class="inline">loc</code>).</p>
+    <p class="label">Syntax</p>
+    <pre><code>df.iloc[row_positions, column_positions]
+df.iloc[0:5, 0:3]     # first 5 rows, first 3 columns
+df.iloc[:, :-1]        # all rows, all columns EXCEPT the last (common: features)
+df.iloc[:, -1]         # all rows, ONLY the last column (common: target)</code></pre>
+    <p class="label">Where it's used</p>
+    <p>This is the classic one-liner for splitting features from target when the target is the last column — extremely common with raw UCI files that have no column names:</p>
+    <p class="label">Example</p>
+    <pre><code>X = df.iloc[:, :-1].values   # every column except the last -> features
+y = df.iloc[:, -1].values     # last column only -> target/label
+print(X.shape, y.shape)</code></pre>
+    <p class="out-label">Output</p>
+    <pre><code>(699, 10) (699,)</code></pre>
+    <p class="label">Common cases</p>
+    <ul>
+      <li><code class="inline">df.iloc[:, :-1]</code> — all features (drop last column)</li>
+      <li><code class="inline">df.iloc[:, -1]</code> — target column only</li>
+      <li><code class="inline">df.iloc[0:100]</code> — first 100 rows (e.g. a quick train subset)</li>
+      <li><code class="inline">df.iloc[-10:]</code> — last 10 rows</li>
+    </ul>
+    <details class="exercise">
+      <summary>Try it — Exercise</summary>
+      <p>Using <code class="inline">iloc</code>, split any loaded dataset into <code class="inline">X</code> (all columns except the last) and <code class="inline">y</code> (last column only), then print both shapes.</p>
+    </details>
+  </div>
+
+  <div class="func-card" id="s-bool">
+    <h3>Boolean indexing: df[condition]</h3>
+    <div class="tagline">Filter rows using a logical condition</div>
+    <p class="label">Definition</p>
+    <p>Passing a boolean Series (produced by a comparison on a column) inside square brackets returns only the rows where the condition is <code class="inline">True</code>. Combine multiple conditions with <code class="inline">&amp;</code> (and), <code class="inline">|</code> (or) — each condition must be wrapped in parentheses.</p>
+    <p class="label">Syntax</p>
+    <pre><code>df[df['col'] > value]
+df[(df['col1'] > v1) &amp; (df['col2'] == v2)]
+df[df['col'].isin([v1, v2, v3])]</code></pre>
+    <p class="label">Example</p>
+    <pre><code>older_high_earners = df[(df['age'] > 30) & (df['salary'] > 50000)]
+print(older_high_earners)</code></pre>
+    <p class="out-label">Output</p>
+    <pre><code>   age  salary  bought_insurance
+2   47   82000                 1
+3   51   90000                 1</code></pre>
+    <p class="label">Common cases</p>
+    <ul>
+      <li>Class-balance check before classification: <code class="inline">df[df['class']==1].shape[0]</code> vs. <code class="inline">df[df['class']==0].shape[0]</code></li>
+      <li>Removing invalid rows: <code class="inline">df = df[df['age'] > 0]</code></li>
+      <li><code class="inline">isin()</code> for multi-value membership tests, useful for keeping only certain classes in a multi-class dataset</li>
+    </ul>
+    <details class="exercise">
+      <summary>Try it — Exercise</summary>
+      <p>On the Iris dataset, filter to rows where <code class="inline">species</code> is either <code class="inline">'Iris-setosa'</code> or <code class="inline">'Iris-virginica'</code> using <code class="inline">isin()</code>, and print how many rows remain.</p>
+    </details>
+  </div>
+
+  <div class="func-card" id="s-drop">
+    <h3>df.drop(labels=None, axis=0, columns=None, inplace=False)</h3>
+    <div class="tagline">Remove columns or rows</div>
+    <p class="label">Definition</p>
+    <p>Returns a new DataFrame with the specified row(s) or column(s) removed.</p>
+    <p class="label">Syntax</p>
+    <pre><code>df.drop('col_name', axis=1)          # drop one column
+df.drop(columns=['c1','c2'])          # drop multiple columns (clearer syntax)
+df.drop([0, 1, 2], axis=0)            # drop rows by index label</code></pre>
+    <p class="label">Where it's used</p>
+    <p>The standard way to separate features (<code class="inline">X</code>) from the target (<code class="inline">y</code>) by name instead of position, and to remove irrelevant columns (e.g. an ID column) that would otherwise be treated — wrongly — as a predictive feature.</p>
+    <p class="label">Example</p>
+    <pre><code>X = df.drop(columns=['id', 'class'])   # features only
+y = df['class']                          # target only
+print(X.columns.tolist())</code></pre>
+    <p class="label">Common cases</p>
+    <ul>
+      <li>Dropping an ID column that has no predictive meaning before training any model</li>
+      <li>Dropping the target column to build <code class="inline">X</code></li>
+      <li><code class="inline">axis=1</code> (or <code class="inline">columns=</code>) for columns, <code class="inline">axis=0</code> (default) for rows</li>
+    </ul>
+    <details class="exercise">
+      <summary>Try it — Exercise</summary>
+      <p>Given a DataFrame with columns <code class="inline">['id','age','salary','purchased']</code>, build <code class="inline">X</code> by dropping both <code class="inline">id</code> and <code class="inline">purchased</code> in a single <code class="inline">drop()</code> call.</p>
+    </details>
+  </div>
+
+  <div class="func-card" id="s-selectdtypes">
+    <h3>df.select_dtypes(include=None, exclude=None)</h3>
+    <div class="tagline">Grab only columns of a certain data type</div>
+    <p class="label">Definition</p>
+    <p>Returns a subset of the DataFrame containing only columns matching the given dtype(s). Useful for separating numeric features (which may need scaling / PCA) from categorical ones (which need encoding).</p>
+    <p class="label">Syntax</p>
+    <pre><code>df.select_dtypes(include=['number'])     # all numeric columns
+df.select_dtypes(include=['object'])     # all text/categorical columns</code></pre>
+    <p class="label">Example</p>
+    <pre><code>numeric_cols = df.select_dtypes(include=['number']).columns
+categorical_cols = df.select_dtypes(include=['object']).columns
+print(numeric_cols.tolist())
+print(categorical_cols.tolist())</code></pre>
+    <p class="label">Common cases</p>
+    <ul>
+      <li>Automatically build a list of numeric columns to feed into feature scaling (Unit 2) without hardcoding names</li>
+      <li>Automatically build a list of categorical columns to one-hot encode with <code class="inline">get_dummies()</code></li>
+    </ul>
+    <details class="exercise">
+      <summary>Try it — Exercise</summary>
+      <p>On a dataset with a mix of numeric and text columns, use <code class="inline">select_dtypes</code> to print the names of all numeric columns, then all categorical columns.</p>
+    </details>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- UNIT 2c: SCALING & ENCODING -->
+<!-- ============================================================ -->
+<section class="unit" id="unit2c">
+  <div class="unit-header"><span class="unit-tag">Unit 2 &amp; 4</span><h2>Scaling, Encoding &amp; Transforming</h2></div>
+  <p class="unit-syllabus-note">Ties to: Unit 2 — "feature scaling" and dimensionality reduction (PCA needs scaled input); Unit 4 — classifiers like Naive Bayes and decision trees need categorical features encoded numerically.</p>
+
+  <div class="func-card" id="s-apply">
+    <h3>df.apply(func, axis=0)  &nbsp;/&nbsp;  Series.apply(func)</h3>
+    <div class="tagline">Apply any custom function across rows, columns, or a single Series</div>
+    <p class="label">Definition</p>
+    <p>Runs a function along an axis of the DataFrame (<code class="inline">axis=0</code> = down each column, <code class="inline">axis=1</code> = across each row), or element-wise on a single Series. Accepts built-in functions, lambdas, or your own custom functions.</p>
+    <p class="label">Syntax</p>
+    <pre><code>df['col'].apply(func)             # element-wise on one column
+df.apply(func, axis=0)             # func receives each COLUMN as a Series
+df.apply(func, axis=1)             # func receives each ROW as a Series</code></pre>
+    <p class="label">Example</p>
+    <pre><code># Feature engineering: turn continuous age into a category (Unit 4 prep)
+def age_group(age):
+    if age < 30: return 'young'
+    elif age < 50: return 'middle'
+    else: return 'senior'
+
+df['age_group'] = df['age'].apply(age_group)
+
+# Row-wise: compute a ratio feature from two columns
+df['salary_per_age'] = df.apply(lambda row: row['salary'] / row['age'], axis=1)
+print(df[['age','age_group','salary_per_age']])</code></pre>
+    <p class="label">Common cases</p>
+    <ul>
+      <li>Single-column transform: <code class="inline">df['col'].apply(lambda x: x**2)</code></li>
+      <li>Row-wise feature engineering combining multiple columns: <code class="inline">axis=1</code></li>
+      <li>Binning a continuous variable into categories before classification</li>
+    </ul>
+    <details class="exercise">
+      <summary>Try it — Exercise</summary>
+      <p>Write a function that labels a numeric <code class="inline">score</code> column as <code class="inline">'pass'</code> if ≥ 40, else <code class="inline">'fail'</code>. Apply it to create a new column, then use <code class="inline">value_counts()</code> to see the pass/fail split.</p>
+    </details>
+  </div>
+
+  <div class="func-card" id="s-map">
+    <h3>Series.map(arg)</h3>
+    <div class="tagline">Element-wise substitution using a function, dict, or Series</div>
+    <p class="label">Definition</p>
+    <p>Substitutes each value in a Series according to a mapping — a function, a dictionary of old→new values, or another Series. Simpler and often faster than <code class="inline">apply()</code> for pure lookup-style replacement, and works only on a Series (not a whole DataFrame).</p>
+    <p class="label">Syntax</p>
+    <pre><code>df['col'].map({'old1':'new1', 'old2':'new2'})
+df['col'].map(lambda x: x.upper())</code></pre>
+    <p class="label">Where it's used</p>
+    <p>The classic way to manually encode a binary/ordinal categorical target before Naive Bayes, logistic regression, decision trees, etc., when you want explicit control over which label maps to which number (unlike the automatic alphabetical mapping <code class="inline">get_dummies()</code> would apply).</p>
+    <p class="label">Example</p>
+    <pre><code>df['class'] = df['class'].map({2: 0, 4: 1})   # UCI encodes benign=2, malignant=4
+print(df['class'].value_counts())</code></pre>
+    <p class="out-label">Output</p>
+    <pre><code>0    458
+1    241
+Name: class, dtype: int64</code></pre>
+    <p class="label">Common cases</p>
+    <ul>
+      <li>Recoding a target's raw class labels into clean 0/1 for binary classification</li>
+      <li>Mapping abbreviations to full names for readability, e.g. <code class="inline">{'M':'Male','F':'Female'}</code></li>
+    </ul>
+    <details class="exercise">
+      <summary>Try it — Exercise</summary>
+      <p>Given a column with values <code class="inline">'yes'</code>/<code class="inline">'no'</code>, use <code class="inline">.map()</code> to convert it to <code class="inline">1</code>/<code class="inline">0</code>, then confirm the dtype is now numeric.</p>
+    </details>
+  </div>
+
+  <div class="func-card" id="s-scaling">
+    <h3>Manual feature scaling with pandas (Min-Max &amp; Standardization)</h3>
+    <div class="tagline">The pandas-only way to scale features — no sklearn required</div>
+    <p class="label">Definition</p>
+    <p>Feature scaling brings all numeric columns to a comparable range. Two formulas matter for this syllabus (Unit 2, 6.1.1/6.1.2):</p>
+    <ul>
+      <li><strong>Min-Max normalization</strong> → squeezes values into [0, 1]: <code class="inline">(x - min) / (max - min)</code></li>
+      <li><strong>Standardization (Z-score)</strong> → mean 0, std 1: <code class="inline">(x - mean) / std</code></li>
+    </ul>
+    <p class="label">Syntax</p>
+    <pre><code># Min-Max scaling, column by column
+df_norm = (df - df.min()) / (df.max() - df.min())
+
+# Standardization (z-score)
+df_std = (df - df.mean()) / df.std()</code></pre>
+    <p class="label">Example</p>
+    <pre><code>features = ['age', 'salary']
+
+# Min-max
+df_norm = df[features].copy()
+df_norm = (df_norm - df_norm.min()) / (df_norm.max() - df_norm.min())
+print(df_norm)
+
+# Standardization
+df_std = df[features].copy()
+df_std = (df_std - df_std.mean()) / df_std.std()
+print(df_std)</code></pre>
+    <p class="out-label">Output (Min-Max, for the earlier age/salary example)</p>
+    <pre><code>        age    salary
+0  0.000000  0.000000
+1  0.269231  0.300000
+2  0.846154  0.840000
+3  1.000000  1.000000</code></pre>
+    <p class="label">Common cases</p>
+    <ul>
+      <li><strong>Use Min-Max</strong> when you need bounded [0,1] values, e.g. before k-NN or k-means, where raw distance calculations are sensitive to feature range</li>
+      <li><strong>Use Standardization</strong> before algorithms that assume roughly normal, zero-centered data — SVM, logistic regression, PCA (Unit 2, 12.2), and gradient-descent-based linear regression (Unit 3) converge faster and more reliably on standardized features</li>
+      <li>Always fit scaling parameters (min/max or mean/std) on the <em>training set only</em>, then apply the same parameters to the test set — never recompute them on test data (this avoids "data leakage")</li>
+    </ul>
+    <details class="exercise">
+      <summary>Try it — Exercise</summary>
+      <p>Take the Breast Cancer Wisconsin features (after cleaning missing values) and standardize all numeric columns using the z-score formula. Confirm that after scaling, <code class="inline">df_std.mean()</code> is ~0 and <code class="inline">df_std.std()</code> is ~1 for every column.</p>
+    </details>
+  </div>
+
+  <div class="func-card" id="s-dummies">
+    <h3>pandas.get_dummies(data, columns=None, drop_first=False)</h3>
+    <div class="tagline">One-hot encode categorical columns</div>
+    <p class="label">Definition</p>
+    <p>Converts a categorical column into multiple binary (0/1) columns, one per category. Required because most ML algorithms in this syllabus (SVM, logistic regression, k-NN, neural networks) need purely numeric input.</p>
+    <p class="label">Syntax</p>
+    <pre><code>pd.get_dummies(df, columns=['species'], drop_first=False)</code></pre>
+    <table class="params">
+      <tr><th>Parameter</th><th>Meaning</th></tr>
+      <tr><td>columns</td><td>which categorical column(s) to encode</td></tr>
+      <tr><td>drop_first</td><td>drop one dummy column per feature to avoid redundant/collinear columns (recommended for linear/logistic regression)</td></tr>
+    </table>
+    <p class="label">Example</p>
+    <pre><code>iris_encoded = pd.get_dummies(iris_df, columns=['species'], drop_first=True)
+print(iris_encoded.columns.tolist())</code></pre>
+    <p class="out-label">Output</p>
+    <pre><code>['sepal_length', 'sepal_width', 'petal_length', 'petal_width',
+ 'species_Iris-versicolor', 'species_Iris-virginica']</code></pre>
+    <p class="label">Common cases</p>
+    <ul>
+      <li><strong>Nominal categories with no order</strong> (color, city, species) → one-hot encode with <code class="inline">get_dummies()</code></li>
+      <li><strong>drop_first=True</strong> for linear/logistic regression, to avoid the "dummy variable trap" (perfectly correlated columns)</li>
+      <li><strong>Ordinal categories with a real order</strong> (low/medium/high) → prefer <code class="inline">.map()</code> to assign 0/1/2 rather than one-hot encoding, since order carries meaning</li>
+    </ul>
+    <details class="exercise">
+      <summary>Try it — Exercise</summary>
+      <p>One-hot encode a categorical column with 3 categories using <code class="inline">get_dummies</code>, once with <code class="inline">drop_first=False</code> and once with <code class="inline">drop_first=True</code>. Compare the number of resulting columns.</p>
+    </details>
+  </div>
+
+  <div class="func-card" id="s-replace">
+    <h3>df.replace(to_replace, value)</h3>
+    <div class="tagline">Substitute specific values anywhere in the DataFrame</div>
+    <p class="label">Definition</p>
+    <p>Replaces occurrences of a value (or list of values) with another value, across a Series or the whole DataFrame. More flexible than <code class="inline">map()</code> because it can target values without replacing everything else with NaN.</p>
+    <p class="label">Syntax</p>
+    <pre><code>df.replace('?', np.nan)                       # normalize a missing-value marker
+df['col'].replace([2, 4], [0, 1])              # replace a list of values with another list
+df.replace({'col1': {2:0, 4:1}, 'col2': {}})   # per-column replacement dict</code></pre>
+    <p class="label">Example</p>
+    <pre><code>import numpy as np
+df = df.replace('?', np.nan)          # standardize UCI's missing marker before isnull()/dropna()
+df['bare_nuclei'] = df['bare_nuclei'].astype(float)</code></pre>
+    <p class="label">Common cases</p>
+    <ul>
+      <li>Normalizing inconsistent missing-value markers (<code class="inline">'?'</code>, <code class="inline">'NA'</code>, <code class="inline">-1</code>) into a real <code class="inline">NaN</code> so <code class="inline">isnull()</code>/<code class="inline">dropna()</code>/<code class="inline">fillna()</code> can find them</li>
+      <li>Fixing inconsistent category spellings, e.g. <code class="inline">{'Male':'M','male':'M'}</code></li>
+    </ul>
+    <details class="exercise">
+      <summary>Try it — Exercise</summary>
+      <p>Create a small DataFrame where missing values are marked with the string <code class="inline">'NA'</code> instead of a real NaN. Use <code class="inline">replace()</code> to convert them to <code class="inline">np.nan</code>, then confirm with <code class="inline">isnull().sum()</code> that pandas now recognizes them as missing.</p>
+    </details>
+  </div>
+
+  <div class="func-card" id="s-astype">
+    <h3>df.astype(dtype)</h3>
+    <div class="tagline">Convert a column's data type</div>
+    <p class="label">Definition</p>
+    <p>Casts a Series or DataFrame to a specified dtype, e.g. <code class="inline">object</code> → <code class="inline">float64</code>, or <code class="inline">int</code> → <code class="inline">category</code>.</p>
+    <p class="label">Syntax</p>
+    <pre><code>df['col'] = df['col'].astype('float64')
+df['col'] = df['col'].astype('category')
+df['col'] = df['col'].astype(int)</code></pre>
+    <p class="label">Where it's used</p>
+    <p>After <code class="inline">read_csv</code> reads a numeric column as <code class="inline">object</code> (usually because of a stray non-numeric marker like <code class="inline">'?'</code>), you must cast it back to numeric before scaling, correlation, or model training — none of those work on text-typed columns.</p>
+    <p class="label">Example</p>
+    <pre><code>print(df['bare_nuclei'].dtype)          # object (because of '?' before cleaning)
+df['bare_nuclei'] = df['bare_nuclei'].astype(float)
+print(df['bare_nuclei'].dtype)          # float64</code></pre>
+    <p class="label">Common cases</p>
+    <ul>
+      <li>Numeric column stuck as <code class="inline">object</code> after loading → <code class="inline">.astype(float)</code></li>
+      <li>Converting a low-cardinality string column to <code class="inline">'category'</code> dtype to save memory before encoding</li>
+    </ul>
+    <details class="exercise">
+      <summary>Try it — Exercise</summary>
+      <p>Confirm that a numeric column with a stray <code class="inline">'?'</code> value reads in as dtype <code class="inline">object</code>. Replace <code class="inline">'?'</code> with NaN, drop or fill it, then cast the column to <code class="inline">float64</code> and verify with <code class="inline">.dtype</code>.</p>
+    </details>
+  </div>
+
+  <div class="unit-exercise-block">
+    <h4>Unit 2 — Combined Preprocessing Exercise</h4>
+    <ol>
+      <li>Load the Breast Cancer Wisconsin dataset from UCI with <code class="inline">read_csv</code>, treating <code class="inline">'?'</code> as missing.</li>
+      <li>Use <code class="inline">info()</code> and <code class="inline">isnull().sum()</code> to find which column has missing values.</li>
+      <li>Impute that column with its median using <code class="inline">fillna()</code>.</li>
+      <li>Drop the <code class="inline">id</code> column with <code class="inline">drop()</code> — it holds no predictive value.</li>
+      <li>Recode the target column (2/4) to (0/1) using <code class="inline">.map()</code>.</li>
+      <li>Standardize all remaining feature columns using the z-score formula from the scaling section.</li>
+      <li>Confirm with <code class="inline">describe()</code> that every feature now has mean ≈ 0 and std ≈ 1.</li>
+    </ol>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- UNIT 3/4: SPLITTING & COMBINING -->
+<!-- ============================================================ -->
+<section class="unit" id="unit34">
+  <div class="unit-header"><span class="unit-tag">Unit 3 &amp; 4</span><h2>Splitting, Sampling &amp; Combining Datasets</h2></div>
+  <p class="unit-syllabus-note">Ties to: the practicals instruction to "split datasets into training and test sets" for every regression/classification model, and to "perform k-cross-validation."</p>
+
+  <div class="func-card" id="s-sample">
+    <h3>df.sample(n=None, frac=None, random_state=None)</h3>
+    <div class="tagline">Randomly sample rows — the pandas-only way to train/test split</div>
+    <p class="label">Definition</p>
+    <p>Returns a random subset of rows. Combined with <code class="inline">drop()</code> on the sampled index, this gives you a manual train/test split using only pandas (useful if you want to understand the mechanics before relying on <code class="inline">sklearn.model_selection.train_test_split</code>).</p>
+    <p class="label">Syntax</p>
+    <pre><code>df.sample(n=50)                     # exactly 50 random rows
+df.sample(frac=0.8, random_state=42) # 80% of rows, reproducible with a fixed seed</code></pre>
+    <p class="label">Example</p>
+    <pre><code># Manual 80/20 train-test split using only pandas
+train = df.sample(frac=0.8, random_state=42)
+test = df.drop(train.index)
+
+print(train.shape, test.shape)</code></pre>
+    <p class="out-label">Output</p>
+    <pre><code>(559, 10) (140, 10)</code></pre>
+    <p class="label">Common cases</p>
+    <ul>
+      <li><code class="inline">random_state</code> fixes the random seed so your split is reproducible across runs — important when comparing model runs for your practical report</li>
+      <li><code class="inline">frac=1</code> is a common trick to <em>shuffle</em> an entire DataFrame (e.g. before k-fold cross-validation, since some datasets are sorted by class)</li>
+    </ul>
+    <details class="exercise">
+      <summary>Try it — Exercise</summary>
+      <p>Perform a manual 70/30 split on the Iris dataset using <code class="inline">sample()</code> and <code class="inline">drop()</code>, with <code class="inline">random_state=1</code>. Print the shapes of both parts and confirm they add up to 150 rows.</p>
+    </details>
+  </div>
+
+  <div class="func-card" id="s-concat">
+    <h3>pandas.concat(objs, axis=0, ignore_index=False)</h3>
+    <div class="tagline">Stack DataFrames together, vertically or side by side</div>
+    <p class="label">Definition</p>
+    <p>Concatenates a list of DataFrames along an axis: <code class="inline">axis=0</code> stacks rows on top of each other (same columns), <code class="inline">axis=1</code> places them side by side (same rows, different columns).</p>
+    <p class="label">Syntax</p>
+    <pre><code>pd.concat([df1, df2], axis=0, ignore_index=True)   # stack rows
+pd.concat([df1, df2], axis=1)                       # join columns side-by-side</code></pre>
+    <p class="label">Where it's used</p>
+    <p>Recombining a scaled feature set with an untouched target column after processing them separately, or merging results from k-fold cross-validation splits back together for reporting.</p>
+    <p class="label">Example</p>
+    <pre><code>X_scaled = (X - X.mean()) / X.std()          # scaled features
+final_df = pd.concat([X_scaled, y], axis=1)   # reattach the target column
+print(final_df.head())</code></pre>
+    <p class="label">Common cases</p>
+    <ul>
+      <li><code class="inline">axis=0</code> — combining multiple CSV files of the same structure (e.g. multiple months of a dataset) into one DataFrame</li>
+      <li><code class="inline">axis=1</code> — reattaching a target column after scaling only the feature columns</li>
+      <li><code class="inline">ignore_index=True</code> — re-numbers the index cleanly after stacking rows, avoiding duplicate index labels</li>
+    </ul>
+    <details class="exercise">
+      <summary>Try it — Exercise</summary>
+      <p>Split a DataFrame's feature columns from its target column with <code class="inline">drop()</code>, standardize only the features, then use <code class="inline">concat</code> to reattach the target column as the last column again.</p>
+    </details>
+  </div>
+
+  <div class="func-card" id="s-merge">
+    <h3>pandas.merge(left, right, on=None, how='inner')</h3>
+    <div class="tagline">SQL-style join of two DataFrames on a common key</div>
+    <p class="label">Definition</p>
+    <p>Combines two DataFrames based on matching values in one or more shared columns (a "key"), similar to a SQL JOIN.</p>
+    <p class="label">Syntax</p>
+    <pre><code>pd.merge(left, right, on='key_column', how='inner')</code></pre>
+    <table class="params">
+      <tr><th>how</th><th>Meaning</th></tr>
+      <tr><td>'inner'</td><td>keep only keys present in <em>both</em> DataFrames (default)</td></tr>
+      <tr><td>'left'</td><td>keep all rows from the left DataFrame, matching where possible</td></tr>
+      <tr><td>'right'</td><td>keep all rows from the right DataFrame</td></tr>
+      <tr><td>'outer'</td><td>keep all rows from both, filling gaps with NaN</td></tr>
+    </table>
+    <p class="label">Example</p>
+    <pre><code>patients = pd.DataFrame({'patient_id':[1,2,3], 'age':[45,60,32]})
+diagnosis = pd.DataFrame({'patient_id':[1,2,3], 'class':[0,1,0]})
+
+full = pd.merge(patients, diagnosis, on='patient_id', how='inner')
+print(full)</code></pre>
+    <p class="out-label">Output</p>
+    <pre><code>   patient_id  age  class
+0           1   45      0
+1           2   60      1
+2           3   32      0</code></pre>
+    <p class="label">Common cases</p>
+    <ul>
+      <li>Joining a feature table and a label table that were provided as two separate files sharing an ID column — common with government open datasets on data.gov.in</li>
+      <li><code class="inline">how='left'</code> when you want to keep every record from your main table even if some auxiliary info is missing</li>
+    </ul>
+    <details class="exercise">
+      <summary>Try it — Exercise</summary>
+      <p>Create two small DataFrames sharing a <code class="inline">student_id</code> column — one with marks, one with attendance. Merge them with <code class="inline">how='inner'</code> and confirm the result has both sets of columns.</p>
+    </details>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- UNIT 3/5: RELATIONSHIPS -->
+<!-- ============================================================ -->
+<section class="unit" id="unit35">
+  <div class="unit-header"><span class="unit-tag">Unit 3 &amp; 5</span><h2>Exploring Relationships — Sorting, Grouping, Correlation</h2></div>
+  <p class="unit-syllabus-note">Ties to: Unit 3 — understanding which features relate to the regression target; Unit 5 — exploring natural groupings before/after clustering; and general class-balance checks for Unit 4.</p>
+
+  <div class="func-card" id="s-sortvalues">
+    <h3>df.sort_values(by, ascending=True)</h3>
+    <div class="tagline">Sort rows by one or more column values</div>
+    <p class="label">Definition</p>
+    <p>Reorders the DataFrame's rows according to the values in one or more columns.</p>
+    <p class="label">Syntax</p>
+    <pre><code>df.sort_values(by='salary', ascending=False)
+df.sort_values(by=['class','age'], ascending=[True, False])</code></pre>
+    <p class="label">Example</p>
+    <pre><code>print(df.sort_values(by='salary', ascending=False).head(3))</code></pre>
+    <p class="label">Common cases</p>
+    <ul>
+      <li>Ranking rows by a regression target to spot outliers at the extremes</li>
+      <li>Sorting a correlation result (see <code class="inline">corr()</code> below) to find the strongest predictors of a target quickly</li>
+    </ul>
+    <details class="exercise">
+      <summary>Try it — Exercise</summary>
+      <p>Sort the Iris dataset by <code class="inline">petal_length</code> descending, and print the top 5 rows — which species dominates the top of the list?</p>
+    </details>
+  </div>
+
+  <div class="func-card" id="s-groupby">
+    <h3>df.groupby(by)</h3>
+    <div class="tagline">Split-apply-combine: aggregate statistics per category</div>
+    <p class="label">Definition</p>
+    <p>Splits the DataFrame into groups based on unique values of one or more columns, applies an aggregation function to each group, then combines the results into a new DataFrame/Series. The engine behind almost all category-wise summary statistics.</p>
+    <p class="label">Syntax</p>
+    <pre><code>df.groupby('species').mean()
+df.groupby('species')['petal_length'].mean()
+df.groupby(['species','class']).agg(['mean','std','count'])</code></pre>
+    <p class="label">Where it's used</p>
+    <p>Directly useful for Unit 5 (clustering) — comparing per-cluster feature averages after you assign k-means labels back onto the DataFrame — and for Unit 4, checking whether classes are balanced before training a classifier.</p>
+    <p class="label">Example</p>
+    <pre><code>print(iris_df.groupby('species').mean())</code></pre>
+    <p class="out-label">Output</p>
+    <pre><code>                 sepal_length  sepal_width  petal_length  petal_width
+species
+Iris-setosa              5.006        3.418         1.464        0.244
+Iris-versicolor           5.936        2.770         4.260        1.326
+Iris-virginica            6.588        2.974         5.552        2.026</code></pre>
+    <p class="label">Common cases</p>
+    <ul>
+      <li>Mean/std of each feature per class → sanity-check that classes are actually separable before training a classifier</li>
+      <li>After running k-means (Unit 5), assign the resulting cluster label as a new column, then <code class="inline">groupby('cluster').mean()</code> to interpret what each cluster represents</li>
+      <li><code class="inline">df.groupby('class').size()</code> — a quick class-balance check, equivalent to <code class="inline">value_counts()</code> on the target</li>
+    </ul>
+    <details class="exercise">
+      <summary>Try it — Exercise</summary>
+      <p>Group the Breast Cancer dataset by its (recoded 0/1) <code class="inline">class</code> column and compute the mean of every feature per class. Which feature shows the biggest difference between benign and malignant groups?</p>
+    </details>
+  </div>
+
+  <div class="func-card" id="s-corr">
+    <h3>df.corr(method='pearson')</h3>
+    <div class="tagline">Pairwise correlation between all numeric columns</div>
+    <p class="label">Definition</p>
+    <p>Computes the pairwise correlation coefficient (Pearson by default, range -1 to 1) between every pair of numeric columns, returned as a square matrix.</p>
+    <p class="label">Syntax</p>
+    <pre><code>df.corr()                      # Pearson correlation matrix
+df.corr()['target'].sort_values(ascending=False)   # correlation with just one column, ranked</code></pre>
+    <p class="label">Where it's used</p>
+    <p>Direct support for Unit 2's "feature selection methods" and Unit 3's regression: features weakly correlated with the target contribute little predictive value and are candidates for removal; features very highly correlated with <em>each other</em> (multicollinearity) can destabilize linear regression coefficients.</p>
+    <p class="label">Example</p>
+    <pre><code>print(df.corr()['salary'].sort_values(ascending=False))</code></pre>
+    <p class="out-label">Output</p>
+    <pre><code>salary              1.000000
+age                 0.987421
+bought_insurance    0.958394
+Name: salary, dtype: float64</code></pre>
+    <p class="label">Common cases</p>
+    <ul>
+      <li>Ranking every feature's correlation with the regression target to guide manual feature selection before Unit 3 models</li>
+      <li>Spotting two features correlated near ±1 with each other — a sign to drop one before linear regression</li>
+      <li>Visualizing the same matrix as a heatmap (with matplotlib/seaborn) is a common companion step, though outside pandas itself</li>
+    </ul>
+    <details class="exercise">
+      <summary>Try it — Exercise</summary>
+      <p>Compute the full correlation matrix for the Breast Cancer Wisconsin features. List the two features most strongly correlated with the target class, and the two most strongly correlated with <em>each other</em>.</p>
+    </details>
+  </div>
+
+  <div class="func-card" id="s-valuecounts">
+    <h3>Series.value_counts(normalize=False)</h3>
+    <div class="tagline">Frequency count of each unique value</div>
+    <p class="label">Definition</p>
+    <p>Returns the count of each unique value in a Series, sorted descending by default. With <code class="inline">normalize=True</code>, returns proportions instead of raw counts.</p>
+    <p class="label">Syntax</p>
+    <pre><code>df['class'].value_counts()
+df['class'].value_counts(normalize=True)   # as percentages (0-1)</code></pre>
+    <p class="label">Where it's used</p>
+    <p>The standard first check for class imbalance before training any classifier (Unit 4) — a 90/10 class split needs different handling (e.g. stratified sampling, different evaluation metrics) than a balanced 50/50 split.</p>
+    <p class="label">Example</p>
+    <pre><code>print(df['class'].value_counts(normalize=True))</code></pre>
+    <p class="out-label">Output</p>
+    <pre><code>0    0.655
+1    0.345
+Name: class, dtype: float64</code></pre>
+    <p class="label">Common cases</p>
+    <ul>
+      <li>Checking class balance before choosing evaluation metrics — with imbalance, accuracy alone is misleading and metrics like Recall, F1-score, and AUC (as your syllabus specifies) matter more</li>
+      <li>Counting categories in a categorical feature before deciding whether to one-hot encode (few categories) or group rare ones together (many categories)</li>
+    </ul>
+    <details class="exercise">
+      <summary>Try it — Exercise</summary>
+      <p>Run <code class="inline">value_counts(normalize=True)</code> on the Iris <code class="inline">species</code> column. Confirm the three classes are perfectly balanced (each ~33.3%) — this is why accuracy alone is a fine metric for Iris, unlike an imbalanced medical dataset.</p>
+    </details>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- CAPSTONE -->
+<!-- ============================================================ -->
+<section class="unit capstone" id="capstone">
+  <h2>Capstone Exercise — Full Preprocessing Pipeline</h2>
+  <p style="font-size:15px;">Combine everything above into one end-to-end pipeline, exactly as you'll need to for your practical file. Pick <strong>any one</strong> of these UCI datasets: Breast Cancer Wisconsin (classification), Wine Quality (regression), or Iris (classification/clustering).</p>
+  <p class="label">Steps</p>
+  <ol>
+    <li><strong>Load</strong> the dataset with <code class="inline">read_csv()</code>, handling missing-value markers with <code class="inline">na_values</code>.</li>
+    <li><strong>Inspect</strong> with <code class="inline">head()</code>, <code class="inline">info()</code>, and <code class="inline">describe()</code>.</li>
+    <li><strong>Clean</strong>: check <code class="inline">isnull().sum()</code>; impute or drop as appropriate with <code class="inline">fillna()</code>/<code class="inline">dropna()</code>. Remove duplicates with <code class="inline">drop_duplicates()</code>.</li>
+    <li><strong>Select features</strong>: drop irrelevant columns (IDs) with <code class="inline">drop()</code>; use <code class="inline">corr()</code> to identify weakly-related features to consider removing.</li>
+    <li><strong>Encode</strong> any categorical columns with <code class="inline">get_dummies()</code> or <code class="inline">.map()</code>.</li>
+    <li><strong>Scale</strong> numeric features with the standardization formula.</li>
+    <li><strong>Check balance</strong> of the target with <code class="inline">value_counts(normalize=True)</code> (classification) — or check its distribution with <code class="inline">describe()</code> (regression).</li>
+    <li><strong>Split</strong> into train/test with <code class="inline">sample()</code> + <code class="inline">drop()</code> (or hand off <code class="inline">X</code>/<code class="inline">y</code> built with <code class="inline">iloc</code> to <code class="inline">sklearn.model_selection.train_test_split</code> for your actual practical).</li>
+    <li><strong>Hand off</strong> the cleaned, scaled <code class="inline">X_train, X_test, y_train, y_test</code> to whichever model your practical requires — Naive Bayes, linear/logistic regression, k-NN, decision tree, SVM, or k-means — this is where pandas' job ends and the model-fitting begins.</li>
+  </ol>
+  <pre><code>import pandas as pd
+import numpy as np
+
+# 1. Load
+df = pd.read_csv('dataset.csv', na_values='?')
+
+# 2. Inspect
+print(df.info())
+print(df.describe())
+
+# 3. Clean
+df = df.drop_duplicates()
+df['col_with_gaps'] = df['col_with_gaps'].fillna(df['col_with_gaps'].median())
+
+# 4. Select features
+df = df.drop(columns=['id'])
+
+# 5. Encode (if a categorical column exists)
+df = pd.get_dummies(df, columns=['categorical_col'], drop_first=True)
+
+# 6. Scale
+target = df['target']
+features = df.drop(columns=['target'])
+features_scaled = (features - features.mean()) / features.std()
+
+# 7. Check target balance / distribution
+print(target.value_counts(normalize=True))
+
+# 8. Split
+train_idx = features_scaled.sample(frac=0.8, random_state=42).index
+X_train, X_test = features_scaled.loc[train_idx], features_scaled.drop(train_idx)
+y_train, y_test = target.loc[train_idx], target.drop(train_idx)
+
+print(X_train.shape, X_test.shape)</code></pre>
+</section>
+
+<p style="text-align:center; font-family:'Helvetica Neue',Arial,sans-serif; font-size:12px; color:var(--unit-tag); margin-top:60px;">
+  Pandas Course Notes &middot; mapped to DSC17 / DSC-A5 / GE7c &middot; NEP UGCF 2022 &middot; <a class="back-top" href="#top">back to top ↑</a>
+</p>
+
+</main>
+</div>
+</body>
+</html>

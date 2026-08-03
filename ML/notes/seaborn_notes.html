@@ -1,0 +1,1025 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Seaborn for Machine Learning — Course Notes</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root{
+    --paper:#f6f7f9;
+    --ink:#1c2230;
+    --ink-soft:#4b5468;
+    --rule:#d8dce3;
+    --card:#ffffff;
+    --sb-blue:#4C72B0;   /* seaborn deep6 default palette */
+    --sb-orange:#DD8452;
+    --sb-green:#55A868;
+    --sb-red:#C44E52;
+    --sb-purple:#8172B2;
+    --code-bg:#161b26;
+    --code-ink:#e3e8f2;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:"IBM Plex Sans", "Segoe UI", Arial, sans-serif;
+    line-height:1.6;
+  }
+  h1,h2,h3,h4{
+    font-family:"Newsreader","Georgia",serif;
+    font-weight:600;
+    color:var(--ink);
+    letter-spacing:-0.01em;
+  }
+  code, pre, .mono{
+    font-family:"IBM Plex Mono","Consolas",monospace;
+  }
+  a{color:var(--sb-blue);}
+
+  /* palette strip signature element */
+  .palette-strip{
+    height:6px;
+    width:100%;
+    background:linear-gradient(90deg,
+      var(--sb-blue) 0 20%, var(--sb-orange) 20% 40%,
+      var(--sb-green) 40% 60%, var(--sb-red) 60% 80%,
+      var(--sb-purple) 80% 100%);
+  }
+
+  .layout{
+    display:grid;
+    grid-template-columns:270px 1fr;
+    min-height:100vh;
+  }
+  nav{
+    position:sticky; top:0; align-self:start;
+    height:100vh; overflow-y:auto;
+    background:#12172200;
+    background:var(--ink);
+    color:#dfe4ee;
+    padding:28px 20px 40px;
+    border-right:1px solid var(--rule);
+  }
+  nav .brand{
+    font-family:"Newsreader",serif;
+    font-size:1.3rem;
+    color:#fff;
+    margin-bottom:2px;
+  }
+  nav .brand small{
+    display:block;
+    font-family:"IBM Plex Sans",sans-serif;
+    font-size:0.72rem;
+    color:#8f9ab8;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    margin-top:4px;
+  }
+  nav .swatches{display:flex; gap:4px; margin:14px 0 22px;}
+  nav .swatches span{width:16px;height:16px;border-radius:3px;display:inline-block;}
+  nav ul{list-style:none; margin:0; padding:0;}
+  nav .unit-label{
+    font-size:0.7rem; text-transform:uppercase; letter-spacing:0.09em;
+    color:#7f8bab; margin:18px 0 6px;
+  }
+  nav a{
+    display:block;
+    color:#c6cde0;
+    text-decoration:none;
+    font-size:0.88rem;
+    padding:5px 8px;
+    border-radius:5px;
+    margin-bottom:1px;
+  }
+  nav a:hover{background:#242c3d; color:#fff;}
+  nav a.func{padding-left:20px; font-family:"IBM Plex Mono",monospace; font-size:0.78rem;}
+
+  main{padding:48px 56px; max-width:920px;}
+  .kicker{
+    font-size:0.78rem; text-transform:uppercase; letter-spacing:0.12em;
+    color:var(--ink-soft); margin-bottom:6px;
+  }
+  header.hero h1{font-size:2.5rem; margin:0 0 10px;}
+  header.hero p.lead{font-size:1.08rem; color:var(--ink-soft); max-width:640px;}
+  .note-scope{
+    background:#eef1fb; border-left:3px solid var(--sb-blue);
+    padding:14px 18px; border-radius:6px; font-size:0.92rem; margin-top:18px;
+  }
+
+  section.unit{margin-top:64px; padding-top:8px; border-top:1px solid var(--rule);}
+  section.unit .unit-num{
+    display:inline-block; font-family:"IBM Plex Mono",monospace;
+    background:var(--ink); color:#fff; padding:2px 10px; border-radius:20px;
+    font-size:0.75rem; margin-bottom:10px;
+  }
+  section.unit h2{font-size:1.8rem; margin:6px 0 4px;}
+  section.unit .unit-sub{color:var(--ink-soft); margin-bottom:26px;}
+
+  .func-card{
+    background:var(--card);
+    border:1px solid var(--rule);
+    border-radius:10px;
+    padding:26px 28px;
+    margin:26px 0;
+    box-shadow:0 1px 2px rgba(20,25,40,0.04);
+  }
+  .func-card h3{
+    font-family:"IBM Plex Mono",monospace;
+    font-size:1.2rem;
+    color:var(--ink);
+    margin-top:0;
+    display:flex; align-items:center; gap:10px;
+  }
+  .func-card h3 .tag{
+    font-family:"IBM Plex Sans",sans-serif;
+    font-size:0.68rem; text-transform:uppercase; letter-spacing:0.06em;
+    background:#eef1fb; color:var(--sb-blue);
+    padding:2px 8px; border-radius:20px; font-weight:600;
+  }
+  .func-card h4{font-size:0.95rem; margin:20px 0 8px; color:var(--ink);}
+  .func-card h4 .dot{color:var(--sb-orange);}
+
+  pre{
+    background:var(--code-bg); color:var(--code-ink);
+    padding:16px 18px; border-radius:8px; overflow-x:auto;
+    font-size:0.85rem; line-height:1.55; margin:8px 0 4px;
+  }
+  pre .cm{color:#7f8bab;}
+  code.inline{
+    background:#eef1fb; color:#33447a; padding:1px 6px; border-radius:4px;
+    font-size:0.88em;
+  }
+  table.params{width:100%; border-collapse:collapse; font-size:0.87rem; margin:8px 0 4px;}
+  table.params th, table.params td{
+    text-align:left; padding:6px 10px; border-bottom:1px solid var(--rule);
+  }
+  table.params th{color:var(--ink-soft); font-weight:600; font-size:0.76rem; text-transform:uppercase; letter-spacing:0.04em;}
+  table.params td code{background:none; color:var(--sb-blue); padding:0;}
+
+  ul.cases li{margin-bottom:6px;}
+
+  .exercise{
+    background:#fbf7ef;
+    border:1px dashed #d9c9a3;
+    border-radius:10px;
+    padding:18px 22px;
+    margin:34px 0;
+  }
+  .exercise .ex-label{
+    font-family:"IBM Plex Mono",monospace; font-size:0.72rem;
+    text-transform:uppercase; letter-spacing:0.08em; color:var(--sb-orange);
+    margin-bottom:6px; display:block;
+  }
+  .exercise h4{margin:2px 0 10px; font-size:1.02rem;}
+  .exercise ol{padding-left:20px;}
+  .exercise li{margin-bottom:8px;}
+  details.solution{margin-top:12px;}
+  details.solution summary{
+    cursor:pointer; font-size:0.85rem; color:var(--sb-blue); font-weight:600;
+  }
+  details.solution pre{margin-top:10px;}
+
+  .callout{
+    border-left:3px solid var(--sb-green);
+    background:#eef8f0; padding:12px 16px; border-radius:6px;
+    font-size:0.9rem; margin:16px 0;
+  }
+  .callout.warn{border-left-color:var(--sb-red); background:#fbebec;}
+
+  footer{
+    padding:40px 56px 80px; color:var(--ink-soft); font-size:0.85rem;
+    border-top:1px solid var(--rule); margin-top:60px;
+  }
+  @media (max-width:860px){
+    .layout{grid-template-columns:1fr;}
+    nav{position:relative; height:auto;}
+    main{padding:32px 20px;}
+  }
+</style>
+</head>
+<body>
+<div class="layout">
+
+<nav>
+  <div class="brand">seaborn<br><small>for machine learning</small></div>
+  <div class="swatches">
+    <span style="background:var(--sb-blue)"></span>
+    <span style="background:var(--sb-orange)"></span>
+    <span style="background:var(--sb-green)"></span>
+    <span style="background:var(--sb-red)"></span>
+    <span style="background:var(--sb-purple)"></span>
+  </div>
+  <ul>
+    <li><a href="#intro">Introduction</a></li>
+
+    <li class="unit-label">Unit 2 · Preprocessing</li>
+    <li><a href="#unit2">Overview</a></li>
+    <li><a href="#histplot" class="func">sns.histplot()</a></li>
+    <li><a href="#boxplot" class="func">sns.boxplot()</a></li>
+    <li><a href="#heatmap" class="func">sns.heatmap()</a></li>
+
+    <li class="unit-label">Unit 3 · Regression</li>
+    <li><a href="#unit3">Overview</a></li>
+    <li><a href="#regplot" class="func">sns.regplot()</a></li>
+    <li><a href="#lmplot" class="func">sns.lmplot()</a></li>
+    <li><a href="#residplot" class="func">sns.residplot()</a></li>
+
+    <li class="unit-label">Unit 4 · Classification</li>
+    <li><a href="#unit4">Overview</a></li>
+    <li><a href="#scatterplot" class="func">sns.scatterplot()</a></li>
+    <li><a href="#pairplot" class="func">sns.pairplot()</a></li>
+    <li><a href="#confmat" class="func">sns.heatmap() — conf. matrix</a></li>
+
+    <li class="unit-label">Unit 5 · Clustering</li>
+    <li><a href="#unit5">Overview</a></li>
+    <li><a href="#clusterscatter" class="func">sns.scatterplot() — clusters</a></li>
+    <li><a href="#clustermap" class="func">sns.clustermap()</a></li>
+
+    <li class="unit-label">Wrap up</li>
+    <li><a href="#cheatsheet">Cheat sheet</a></li>
+  </ul>
+</nav>
+
+<main>
+
+<header class="hero" id="intro">
+  <div class="kicker">DSC17 / DSC-A5 / GE7c · Machine Learning · NEP UGCF 2022</div>
+  <h1>Seaborn, mapped to your syllabus</h1>
+  <p class="lead">Seaborn is a statistical plotting library built on Matplotlib. In this course it is not
+  a separate topic — it is the tool you use <em>inside</em> every unit: to inspect features before
+  scaling them, to see whether a regression line actually fits, to look at how classes separate in
+  feature space, and to read a dendrogram after hierarchical clustering.</p>
+
+  <div class="note-scope">
+    <strong>Scope of these notes.</strong> Rather than covering seaborn's entire API, each unit below
+    covers the small set of functions that earns its place in <em>that</em> unit's workflow, with full
+    definitions, every common calling pattern (the "cases"), worked examples using scikit-learn style
+    datasets, and an exercise set. Install once, use everywhere:
+  </div>
+  <pre>pip install seaborn matplotlib pandas scikit-learn</pre>
+  <pre><span class="cm"># the import convention used throughout these notes</span>
+import seaborn as sns
+import matplotlib.pyplot as plt
+import pandas as pd
+
+sns.set_theme(style="whitegrid")   <span class="cm"># sets a clean default look for every plot below</span></pre>
+</header>
+
+<!-- ================= UNIT 2 ================= -->
+<section class="unit" id="unit2">
+  <span class="unit-num">UNIT 2</span>
+  <h2>Preprocessing — seeing your features before you touch them</h2>
+  <p class="unit-sub">Feature scaling, feature selection, dimensionality reduction (PCA). Before you
+  scale a feature you should look at its distribution; before you select or drop a feature you should
+  look at how correlated it is with everything else. Three functions do almost all of this work.</p>
+
+  <div class="func-card" id="histplot">
+    <h3>sns.histplot() <span class="tag">distribution</span></h3>
+    <h4><span class="dot">●</span> Definition</h4>
+    <p>Draws a histogram (optionally with a KDE curve overlaid) of a numeric column, showing how its
+    values are spread out. Figure-level histograms would need Matplotlib boilerplate; <code class="inline">histplot</code>
+    is the axes-level, one-line version seaborn provides.</p>
+    <pre>sns.histplot(data=None, x=None, y=None, hue=None, stat='count',
+             bins='auto', kde=False, element='bars', multiple='layer', ax=None)</pre>
+    <table class="params">
+      <tr><th>Parameter</th><th>What it controls</th></tr>
+      <tr><td><code>data, x</code></td><td>a DataFrame and the column name to plot</td></tr>
+      <tr><td><code>hue</code></td><td>splits the histogram by a categorical column (e.g. class label)</td></tr>
+      <tr><td><code>stat</code></td><td><code>'count'</code>, <code>'density'</code>, or <code>'probability'</code> on the y-axis</td></tr>
+      <tr><td><code>bins</code></td><td>number of bins, or a strategy like <code>'auto'</code></td></tr>
+      <tr><td><code>kde</code></td><td>overlays a smooth density curve on top of the bars</td></tr>
+      <tr><td><code>multiple</code></td><td>when using <code>hue</code>: <code>'layer'</code>, <code>'stack'</code>, or <code>'dodge'</code></td></tr>
+    </table>
+
+    <h4><span class="dot">●</span> Why it matters here</h4>
+    <p>Feature scaling decisions depend on shape. A right-skewed feature (e.g. income) is often
+    log-transformed before standardization; a roughly symmetric feature is a good candidate for
+    z-score scaling as-is. You check the shape with <code class="inline">histplot</code> first.</p>
+
+    <h4><span class="dot">●</span> Every case</h4>
+    <ul class="cases">
+      <li><strong>Single feature, raw:</strong> <code>sns.histplot(data=df, x="Age")</code></li>
+      <li><strong>With a smooth curve:</strong> <code>sns.histplot(data=df, x="Age", kde=True)</code></li>
+      <li><strong>Before vs after scaling, side by side</strong> using two subplots</li>
+      <li><strong>Split by class</strong> using <code>hue="target"</code> — reveals whether a feature
+      separates classes before you even train a model</li>
+      <li><strong>Density instead of raw counts</strong>: <code>stat="density"</code> — useful when
+      comparing groups of different sizes</li>
+    </ul>
+
+    <h4><span class="dot">●</span> Worked example</h4>
+    <pre><span class="cm"># Unit 2: check a feature's distribution before scaling</span>
+from sklearn.datasets import load_wine
+from sklearn.preprocessing import StandardScaler
+
+wine = load_wine(as_frame=True)
+df = wine.frame
+
+fig, axes = plt.subplots(1, 2, figsize=(10, 4))
+sns.histplot(data=df, x="proline", kde=True, ax=axes[0], color="#4C72B0")
+axes[0].set_title("proline — before scaling")
+
+scaled = df.copy()
+scaled["proline"] = StandardScaler().fit_transform(df[["proline"]])
+sns.histplot(data=scaled, x="proline", kde=True, ax=axes[1], color="#DD8452")
+axes[1].set_title("proline — after StandardScaler")
+plt.tight_layout()
+plt.show()</pre>
+    <div class="callout">Notice the <em>shape</em> of the histogram is identical before and after —
+    standardization re-centers and rescales, it does not change the distribution's shape. That's a
+    common misconception worth confirming visually.</div>
+  </div>
+
+  <div class="func-card" id="boxplot">
+    <h3>sns.boxplot() <span class="tag">distribution / outliers</span></h3>
+    <h4><span class="dot">●</span> Definition</h4>
+    <p>Draws a box (interquartile range), a line at the median, whiskers extending to 1.5×IQR, and
+    individual points beyond that as outliers. It is the standard way to spot outliers that would
+    distort a scaler like <code class="inline">MinMaxScaler</code>.</p>
+    <pre>sns.boxplot(data=None, x=None, y=None, hue=None, orient=None,
+            width=0.8, showfliers=True, ax=None)</pre>
+    <table class="params">
+      <tr><th>Parameter</th><th>What it controls</th></tr>
+      <tr><td><code>x, y</code></td><td>categorical column on one axis, numeric on the other</td></tr>
+      <tr><td><code>hue</code></td><td>a second categorical grouping, drawn as side-by-side boxes</td></tr>
+      <tr><td><code>showfliers</code></td><td>toggle the outlier points off if you only want the box</td></tr>
+      <tr><td><code>orient</code></td><td>force <code>'h'</code> or <code>'v'</code> orientation</td></tr>
+    </table>
+
+    <h4><span class="dot">●</span> Every case</h4>
+    <ul class="cases">
+      <li><strong>Single numeric column:</strong> <code>sns.boxplot(data=df, y="proline")</code></li>
+      <li><strong>Numeric feature by category:</strong> <code>sns.boxplot(data=df, x="target", y="proline")</code>
+      — compares a feature's spread across classes</li>
+      <li><strong>Many features at once</strong> after melting a wide DataFrame to long form, to scan
+      every column for outliers in one figure</li>
+      <li><strong>Grouped boxes:</strong> add <code>hue</code> for a second categorical split</li>
+    </ul>
+
+    <h4><span class="dot">●</span> Worked example — scanning all features for outliers</h4>
+    <pre><span class="cm"># reshape wide -> long so every feature becomes one row per value</span>
+long_df = df.drop(columns="target").melt(var_name="feature", value_name="value")
+
+plt.figure(figsize=(11, 5))
+sns.boxplot(data=long_df, x="feature", y="value")
+plt.xticks(rotation=60, ha="right")
+plt.title("Outlier scan across all raw features")
+plt.tight_layout()
+plt.show()</pre>
+    <div class="callout warn">If a feature's scale dwarfs the others (e.g. <code>proline</code> in the
+    hundreds vs. <code>hue</code> around 1), its box will flatten every other box to a line — that visual
+    flattening is itself the argument for feature scaling.</div>
+  </div>
+
+  <div class="func-card" id="heatmap">
+    <h3>sns.heatmap() <span class="tag">correlation / feature selection</span></h3>
+    <h4><span class="dot">●</span> Definition</h4>
+    <p>Renders a 2-D matrix (e.g. a correlation matrix, a confusion matrix, or PCA loadings) as a grid
+    of colored cells, with color intensity encoding the value. It is the single most-used seaborn
+    function across this entire syllabus because so much of ML reduces to a matrix.</p>
+    <pre>sns.heatmap(data, vmin=None, vmax=None, cmap=None, annot=False, fmt='.2g',
+            center=None, square=False, cbar=True, mask=None, ax=None)</pre>
+    <table class="params">
+      <tr><th>Parameter</th><th>What it controls</th></tr>
+      <tr><td><code>data</code></td><td>a 2-D array or DataFrame (e.g. <code>df.corr()</code>)</td></tr>
+      <tr><td><code>annot</code></td><td>writes the numeric value inside each cell</td></tr>
+      <tr><td><code>cmap</code></td><td>color map, e.g. <code>'coolwarm'</code> for signed correlations</td></tr>
+      <tr><td><code>center</code></td><td>value mapped to the middle of the color scale (use <code>0</code>
+      for correlation matrices so positive/negative are visually symmetric)</td></tr>
+      <tr><td><code>mask</code></td><td>boolean array to hide cells — commonly used to show only the
+      lower triangle of a symmetric correlation matrix</td></tr>
+    </table>
+
+    <h4><span class="dot">●</span> Every case</h4>
+    <ul class="cases">
+      <li><strong>Full correlation matrix:</strong> <code>sns.heatmap(df.corr(), annot=True, cmap="coolwarm", center=0)</code></li>
+      <li><strong>Lower-triangle only</strong> (avoids repeating symmetric information) via a mask</li>
+      <li><strong>PCA component loadings</strong>: rows = components, columns = original features —
+      reveals which original features drive each principal component</li>
+      <li><strong>Confusion matrix</strong> for classification (see Unit 4)</li>
+    </ul>
+
+    <h4><span class="dot">●</span> Worked example — correlation matrix for feature selection</h4>
+    <pre>corr = df.drop(columns="target").corr()
+mask = None
+import numpy as np
+mask = np.triu(np.ones_like(corr, dtype=bool))   <span class="cm"># hide upper triangle</span>
+
+plt.figure(figsize=(9, 7))
+sns.heatmap(corr, mask=mask, annot=True, fmt=".2f", cmap="coolwarm",
+            center=0, square=True, cbar_kws={"shrink": .7})
+plt.title("Feature correlation — candidates for removal are near ±1")
+plt.tight_layout()
+plt.show()</pre>
+
+    <h4><span class="dot">●</span> Worked example — PCA loadings</h4>
+    <pre>from sklearn.decomposition import PCA
+from sklearn.preprocessing import StandardScaler
+
+X = StandardScaler().fit_transform(df.drop(columns="target"))
+pca = PCA(n_components=4).fit(X)
+
+loadings = pd.DataFrame(pca.components_,
+                         columns=df.drop(columns="target").columns,
+                         index=[f"PC{i+1}" for i in range(4)])
+
+plt.figure(figsize=(11, 4))
+sns.heatmap(loadings, cmap="vlag", center=0, annot=False)
+plt.title("PCA component loadings")
+plt.tight_layout()
+plt.show()</pre>
+  </div>
+
+  <div class="exercise">
+    <span class="ex-label">Exercise — Unit 2</span>
+    <h4>Preprocessing with seaborn</h4>
+    <ol>
+      <li>Load the <code>load_breast_cancer</code> dataset from scikit-learn. Use <code>histplot</code>
+      with <code>hue="target"</code> to find one feature that visibly separates the two classes and one
+      that does not.</li>
+      <li>Use <code>boxplot</code> on the melted (long-form) feature set to identify the three features
+      with the widest spread of outliers.</li>
+      <li>Compute the correlation matrix and use <code>heatmap</code> (masked, lower-triangle) to find
+      a pair of features correlated above 0.9 — these are candidates to drop before modelling.</li>
+      <li>Run PCA with 2 components on the scaled data and heatmap the loadings to name the feature
+      that dominates PC1.</li>
+    </ol>
+    <details class="solution">
+      <summary>Show a starting-point solution</summary>
+      <pre>from sklearn.datasets import load_breast_cancer
+import numpy as np
+
+data = load_breast_cancer(as_frame=True)
+df = data.frame
+
+<span class="cm"># 1. distribution split by class</span>
+fig, axes = plt.subplots(1, 2, figsize=(10, 4))
+sns.histplot(data=df, x="mean radius", hue="target", kde=True, ax=axes[0])
+sns.histplot(data=df, x="mean symmetry", hue="target", kde=True, ax=axes[1])
+plt.tight_layout(); plt.show()
+
+<span class="cm"># 2. outlier scan</span>
+long_df = df.drop(columns="target").melt(var_name="feature", value_name="value")
+plt.figure(figsize=(14, 5))
+sns.boxplot(data=long_df, x="feature", y="value")
+plt.xticks(rotation=75, ha="right"); plt.tight_layout(); plt.show()
+
+<span class="cm"># 3. correlation heatmap</span>
+corr = df.drop(columns="target").corr()
+mask = np.triu(np.ones_like(corr, dtype=bool))
+plt.figure(figsize=(12, 10))
+sns.heatmap(corr, mask=mask, cmap="coolwarm", center=0, square=True)
+plt.tight_layout(); plt.show()
+high_corr = corr.where(~mask).stack()
+print(high_corr[high_corr.abs() > 0.9].sort_values(ascending=False))
+
+<span class="cm"># 4. PCA loadings</span>
+from sklearn.decomposition import PCA
+from sklearn.preprocessing import StandardScaler
+X = StandardScaler().fit_transform(df.drop(columns="target"))
+pca = PCA(n_components=2).fit(X)
+loadings = pd.DataFrame(pca.components_, columns=df.columns[:-1], index=["PC1", "PC2"])
+sns.heatmap(loadings, cmap="vlag", center=0)
+plt.show()</pre>
+    </details>
+  </div>
+</section>
+
+<!-- ================= UNIT 3 ================= -->
+<section class="unit" id="unit3">
+  <span class="unit-num">UNIT 3</span>
+  <h2>Regression — is the line actually a good fit?</h2>
+  <p class="unit-sub">Linear regression (one and many variables), gradient descent, overfitting,
+  regularization, evaluation metrics. Seaborn won't run gradient descent for you, but it will show you,
+  in one line, whether a fitted line under- or over-fits — which is exactly the visual judgment those
+  topics ask you to make.</p>
+
+  <div class="func-card" id="regplot">
+    <h3>sns.regplot() <span class="tag">axes-level</span></h3>
+    <h4><span class="dot">●</span> Definition</h4>
+    <p>Plots a scatter of <code>x</code> vs <code>y</code> and fits + draws a regression line through it,
+    with a shaded confidence interval. It is an <em>axes-level</em> function — it draws onto a single
+    Matplotlib axis, so it composes with subplots.</p>
+    <pre>sns.regplot(data=None, x=None, y=None, order=1, ci=95, scatter=True,
+            fit_reg=True, robust=False, logistic=False, lowess=False, ax=None)</pre>
+    <table class="params">
+      <tr><th>Parameter</th><th>What it controls</th></tr>
+      <tr><td><code>order</code></td><td><code>1</code> = linear; <code>2</code>/<code>3</code> fits a
+      polynomial — set higher to visualize overfitting</td></tr>
+      <tr><td><code>ci</code></td><td>confidence interval band width (as a %), or <code>None</code> to hide it</td></tr>
+      <tr><td><code>robust</code></td><td>uses a robust regression, downweighting outliers</td></tr>
+      <tr><td><code>logistic</code></td><td>fits a logistic curve instead — useful preview for Unit 4</td></tr>
+      <tr><td><code>lowess</code></td><td>fits a local, non-parametric smoother instead of a straight line</td></tr>
+    </table>
+
+    <h4><span class="dot">●</span> Every case</h4>
+    <ul class="cases">
+      <li><strong>Simple linear regression:</strong> <code>sns.regplot(data=df, x="RM", y="MEDV")</code></li>
+      <li><strong>Polynomial fit:</strong> <code>order=2</code> or <code>order=3</code> — compare against
+      <code>order=1</code> side-by-side to see under/overfitting</li>
+      <li><strong>No scatter, line only:</strong> <code>scatter=False</code> — clean when overlaying several fits</li>
+      <li><strong>No confidence band:</strong> <code>ci=None</code> — for a less cluttered look</li>
+      <li><strong>Robust regression:</strong> <code>robust=True</code> — downweights outliers so the
+      line isn't dragged by them</li>
+    </ul>
+
+    <h4><span class="dot">●</span> Worked example</h4>
+    <pre><span class="cm"># Unit 3: simple linear regression with one variable</span>
+from sklearn.datasets import fetch_california_housing
+housing = fetch_california_housing(as_frame=True)
+hdf = housing.frame.sample(1000, random_state=0)   <span class="cm"># subsample for a readable plot</span>
+
+plt.figure(figsize=(6, 5))
+sns.regplot(data=hdf, x="MedInc", y="MedHouseVal",
+            scatter_kws={"alpha": 0.3, "color": "#4C72B0"},
+            line_kws={"color": "#C44E52"})
+plt.title("Median income vs. median house value")
+plt.show()</pre>
+
+    <h4><span class="dot">●</span> Worked example — comparing polynomial orders (overfitting)</h4>
+    <pre>fig, axes = plt.subplots(1, 3, figsize=(14, 4), sharey=True)
+for ax, order in zip(axes, [1, 2, 6]):
+    sns.regplot(data=hdf, x="MedInc", y="MedHouseVal", order=order,
+                scatter_kws={"alpha": 0.2}, ax=ax, ci=None)
+    ax.set_title(f"order = {order}")
+plt.tight_layout()
+plt.show()</pre>
+    <div class="callout">At <code>order=6</code> the curve starts chasing individual points near the
+    edges of the data — the visual definition of overfitting, before you've computed a single metric.</div>
+  </div>
+
+  <div class="func-card" id="lmplot">
+    <h3>sns.lmplot() <span class="tag">figure-level</span></h3>
+    <h4><span class="dot">●</span> Definition</h4>
+    <p>The figure-level counterpart to <code>regplot</code>. It combines a regression fit with faceting:
+    it can draw one regression line per category, or lay out a whole grid of small regression plots
+    split by one or two categorical variables. Use this specifically when you have <strong>multiple
+    variables</strong> to compare, not just one.</p>
+    <pre>sns.lmplot(data, x, y, hue=None, col=None, row=None, order=1,
+           col_wrap=None, height=4, aspect=1, ci=95)</pre>
+    <table class="params">
+      <tr><th>Parameter</th><th>What it controls</th></tr>
+      <tr><td><code>hue</code></td><td>separate colored regression lines in the <em>same</em> axes</td></tr>
+      <tr><td><code>col</code>, <code>row</code></td><td>separate <em>panels</em> (facets), one per category</td></tr>
+      <tr><td><code>col_wrap</code></td><td>wrap facets onto multiple rows after N columns</td></tr>
+      <tr><td><code>height, aspect</code></td><td>size of each individual facet</td></tr>
+    </table>
+
+    <h4><span class="dot">●</span> Every case</h4>
+    <ul class="cases">
+      <li><strong>One fit per category, same axes:</strong> <code>hue="ocean_proximity"</code></li>
+      <li><strong>One fit per category, separate panels:</strong> <code>col="ocean_proximity"</code></li>
+      <li><strong>Two-way facet grid:</strong> both <code>row</code> and <code>col</code> for two
+      categorical variables at once</li>
+      <li><strong>Multiple linear regression, visualized one predictor at a time:</strong> loop the
+      target against each numeric predictor to sanity-check individual relationships even though the
+      model uses all of them together</li>
+    </ul>
+
+    <h4><span class="dot">●</span> Worked example — multiple variables, faceted</h4>
+    <pre><span class="cm"># regression of house value on income, split by coastal proximity</span>
+sample = housing.frame.sample(2000, random_state=1)
+sample["ocean_group"] = pd.qcut(sample["Latitude"], 3, labels=["south", "mid", "north"])
+
+sns.lmplot(data=sample, x="MedInc", y="MedHouseVal", col="ocean_group",
+           scatter_kws={"alpha": 0.2}, height=4, ci=None)
+plt.show()</pre>
+  </div>
+
+  <div class="func-card" id="residplot">
+    <h3>sns.residplot() <span class="tag">diagnostics</span></h3>
+    <h4><span class="dot">●</span> Definition</h4>
+    <p>Fits a regression of <code>y</code> on <code>x</code> and plots the <em>residuals</em>
+    (actual − predicted) instead of the raw fit. A good linear fit shows residuals scattered randomly
+    around zero; a curved or funnel-shaped residual pattern signals that the linear model is
+    mis-specified or that regularization / a different feature transform is needed.</p>
+    <pre>sns.residplot(data=None, x=None, y=None, lowess=False, order=1, ax=None)</pre>
+
+    <h4><span class="dot">●</span> Every case</h4>
+    <ul class="cases">
+      <li><strong>Basic residual check:</strong> <code>sns.residplot(data=df, x="RM", y="MEDV")</code></li>
+      <li><strong>With a smoother over the residuals:</strong> <code>lowess=True</code> — makes a subtle
+      curved pattern easier to spot</li>
+      <li><strong>After regularization:</strong> pass in the model's own residuals
+      (<code>y_true - y_pred</code>) as a manual scatterplot to compare Ridge vs Lasso vs plain OLS</li>
+    </ul>
+
+    <h4><span class="dot">●</span> Worked example</h4>
+    <pre>plt.figure(figsize=(6, 4))
+sns.residplot(data=hdf, x="MedInc", y="MedHouseVal", lowess=True,
+              line_kws={"color": "#C44E52"})
+plt.axhline(0, color="grey", linestyle="--")
+plt.title("Residuals: median income model")
+plt.show()</pre>
+    <div class="callout warn">A residual plot that fans out (variance grows with x) is
+    <em>heteroscedasticity</em> — a linear model's constant-variance assumption is violated, and this
+    is often the visual cue that motivates trying Ridge/Lasso or a transformed feature.</div>
+  </div>
+
+  <div class="exercise">
+    <span class="ex-label">Exercise — Unit 3</span>
+    <h4>Regression with seaborn</h4>
+    <ol>
+      <li>Using the California housing data, plot <code>regplot</code> for <code>AveRooms</code> vs
+      <code>MedHouseVal</code> and identify whether the relationship looks linear.</li>
+      <li>Use <code>lmplot</code> with <code>col</code> to compare that same relationship split into
+      three income quantile groups (<code>pd.qcut(df["MedInc"], 3)</code>). Does the slope change
+      across groups?</li>
+      <li>Fit polynomial orders 1, 2, and 4 with <code>regplot</code> on <code>AveOccup</code> vs
+      <code>MedHouseVal</code> (clip extreme values first) and describe which one looks overfit.</li>
+      <li>Use <code>residplot</code> to check whether a linear fit of <code>MedInc</code> vs
+      <code>MedHouseVal</code> shows heteroscedasticity.</li>
+    </ol>
+    <details class="solution">
+      <summary>Show a starting-point solution</summary>
+      <pre>hdf2 = housing.frame.sample(1500, random_state=2)
+hdf2 = hdf2[hdf2["AveOccup"] < 6]   <span class="cm"># clip a few extreme outliers for readability</span>
+
+<span class="cm"># 1</span>
+sns.regplot(data=hdf2, x="AveRooms", y="MedHouseVal", scatter_kws={"alpha": .2})
+plt.show()
+
+<span class="cm"># 2</span>
+hdf2["income_group"] = pd.qcut(hdf2["MedInc"], 3, labels=["low", "mid", "high"])
+sns.lmplot(data=hdf2, x="AveRooms", y="MedHouseVal", col="income_group",
+           scatter_kws={"alpha": .2}, ci=None)
+plt.show()
+
+<span class="cm"># 3</span>
+fig, axes = plt.subplots(1, 3, figsize=(13, 4), sharey=True)
+for ax, order in zip(axes, [1, 2, 4]):
+    sns.regplot(data=hdf2, x="AveOccup", y="MedHouseVal", order=order,
+                scatter_kws={"alpha": .2}, ci=None, ax=ax)
+    ax.set_title(f"order={order}")
+plt.tight_layout(); plt.show()
+
+<span class="cm"># 4</span>
+sns.residplot(data=hdf2, x="MedInc", y="MedHouseVal", lowess=True)
+plt.axhline(0, color="grey", linestyle="--")
+plt.show()</pre>
+    </details>
+  </div>
+</section>
+
+<!-- ================= UNIT 4 ================= -->
+<section class="unit" id="unit4">
+  <span class="unit-num">UNIT 4</span>
+  <h2>Classification — how do the classes sit in feature space?</h2>
+  <p class="unit-sub">Decision trees, Naive Bayes, logistic regression, k-NN, perceptron/MLP, neural
+  networks, SVM, and classification metrics. Whatever the algorithm, the same three seaborn tools apply:
+  look at the raw feature space with class colors, look at every pair of features at once, and, after
+  training, look at the confusion matrix.</p>
+
+  <div class="func-card" id="scatterplot">
+    <h3>sns.scatterplot() <span class="tag">axes-level</span></h3>
+    <h4><span class="dot">●</span> Definition</h4>
+    <p>Plots points at <code>(x, y)</code>, with optional color (<code>hue</code>), marker shape
+    (<code>style</code>), and size (<code>size</code>) mapped to other columns. For classification this
+    is how you visually check whether two features already separate the classes — which hints at
+    whether a linear boundary (logistic regression, linear SVM) will work, or whether you need
+    something non-linear (kernel SVM, trees, k-NN).</p>
+    <pre>sns.scatterplot(data=None, x=None, y=None, hue=None, style=None,
+                size=None, palette=None, alpha=1.0, ax=None)</pre>
+    <table class="params">
+      <tr><th>Parameter</th><th>What it controls</th></tr>
+      <tr><td><code>hue</code></td><td>color by class label — the most common use in this unit</td></tr>
+      <tr><td><code>style</code></td><td>different marker shapes per category (useful alongside hue for
+      colorblind-safe or print-friendly plots)</td></tr>
+      <tr><td><code>size</code></td><td>maps a numeric column to point size (e.g. a probability)</td></tr>
+      <tr><td><code>palette</code></td><td>color palette name or explicit mapping, e.g. <code>"deep"</code></td></tr>
+    </table>
+
+    <h4><span class="dot">●</span> Every case</h4>
+    <ul class="cases">
+      <li><strong>Two features colored by class:</strong> <code>hue="target"</code></li>
+      <li><strong>Add marker shape too:</strong> <code>style="target"</code> together with
+      <code>hue="target"</code> for redundant, accessible encoding</li>
+      <li><strong>Show model confidence:</strong> <code>size="predicted_proba"</code> — larger points
+      are predictions the model is more confident about</li>
+      <li><strong>Overlay a decision boundary</strong>: scatter the true points, then draw a filled
+      contour of model predictions underneath with Matplotlib's <code>contourf</code></li>
+    </ul>
+
+    <h4><span class="dot">●</span> Worked example</h4>
+    <pre><span class="cm"># Unit 4: are two features linearly separable?</span>
+from sklearn.datasets import load_iris
+iris = load_iris(as_frame=True)
+idf = iris.frame
+idf["species"] = idf["target"].map(dict(enumerate(iris.target_names)))
+
+plt.figure(figsize=(6, 5))
+sns.scatterplot(data=idf, x="petal length (cm)", y="petal width (cm)",
+                 hue="species", style="species", s=70, palette="deep")
+plt.title("Petal measurements by species")
+plt.show()</pre>
+    <div class="callout">Setosa separates almost perfectly on these two features alone — a strong hint
+    that even a simple linear model (logistic regression, linear SVM) will do well distinguishing it
+    from the other two.</div>
+  </div>
+
+  <div class="func-card" id="pairplot">
+    <h3>sns.pairplot() <span class="tag">figure-level</span></h3>
+    <h4><span class="dot">●</span> Definition</h4>
+    <p>Builds a full grid of pairwise scatterplots for every combination of numeric columns, with
+    histograms (or KDEs) on the diagonal. It is the fastest way to scan <em>all</em> feature pairs for
+    class separability at once, instead of calling <code>scatterplot</code> repeatedly.</p>
+    <pre>sns.pairplot(data, hue=None, vars=None, diag_kind='auto',
+             corner=False, palette=None, height=2.2)</pre>
+    <table class="params">
+      <tr><th>Parameter</th><th>What it controls</th></tr>
+      <tr><td><code>hue</code></td><td>color every panel by class label</td></tr>
+      <tr><td><code>vars</code></td><td>restrict to a subset of columns (full grid gets large fast)</td></tr>
+      <tr><td><code>diag_kind</code></td><td><code>'hist'</code> or <code>'kde'</code> for the diagonal</td></tr>
+      <tr><td><code>corner</code></td><td><code>True</code> draws only the lower triangle, halving the
+      number of panels for a large feature set</td></tr>
+    </table>
+
+    <h4><span class="dot">●</span> Every case</h4>
+    <ul class="cases">
+      <li><strong>All features, colored by class:</strong> <code>sns.pairplot(idf, hue="species")</code></li>
+      <li><strong>Restricted to a few features:</strong> <code>vars=[...]</code> when the dataset has
+      many columns (e.g. before k-NN, where the "curse of dimensionality" makes this scan more important)</li>
+      <li><strong>Corner-only grid:</strong> <code>corner=True</code> for a cleaner, non-redundant layout</li>
+    </ul>
+
+    <h4><span class="dot">●</span> Worked example</h4>
+    <pre>sns.pairplot(idf.drop(columns="target"), hue="species",
+             palette="deep", corner=True, diag_kind="kde")
+plt.show()</pre>
+    <div class="callout">This single figure tells you, before training anything, which feature pairs
+    a decision tree would likely split on first, and whether Naive Bayes' assumption of roughly
+    Gaussian, class-conditional features looks reasonable from the diagonal KDEs.</div>
+  </div>
+
+  <div class="func-card" id="confmat">
+    <h3>sns.heatmap() for a confusion matrix <span class="tag">evaluation</span></h3>
+    <h4><span class="dot">●</span> Definition</h4>
+    <p>Same function as in Unit 2, applied to a different matrix: scikit-learn's
+    <code>confusion_matrix</code> output. Rows are true classes, columns are predicted classes, and the
+    diagonal is what the classifier got right — the visual basis for accuracy, precision, recall, and F1.</p>
+    <pre>from sklearn.metrics import confusion_matrix
+cm = confusion_matrix(y_true, y_pred)
+sns.heatmap(cm, annot=True, fmt='d', cmap='Blues',
+            xticklabels=labels, yticklabels=labels)</pre>
+
+    <h4><span class="dot">●</span> Every case</h4>
+    <ul class="cases">
+      <li><strong>Raw counts:</strong> <code>fmt='d'</code>, integer annotations</li>
+      <li><strong>Normalized (row-wise) percentages:</strong> pass
+      <code>confusion_matrix(y_true, y_pred, normalize='true')</code> and use <code>fmt='.1%'</code>
+      or <code>'.2f'</code> — shows recall per class directly</li>
+      <li><strong>Binary classification, 2×2</strong> — label cells TP / FP / FN / TN explicitly with
+      <code>annot</code> as a custom string array</li>
+    </ul>
+
+    <h4><span class="dot">●</span> Worked example</h4>
+    <pre>from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import confusion_matrix
+
+X, y = idf.drop(columns=["target", "species"]), idf["target"]
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=0)
+
+clf = LogisticRegression(max_iter=1000).fit(X_train, y_train)
+y_pred = clf.predict(X_test)
+cm = confusion_matrix(y_test, y_pred)
+
+plt.figure(figsize=(5, 4))
+sns.heatmap(cm, annot=True, fmt='d', cmap='Blues',
+            xticklabels=iris.target_names, yticklabels=iris.target_names)
+plt.xlabel("Predicted"); plt.ylabel("Actual")
+plt.title("Logistic regression — confusion matrix")
+plt.show()</pre>
+  </div>
+
+  <div class="callout">Boxplots and violin plots (from Unit 2's <code>boxplot</code>, plus
+  <code>sns.violinplot()</code> which takes identical arguments) are also frequently reused here:
+  <code>sns.violinplot(data=idf, x="species", y="petal length (cm)")</code> shows the full distribution
+  shape per class, useful for judging Naive Bayes' Gaussian assumption per class.</div>
+
+  <div class="exercise">
+    <span class="ex-label">Exercise — Unit 4</span>
+    <h4>Classification with seaborn</h4>
+    <ol>
+      <li>Load <code>load_wine</code>. Use <code>pairplot</code> with <code>hue="target"</code> restricted
+      to 4 features (<code>vars=[...]</code>) to pick the two features that separate classes best.</li>
+      <li>Use <code>scatterplot</code> on just those two features, with both <code>hue</code> and
+      <code>style</code> set to the class, sized by the value of a third feature.</li>
+      <li>Train a k-NN classifier (<code>k=5</code>) and a Decision Tree on the same data. Plot both
+      confusion matrices side by side with <code>heatmap</code> and compare which classes get confused.</li>
+      <li>Re-plot one confusion matrix normalized by row (<code>normalize='true'</code>) and explain, in
+      one sentence, how that changes the metric you're reading off the diagonal.</li>
+    </ol>
+    <details class="solution">
+      <summary>Show a starting-point solution</summary>
+      <pre>from sklearn.datasets import load_wine
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import confusion_matrix
+
+wine = load_wine(as_frame=True)
+wdf = wine.frame
+
+<span class="cm"># 1</span>
+cols = ["flavanoids", "color_intensity", "proline", "alcohol"]
+sns.pairplot(wdf, hue="target", vars=cols, palette="deep", corner=True)
+plt.show()
+
+<span class="cm"># 2 (assume flavanoids & color_intensity separate best)</span>
+sns.scatterplot(data=wdf, x="flavanoids", y="color_intensity",
+                 hue="target", style="target", size="proline", palette="deep")
+plt.show()
+
+<span class="cm"># 3</span>
+X, y = wdf.drop(columns="target"), wdf["target"]
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=.3, random_state=0)
+
+knn = KNeighborsClassifier(5).fit(X_train, y_train)
+tree = DecisionTreeClassifier(random_state=0).fit(X_train, y_train)
+
+cm_knn = confusion_matrix(y_test, knn.predict(X_test))
+cm_tree = confusion_matrix(y_test, tree.predict(X_test))
+
+fig, axes = plt.subplots(1, 2, figsize=(10, 4))
+sns.heatmap(cm_knn, annot=True, fmt='d', cmap='Blues', ax=axes[0]); axes[0].set_title("k-NN")
+sns.heatmap(cm_tree, annot=True, fmt='d', cmap='Oranges', ax=axes[1]); axes[1].set_title("Decision Tree")
+plt.tight_layout(); plt.show()
+
+<span class="cm"># 4</span>
+cm_norm = confusion_matrix(y_test, knn.predict(X_test), normalize='true')
+sns.heatmap(cm_norm, annot=True, fmt='.2f', cmap='Blues')
+plt.title("k-NN — recall per class (row-normalized)")
+plt.show()</pre>
+    </details>
+  </div>
+</section>
+
+<!-- ================= UNIT 5 ================= -->
+<section class="unit" id="unit5">
+  <span class="unit-num">UNIT 5</span>
+  <h2>Clustering — no labels, so the plot <em>is</em> the evidence</h2>
+  <p class="unit-sub">Approaches to clustering, distance metrics, K-means, hierarchical clustering.
+  Without ground-truth labels, a visualization is often the only way to judge whether clusters are
+  sensible — and for hierarchical clustering specifically, seaborn has a function built for exactly
+  this: the dendrogram-plus-heatmap combination.</p>
+
+  <div class="func-card" id="clusterscatter">
+    <h3>sns.scatterplot() for cluster labels <span class="tag">K-means</span></h3>
+    <h4><span class="dot">●</span> Definition</h4>
+    <p>Identical function to Unit 4's version — the only difference is that <code>hue</code> now maps
+    to the <em>cluster assignment</em> produced by an algorithm like K-means, not a true class label.
+    Because there is no ground truth, this plot is often the main way to sanity-check <code>k</code>.</p>
+
+    <h4><span class="dot">●</span> Every case</h4>
+    <ul class="cases">
+      <li><strong>Two raw features, colored by cluster:</strong> <code>hue="cluster"</code></li>
+      <li><strong>Cluster centers overlaid</strong>: a second, larger-marker scatterplot for
+      <code>kmeans.cluster_centers_</code>, plotted on the same axes</li>
+      <li><strong>Comparing values of k side-by-side</strong>: one subplot per candidate <code>k</code>
+      to visually pick an elbow</li>
+    </ul>
+
+    <h4><span class="dot">●</span> Worked example</h4>
+    <pre><span class="cm"># Unit 5: K-means, visualized</span>
+from sklearn.cluster import KMeans
+from sklearn.preprocessing import StandardScaler
+
+X = StandardScaler().fit_transform(wdf.drop(columns="target"))
+km = KMeans(n_clusters=3, n_init=10, random_state=0).fit(X)
+wdf["cluster"] = km.labels_
+
+plt.figure(figsize=(6, 5))
+sns.scatterplot(data=wdf, x="flavanoids", y="color_intensity",
+                 hue="cluster", palette="deep", s=60)
+plt.title("K-means clusters (k=3) on wine data")
+plt.show()</pre>
+    <div class="callout">Because K-means was fit on <em>all</em> scaled features but we're only viewing
+    two, clusters may look imperfectly separated here even when they are well separated in the full
+    feature space — a reminder that a 2-D scatter is a projection, not the whole picture.</div>
+  </div>
+
+  <div class="func-card" id="clustermap">
+    <h3>sns.clustermap() <span class="tag">hierarchical clustering</span></h3>
+    <h4><span class="dot">●</span> Definition</h4>
+    <p>Draws a heatmap where rows and/or columns are reordered according to a hierarchical clustering
+    (agglomerative, using a distance metric and linkage method), with the resulting dendrograms drawn
+    alongside. This is the one seaborn function that directly visualizes the hierarchical clustering
+    algorithm itself, rather than just its output.</p>
+    <pre>sns.clustermap(data, metric='euclidean', method='average',
+               z_score=None, standard_scale=None, cmap='vlag',
+               row_cluster=True, col_cluster=True, figsize=(10, 10))</pre>
+    <table class="params">
+      <tr><th>Parameter</th><th>What it controls</th></tr>
+      <tr><td><code>metric</code></td><td>distance metric between rows, e.g. <code>'euclidean'</code>,
+      <code>'cosine'</code>, <code>'cityblock'</code></td></tr>
+      <tr><td><code>method</code></td><td>linkage method: <code>'average'</code>, <code>'single'</code>,
+      <code>'complete'</code>, <code>'ward'</code></td></tr>
+      <tr><td><code>z_score</code></td><td>standardize rows (<code>0</code>) or columns (<code>1</code>)
+      before clustering, so scale doesn't dominate distance</td></tr>
+      <tr><td><code>row_cluster, col_cluster</code></td><td>toggle clustering off on either axis</td></tr>
+    </table>
+
+    <h4><span class="dot">●</span> Every case</h4>
+    <ul class="cases">
+      <li><strong>Cluster samples only</strong> (rows), keep original feature order: <code>col_cluster=False</code></li>
+      <li><strong>Cluster both samples and features</strong>: default behavior — reveals feature groups too</li>
+      <li><strong>Different linkage methods</strong>: compare <code>method='single'</code> (chaining) vs
+      <code>method='ward'</code> (compact, even-sized clusters) on the same data</li>
+      <li><strong>Standardized features first</strong>: <code>z_score=1</code> so no single
+      large-scale feature dominates the distance metric</li>
+      <li><strong>Color rows by true/cluster label</strong>: pass <code>row_colors=</code> a Series
+      mapping each sample to a color, to visually check hierarchical clusters against known labels</li>
+    </ul>
+
+    <h4><span class="dot">●</span> Worked example</h4>
+    <pre><span class="cm"># Unit 5: hierarchical clustering, visualized directly</span>
+sample = wdf.drop(columns=["target", "cluster"]).sample(40, random_state=0)
+
+palette = dict(zip(wdf["target"].unique(), sns.color_palette("deep", 3)))
+row_colors = wdf.loc[sample.index, "target"].map(palette)
+
+sns.clustermap(sample, method="ward", metric="euclidean",
+               z_score=1, cmap="vlag", row_colors=row_colors,
+               figsize=(9, 9))
+plt.show()</pre>
+    <div class="callout">The colored strip next to the dendrogram shows the <em>true</em> wine class
+    for each row. If the dendrogram's branches roughly group same-colored rows together, hierarchical
+    clustering has recovered structure that lines up with the real classes — without ever being told
+    what they were.</div>
+  </div>
+
+  <div class="exercise">
+    <span class="ex-label">Exercise — Unit 5</span>
+    <h4>Clustering with seaborn</h4>
+    <ol>
+      <li>Run K-means with <code>k = 2, 3, 4, 5</code> on the scaled wine features. For each, scatterplot
+      two features colored by cluster in a 2×2 grid of subplots. Pick the <code>k</code> that looks most
+      visually sensible and explain why.</li>
+      <li>Build a <code>clustermap</code> on a 40-row sample of the (standardized) wine data using
+      <code>method='ward'</code>, then rebuild it with <code>method='single'</code>. Describe one visible
+      difference between the two dendrograms.</li>
+      <li>Add <code>row_colors</code> mapped to the true wine class and comment on whether the
+      hierarchical clusters recover the true classes better or worse than your chosen K-means <code>k</code>
+      did in question 1.</li>
+    </ol>
+    <details class="solution">
+      <summary>Show a starting-point solution</summary>
+      <pre>fig, axes = plt.subplots(2, 2, figsize=(10, 8))
+for ax, k in zip(axes.ravel(), [2, 3, 4, 5]):
+    labels = KMeans(n_clusters=k, n_init=10, random_state=0).fit_predict(X)
+    sns.scatterplot(x=wdf["flavanoids"], y=wdf["color_intensity"],
+                     hue=labels, palette="deep", ax=ax, legend=False)
+    ax.set_title(f"k={k}")
+plt.tight_layout(); plt.show()
+
+<span class="cm"># 2</span>
+sample = wdf.drop(columns=["target", "cluster"]).sample(40, random_state=0)
+sns.clustermap(sample, method="ward", z_score=1, cmap="vlag", figsize=(8, 8))
+plt.show()
+sns.clustermap(sample, method="single", z_score=1, cmap="vlag", figsize=(8, 8))
+plt.show()
+
+<span class="cm"># 3</span>
+palette = dict(zip(wdf["target"].unique(), sns.color_palette("deep", 3)))
+row_colors = wdf.loc[sample.index, "target"].map(palette)
+sns.clustermap(sample, method="ward", z_score=1, cmap="vlag",
+               row_colors=row_colors, figsize=(9, 9))
+plt.show()</pre>
+    </details>
+  </div>
+</section>
+
+<section id="cheatsheet" class="unit">
+  <span class="unit-num">REFERENCE</span>
+  <h2>One-page cheat sheet</h2>
+  <table class="params">
+    <tr><th>Unit</th><th>Question you're asking</th><th>Function</th></tr>
+    <tr><td>2 — Preprocessing</td><td>What shape is this feature?</td><td><code>sns.histplot()</code></td></tr>
+    <tr><td>2 — Preprocessing</td><td>Which features have outliers?</td><td><code>sns.boxplot()</code></td></tr>
+    <tr><td>2 — Preprocessing</td><td>Which features are redundant / what drives each PC?</td><td><code>sns.heatmap()</code></td></tr>
+    <tr><td>3 — Regression</td><td>Does a line fit one relationship well?</td><td><code>sns.regplot()</code></td></tr>
+    <tr><td>3 — Regression</td><td>Does the fit differ across groups / multiple variables?</td><td><code>sns.lmplot()</code></td></tr>
+    <tr><td>3 — Regression</td><td>Are the residuals well-behaved?</td><td><code>sns.residplot()</code></td></tr>
+    <tr><td>4 — Classification</td><td>Do two features separate the classes?</td><td><code>sns.scatterplot()</code></td></tr>
+    <tr><td>4 — Classification</td><td>Which feature pair separates classes best, overall?</td><td><code>sns.pairplot()</code></td></tr>
+    <tr><td>4 — Classification</td><td>Where does the classifier get confused?</td><td><code>sns.heatmap()</code> (confusion matrix)</td></tr>
+    <tr><td>5 — Clustering</td><td>Do K-means clusters look sensible?</td><td><code>sns.scatterplot()</code></td></tr>
+    <tr><td>5 — Clustering</td><td>How does hierarchical clustering group the data?</td><td><code>sns.clustermap()</code></td></tr>
+  </table>
+</section>
+
+</main>
+</div>
+
+<footer>
+  Course notes prepared for DSC17 / DSC-A5 / GE7c — Machine Learning (NEP UGCF 2022). Datasets used in
+  examples are the built-in scikit-learn toy/sample datasets (wine, iris, breast cancer, California
+  housing) so every example runs offline with <code>pip install scikit-learn seaborn</code>.
+</footer>
+
+</body>
+</html>
