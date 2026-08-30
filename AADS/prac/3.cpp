@@ -1,24 +1,34 @@
-#include <bits/stdc++.h>
-using namespace std; 
+#include <iostream>
+#include <vector>
+#include <unordered_map>
 
-void rotate(vector<int>& nums, int k) {
-    int n = nums.size();
-    if (k == 0) return;
-    if (k > nums.size() - 1) k = k % (nums.size() - 1);
-    reverse(nums.begin(), nums.end());
-    reverse(nums.begin(), nums.begin() + k);
-    reverse(nums.begin() + k, nums.end());
+std::vector<int> twoSum(const std::vector<int>& nums, int target) {
+    std::unordered_map<int, int> num_map;
+    
+    for (int i = 0; i < nums.size(); ++i) {
+        int complement = target - nums[i];
+        
+        if (num_map.find(complement) != num_map.end()) {
+            return {num_map[complement], i};
+        }
+        
+        num_map[nums[i]] = i;
+    }
+    
+    return {};
 }
 
-int main () {
-    vector<int> nums = {1,2,3,4,5,6,7};
-    int k = 3;
-    rotate(nums, k);
-    
-    cout << "Rotated list: [ ";
-    for (int it : nums) {
-        cout << it << " ";
-    } cout << "]" << endl;
-    
+int main() {
+    std::vector<int> nums = {2, 7, 11, 15};
+    int target = 9;
+
+    std::vector<int> result = twoSum(nums, target);
+
+    if (!result.empty()) {
+        std::cout << result[0] << " " << result[1] << std::endl;
+    } else {
+        std::cout << "No pair found" << std::endl;
+    }
+
     return 0;
 }

@@ -2,6 +2,8 @@
 #include <vector>
 using namespace std;
 
+/* 1. Write a program to implement following vector operations: at(i), insert (i,e), erase(i,e), set(i,e), push_back(), pop_back(). */
+
 void printVector(const string& operation, const vector<int>& vec) {
     cout << operation << ": [ ";
     for (int val : vec) {
